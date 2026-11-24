@@ -282,7 +282,7 @@ def md_to_wechat_html(md_text: str, meta: dict, asset_prefix: str = "../assets/"
                 current_section_mode = "normal"
                 continue
 
-            elif "下期悬念" in h2_text or "毕业挑战" in h2_text:
+            elif "下期预告" in h2_text or "毕业挑战" in h2_text:
                 current_section_mode = "hook"
                 i += 1
                 hook_paras = []
