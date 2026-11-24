@@ -1,0 +1,10 @@
+vocab_size,model_name,algorithm,emb_params_1_3b_M,pct_1_3b,pct_70b,rel_zh_tokens_per_char,rel_attention_flops_pct
+30522,BERT-base (2018),WordPiece,125.0,9.33,0.72,1.45,115.4
+32256,DeepSeek-1.3B / LLaMA-2 (2023),Byte-BPE,132.1,9.81,0.76,1.35,100.0
+50257,GPT-2 / GPT-3 (2020),Byte-BPE,205.9,14.49,1.18,1.25,85.7
+64000,Baichuan-2 (2023),BPE,262.1,17.75,1.5,1.05,60.5
+100256,GPT-4 cl100k (2023),Byte-BPE,410.6,25.27,2.33,0.95,49.5
+129280,DeepSeek-V3 / R1 (2025),Byte-BPE,529.5,30.37,2.98,0.78,33.4
+151936,Qwen-2.5 (2024),Byte-BPE,622.3,33.88,3.49,0.74,30.0
+200019,GPT-4o o200k (2024),Byte-BPE,819.3,40.29,4.54,0.7,26.9
+256000,Gemma-2 / Gemma-3 (2025),SentencePiece BPE,1048.6,46.34,5.74,0.67,24.6

@@ -1,0 +1,3088 @@
+{
+  "ep01_overview": {
+    "model_name": "deepseek-ai/deepseek-coder-1.3b-base",
+    "total_params": 1346471936,
+    "total_tensors": 219,
+    "layers": 24,
+    "hidden_size": 2048,
+    "num_heads": 16,
+    "head_dim": 128,
+    "vocab_size": 32256,
+    "main_sentence": "我在苹果公司吃了一个苹果",
+    "main_tokens": [
+      {
+        "text": "我在",
+        "id": 23098
+      },
+      {
+        "text": "苹果",
+        "id": 17144
+      },
+      {
+        "text": "公司",
+        "id": 2804
+      },
+      {
+        "text": "吃",
+        "id": 3509
+      },
+      {
+        "text": "了一个",
+        "id": 13556
+      },
+      {
+        "text": "苹果",
+        "id": 17144
+      }
+    ],
+    "generation_steps": [
+      {
+        "step": 1,
+        "chosen": "，",
+        "chosen_id": 19385,
+        "chosen_prob": 0.3738,
+        "top5": [
+          {
+            "token": "，",
+            "prob": 0.3738
+          },
+          {
+            "token": "。",
+            "prob": 0.1464
+          },
+          {
+            "token": "�",
+            "prob": 0.0271
+          },
+          {
+            "token": "的",
+            "prob": 0.0271
+          },
+          {
+            "token": "之后",
+            "prob": 0.0254
+          }
+        ]
+      },
+      {
+        "step": 2,
+        "chosen": "然后",
+        "chosen_id": 7759,
+        "chosen_prob": 0.0575,
+        "top5": [
+          {
+            "token": "然后",
+            "prob": 0.0575
+          },
+          {
+            "token": "你",
+            "prob": 0.0448
+          },
+          {
+            "token": "苹果",
+            "prob": 0.0395
+          },
+          {
+            "token": "但是",
+            "prob": 0.0308
+          },
+          {
+            "token": "我",
+            "prob": 0.0271
+          }
+        ]
+      },
+      {
+        "step": 3,
+        "chosen": "又",
+        "chosen_id": 3114,
+        "chosen_prob": 0.053,
+        "top5": [
+          {
+            "token": "又",
+            "prob": 0.053
+          },
+          {
+            "token": "在",
+            "prob": 0.044
+          },
+          {
+            "token": "把",
+            "prob": 0.0388
+          },
+          {
+            "token": "，",
+            "prob": 0.0365
+          },
+          {
+            "token": "你",
+            "prob": 0.0322
+          }
+        ]
+      },
+      {
+        "step": 4,
+        "chosen": "吃",
+        "chosen_id": 3509,
+        "chosen_prob": 0.2352,
+        "top5": [
+          {
+            "token": "吃",
+            "prob": 0.2352
+          },
+          {
+            "token": "在",
+            "prob": 0.1111
+          },
+          {
+            "token": "把",
+            "prob": 0.0493
+          },
+          {
+            "token": "买",
+            "prob": 0.0409
+          },
+          {
+            "token": "去",
+            "prob": 0.0264
+          }
+        ]
+      }
+    ],
+    "generation_full": "我在苹果公司吃了一个苹果，然后又吃"
+  },
+  "ep03_binary_utf8": {
+    "utf8_table": [
+      {
+        "char": "A",
+        "unicode_codepoint": "U+0041",
+        "byte_count": 1,
+        "decimal_bytes": [
+          65
+        ],
+        "hex_bytes": "0x41",
+        "binary_bits": "01000001"
+      },
+      {
+        "char": "0",
+        "unicode_codepoint": "U+0030",
+        "byte_count": 1,
+        "decimal_bytes": [
+          48
+        ],
+        "hex_bytes": "0x30",
+        "binary_bits": "00110000"
+      },
+      {
+        "char": "我",
+        "unicode_codepoint": "U+6211",
+        "byte_count": 3,
+        "decimal_bytes": [
+          230,
+          136,
+          145
+        ],
+        "hex_bytes": "0xE6 0x88 0x91",
+        "binary_bits": "11100110 10001000 10010001"
+      },
+      {
+        "char": "在",
+        "unicode_codepoint": "U+5728",
+        "byte_count": 3,
+        "decimal_bytes": [
+          229,
+          156,
+          168
+        ],
+        "hex_bytes": "0xE5 0x9C 0xA8",
+        "binary_bits": "11100101 10011100 10101000"
+      },
+      {
+        "char": "苹",
+        "unicode_codepoint": "U+82F9",
+        "byte_count": 3,
+        "decimal_bytes": [
+          232,
+          139,
+          185
+        ],
+        "hex_bytes": "0xE8 0x8B 0xB9",
+        "binary_bits": "11101000 10001011 10111001"
+      },
+      {
+        "char": "果",
+        "unicode_codepoint": "U+679C",
+        "byte_count": 3,
+        "decimal_bytes": [
+          230,
+          158,
+          156
+        ],
+        "hex_bytes": "0xE6 0x9E 0x9C",
+        "binary_bits": "11100110 10011110 10011100"
+      }
+    ],
+    "initial_utf8_bytes_count": 243,
+    "forbidden_rfc3629_bytes_count": 13,
+    "forbidden_bytes_hex": [
+      "0xC0",
+      "0xC1",
+      "0xF5",
+      "0xF6",
+      "0xF7",
+      "0xF8",
+      "0xF9",
+      "0xFA",
+      "0xFB",
+      "0xFC",
+      "0xFD",
+      "0xFE",
+      "0xFF"
+    ],
+    "forbidden_token_ids": "32000..32012"
+  },
+  "ep06_tensor_stacking": {
+    "passage_45_text": "我在苹果公司吃了一个苹果，发现大模型其实并不神秘��它只是一个把词元转化为高维语义张量、再通过层层注意力计算预测下一个词概率",
+    "token_count": 45,
+    "tokens_45_preview": [
+      {
+        "pos": 1,
+        "token": "我在",
+        "id": 23098,
+        "l2_norm": 7.935
+      },
+      {
+        "pos": 2,
+        "token": "苹果",
+        "id": 17144,
+        "l2_norm": 8.07
+      },
+      {
+        "pos": 3,
+        "token": "公司",
+        "id": 2804,
+        "l2_norm": 9.109
+      },
+      {
+        "pos": 4,
+        "token": "吃",
+        "id": 3509,
+        "l2_norm": 9.143
+      },
+      {
+        "pos": 5,
+        "token": "了一个",
+        "id": 13556,
+        "l2_norm": 9.688
+      },
+      {
+        "pos": 6,
+        "token": "苹果",
+        "id": 17144,
+        "l2_norm": 8.07
+      },
+      {
+        "pos": 7,
+        "token": "，",
+        "id": 19385,
+        "l2_norm": 8.065
+      },
+      {
+        "pos": 8,
+        "token": "发现",
+        "id": 5662,
+        "l2_norm": 9.681
+      },
+      {
+        "pos": 9,
+        "token": "大",
+        "id": 744,
+        "l2_norm": 10.116
+      },
+      {
+        "pos": 10,
+        "token": "模",
+        "id": 4604,
+        "l2_norm": 10.299
+      },
+      {
+        "pos": 11,
+        "token": "型",
+        "id": 3044,
+        "l2_norm": 9.669
+      },
+      {
+        "pos": 12,
+        "token": "其实",
+        "id": 5803,
+        "l2_norm": 9.627
+      },
+      {
+        "pos": 13,
+        "token": "并不",
+        "id": 10371,
+        "l2_norm": 9.497
+      },
+      {
+        "pos": 14,
+        "token": "神",
+        "id": 3573,
+        "l2_norm": 10.226
+      },
+      {
+        "pos": 15,
+        "token": "秘",
+        "id": 11675,
+        "l2_norm": 9.255
+      },
+      {
+        "pos": 16,
+        "token": "�",
+        "id": 942,
+        "l2_norm": 10.568
+      },
+      {
+        "pos": 17,
+        "token": "�",
+        "id": 235,
+        "l2_norm": 8.048
+      },
+      {
+        "pos": 18,
+        "token": "它",
+        "id": 3334,
+        "l2_norm": 10.097
+      },
+      {
+        "pos": 19,
+        "token": "只是",
+        "id": 7555,
+        "l2_norm": 9.94
+      },
+      {
+        "pos": 20,
+        "token": "一个",
+        "id": 1604,
+        "l2_norm": 10.007
+      },
+      {
+        "pos": 21,
+        "token": "把",
+        "id": 2703,
+        "l2_norm": 10.907
+      },
+      {
+        "pos": 22,
+        "token": "词",
+        "id": 10506,
+        "l2_norm": 9.352
+      },
+      {
+        "pos": 23,
+        "token": "元",
+        "id": 2350,
+        "l2_norm": 10.042
+      },
+      {
+        "pos": 24,
+        "token": "转化",
+        "id": 30574,
+        "l2_norm": 9.365
+      },
+      {
+        "pos": 25,
+        "token": "为",
+        "id": 772,
+        "l2_norm": 10.017
+      },
+      {
+        "pos": 26,
+        "token": "高",
+        "id": 1329,
+        "l2_norm": 9.984
+      },
+      {
+        "pos": 27,
+        "token": "维",
+        "id": 4792,
+        "l2_norm": 9.976
+      },
+      {
+        "pos": 28,
+        "token": "语",
+        "id": 5253,
+        "l2_norm": 9.794
+      },
+      {
+        "pos": 29,
+        "token": "义",
+        "id": 4789,
+        "l2_norm": 9.398
+      },
+      {
+        "pos": 30,
+        "token": "张",
+        "id": 3674,
+        "l2_norm": 10.126
+      },
+      {
+        "pos": 31,
+        "token": "量",
+        "id": 1958,
+        "l2_norm": 8.944
+      },
+      {
+        "pos": 32,
+        "token": "、",
+        "id": 534,
+        "l2_norm": 9.258
+      },
+      {
+        "pos": 33,
+        "token": "再",
+        "id": 2819,
+        "l2_norm": 11.266
+      },
+      {
+        "pos": 34,
+        "token": "通过",
+        "id": 4328,
+        "l2_norm": 10.881
+      },
+      {
+        "pos": 35,
+        "token": "层",
+        "id": 5385,
+        "l2_norm": 9.84
+      },
+      {
+        "pos": 36,
+        "token": "层",
+        "id": 5385,
+        "l2_norm": 9.84
+      },
+      {
+        "pos": 37,
+        "token": "注意",
+        "id": 7421,
+        "l2_norm": 10.285
+      },
+      {
+        "pos": 38,
+        "token": "力",
+        "id": 1405,
+        "l2_norm": 9.311
+      },
+      {
+        "pos": 39,
+        "token": "计算",
+        "id": 13828,
+        "l2_norm": 9.765
+      },
+      {
+        "pos": 40,
+        "token": "预测",
+        "id": 28164,
+        "l2_norm": 8.814
+      },
+      {
+        "pos": 41,
+        "token": "下",
+        "id": 1153,
+        "l2_norm": 10.327
+      },
+      {
+        "pos": 42,
+        "token": "一个",
+        "id": 1604,
+        "l2_norm": 10.007
+      },
+      {
+        "pos": 43,
+        "token": "词",
+        "id": 10506,
+        "l2_norm": 9.352
+      },
+      {
+        "pos": 44,
+        "token": "概",
+        "id": 9783,
+        "l2_norm": 9.565
+      },
+      {
+        "pos": 45,
+        "token": "率",
+        "id": 4184,
+        "l2_norm": 9.435
+      }
+    ],
+    "hierarchy": [
+      {
+        "dim": "0D 标量 (Scalar)",
+        "shape": "()",
+        "element_count": 1,
+        "fp16_bytes": 2,
+        "meaning": "单个数字（如“苹果”与“水果”的点积得分或温度参数）",
+        "real_example": "dot(E['苹果'], E['水果']) = 13.7895"
+      },
+      {
+        "dim": "1D 向量 (Vector)",
+        "shape": "(2048,)",
+        "element_count": 2048,
+        "fp16_bytes": 4096,
+        "meaning": "1 个 Token（如“苹果” id=17144）的 2048 维语义特征长条",
+        "real_example": "前6维: [0.0398, -0.2314, 0.1011, 0.2002, -0.1553, 0.0908]"
+      },
+      {
+        "dim": "2D 矩阵 (Matrix)",
+        "shape": "(45, 2048)",
+        "element_count": 92160,
+        "fp16_bytes": 184320,
+        "meaning": "1 段话 45 个 Token 并排堆叠成的“语义平面”",
+        "real_example": "45 行 × 2048 列 = 92,160 个浮点数 (约 180 KB)"
+      },
+      {
+        "dim": "3D 张量·多头视角 (Multi-Head 3D Tensor)",
+        "shape": "(45, 16, 128)",
+        "element_count": 92160,
+        "fp16_bytes": 184320,
+        "meaning": "把 45 个词的 2048 维切分成 16 个注意力头（每头 128 维）堆成的三维魔方",
+        "real_example": "45(词长) × 16(视角头) × 128(子空间维度) = 92,160 个浮点数"
+      },
+      {
+        "dim": "3D 张量·批次视角 (Batch 3D Tensor)",
+        "shape": "(4, 45, 2048)",
+        "element_count": 368640,
+        "fp16_bytes": 737280,
+        "meaning": "GPU 同时并行处理 4 段长度为 45 的句子堆叠成的三维语义立方体",
+        "real_example": "4(句子数) × 45(词数) × 2048(维度) = 368,640 个浮点数 (约 720 KB)"
+      },
+      {
+        "dim": "4D 张量·批量多头 (Batch Multi-Head 4D Tensor)",
+        "shape": "(4, 16, 45, 128)",
+        "element_count": 368640,
+        "fp16_bytes": 737280,
+        "meaning": "4 句话在 16 个注意力头中同时计算 Q/K/V 时的四维超立方体",
+        "real_example": "4(Batch) × 16(Heads) × 45(Tokens) × 128(HeadDim)"
+      }
+    ]
+  },
+  "ep07_math_geometry": {
+    "dot_product_table": [
+      {
+        "pair": "苹果 ↔ 水果",
+        "w1": "苹果",
+        "w2": "水果",
+        "id1": 17144,
+        "id2": 21965,
+        "norm1": 8.07,
+        "norm2": 6.96,
+        "trained_dot": 13.79,
+        "trained_cos": 0.2454,
+        "trained_angle_deg": 75.8,
+        "random_dot": -0.76,
+        "random_cos": -0.0094,
+        "random_angle_deg": 90.54,
+        "note": "同属水果语义簇"
+      },
+      {
+        "pair": "苹果 ↔ 公司",
+        "w1": "苹果",
+        "w2": "公司",
+        "id1": 17144,
+        "id2": 2804,
+        "norm1": 8.07,
+        "norm2": 9.11,
+        "trained_dot": 8.66,
+        "trained_cos": 0.1178,
+        "trained_angle_deg": 83.24,
+        "random_dot": 0.52,
+        "random_cos": 0.0064,
+        "random_angle_deg": 89.63,
+        "note": "科技巨头搭配簇"
+      },
+      {
+        "pair": "苹果 ↔ 手机",
+        "w1": "苹果",
+        "w2": "手机",
+        "id1": 17144,
+        "id2": 7259,
+        "norm1": 8.07,
+        "norm2": 9.56,
+        "trained_dot": 8.37,
+        "trained_cos": 0.1084,
+        "trained_angle_deg": 83.77,
+        "random_dot": -0.11,
+        "random_cos": -0.0013,
+        "random_angle_deg": 90.08,
+        "note": "数码产品语义簇"
+      },
+      {
+        "pair": "吃 ↔ 喝",
+        "w1": "吃",
+        "w2": "喝",
+        "id1": 3509,
+        "id2": 9066,
+        "norm1": 9.14,
+        "norm2": 8.0,
+        "trained_dot": 26.12,
+        "trained_cos": 0.357,
+        "trained_angle_deg": 69.08,
+        "random_dot": 1.1,
+        "random_cos": 0.0139,
+        "random_angle_deg": 89.2,
+        "note": "饮食动作高频共现"
+      },
+      {
+        "pair": "猫 ↔ 狗",
+        "w1": "猫",
+        "w2": "狗",
+        "id1": 15474,
+        "id2": 12417,
+        "norm1": 8.63,
+        "norm2": 8.63,
+        "trained_dot": 23.87,
+        "trained_cos": 0.3205,
+        "trained_angle_deg": 71.31,
+        "random_dot": -0.92,
+        "random_cos": -0.0116,
+        "random_angle_deg": 90.67,
+        "note": "宠物名词高频共现"
+      },
+      {
+        "pair": "北京 ↔ 上海",
+        "w1": "北京",
+        "w2": "上海",
+        "id1": 7203,
+        "id2": 9329,
+        "norm1": 9.48,
+        "norm2": 8.83,
+        "trained_dot": 40.4,
+        "trained_cos": 0.4825,
+        "trained_angle_deg": 61.15,
+        "random_dot": -1.31,
+        "random_cos": -0.0165,
+        "random_angle_deg": 90.95,
+        "note": "中国核心城市共现"
+      },
+      {
+        "pair": "大 ↔ 小",
+        "w1": "大",
+        "w2": "小",
+        "id1": 744,
+        "id2": 1310,
+        "norm1": 10.12,
+        "norm2": 9.85,
+        "trained_dot": 40.29,
+        "trained_cos": 0.4042,
+        "trained_angle_deg": 66.16,
+        "random_dot": -0.14,
+        "random_cos": -0.0018,
+        "random_angle_deg": 90.1,
+        "note": "反义词共享修饰语境"
+      },
+      {
+        "pair": "苹果 ↔ 微积分",
+        "w1": "苹果",
+        "w2": "微积分",
+        "id1": 17144,
+        "id2": 4788,
+        "norm1": 8.07,
+        "norm2": 9.84,
+        "trained_dot": 4.19,
+        "trained_cos": 0.0528,
+        "trained_angle_deg": 86.97,
+        "random_dot": 5.8,
+        "random_cos": 0.0718,
+        "random_angle_deg": 85.88,
+        "note": "跨界无关词对"
+      },
+      {
+        "pair": "吃 ↔ 二进制",
+        "w1": "吃",
+        "w2": "二进制",
+        "id1": 3509,
+        "id2": 2535,
+        "norm1": 9.14,
+        "norm2": 10.46,
+        "trained_dot": 2.73,
+        "trained_cos": 0.0285,
+        "trained_angle_deg": 88.37,
+        "random_dot": -1.3,
+        "random_cos": -0.0157,
+        "random_angle_deg": 90.9,
+        "note": "跨界无关词对"
+      }
+    ],
+    "linear_nonlinear_stats": {
+      "raw_embedding_norm": 8.07,
+      "after_rmsnorm_norm": 6.614,
+      "q_proj_linear": {
+        "matrix_shape": "[2048, 2048]",
+        "output_norm": 54.659,
+        "stretch_factor_vs_normed": 8.264,
+        "rotation_angle_deg": 90.24
+      },
+      "k_proj_linear": {
+        "matrix_shape": "[2048, 2048]",
+        "output_norm": 40.95,
+        "stretch_factor_vs_normed": 6.191,
+        "rotation_angle_deg": 90.84
+      },
+      "v_proj_linear": {
+        "matrix_shape": "[2048, 2048]",
+        "output_norm": 6.642,
+        "stretch_factor_vs_normed": 1.004,
+        "rotation_angle_deg": 87.11
+      },
+      "mlp_gate_to_silu_nonlinear": {
+        "gate_linear_shape": "[2048 -> 5504]",
+        "before_silu_negative_dims": 2118,
+        "before_silu_positive_dims": 3386,
+        "before_silu_min": -1.695,
+        "after_silu_min": -0.277,
+        "before_silu_norm": 21.654,
+        "after_silu_norm": 11.803,
+        "direction_change_deg": 14.24
+      }
+    }
+  },
+  "ep08_layer_tracking": {
+    "layer0_internal_trace": [
+      {
+        "step": "0. 词表查表输出 (Embedding)",
+        "math_type": "查表映射 (Lookup)",
+        "input_shape": "[1, 6] (Token IDs)",
+        "weight_shape": "[32256, 2048]",
+        "output_shape": "[1, 6, 2048]",
+        "apple1_norm": 8.07,
+        "apple2_norm": 8.07,
+        "apple12_cos": 1.0,
+        "role": "把 6 个词编号变成 6 条 2048 维初始向量（此时两个“苹果”完全相同）"
+      },
+      {
+        "step": "1. 层归一化 (RMSNorm)",
+        "math_type": "非线性缩放 + 线性缩放",
+        "input_shape": "[1, 6, 2048]",
+        "weight_shape": "[2048]",
+        "output_shape": "[1, 6, 2048]",
+        "apple1_norm": 6.61,
+        "apple2_norm": 6.61,
+        "apple12_cos": 1.0,
+        "role": "把每条向量长度校准到统一量级，防止多层计算数值爆炸"
+      },
+      {
+        "step": "2. Q/K/V 线性投影 (Linear Projections)",
+        "math_type": "纯线性变换 (拉伸+旋转)",
+        "input_shape": "[1, 6, 2048]",
+        "weight_shape": "3 × [2048, 2048]",
+        "output_shape": "Q,K,V 各 [1, 6, 2048]",
+        "apple1_norm": 54.66,
+        "apple2_norm": 54.66,
+        "apple12_cos": 1.0,
+        "role": "把每个词旋转投影出三种身份：找人的问题(Q)、被找的标签(K)、携带的干货(V)"
+      },
+      {
+        "step": "3. 切分 16 个注意力头 + RoPE 位置旋转",
+        "math_type": "维度重排 + 几何旋转",
+        "input_shape": "[1, 6, 2048]",
+        "weight_shape": "无参数 (旋转角矩阵)",
+        "output_shape": "[1, 16, 6, 128]",
+        "apple1_norm": 54.66,
+        "apple2_norm": 54.66,
+        "apple12_cos": "按位置旋转分离",
+        "role": "把 2048 维劈成 16 个 128 维独立视角，并按词的位置序号旋转不同角度"
+      },
+      {
+        "step": "4. 注意力打分与 Softmax 概率化",
+        "math_type": "点积 + 非线性变换(Softmax)",
+        "input_shape": "Q,K: [1, 16, 6, 128]",
+        "weight_shape": "因果掩码 (上三角 -∞)",
+        "output_shape": "注意力矩阵 [1, 16, 6, 6]",
+        "apple1_norm": "行概率和 = 1.00",
+        "apple2_norm": "行概率和 = 1.00",
+        "apple12_cos": "关注视野不同",
+        "role": "计算前文每个词对当前词的影响权重（第 2 个苹果看到了“公司”和“吃”）"
+      },
+      {
+        "step": "5. 语境加权求和 + 多头合并投影 + 残差相加",
+        "math_type": "线性组合 + 线性投影",
+        "input_shape": "[1, 16, 6, 6] × [1, 16, 6, 128]",
+        "weight_shape": "W_o: [2048, 2048]",
+        "output_shape": "[1, 6, 2048]",
+        "apple1_norm": "语境已注入",
+        "apple2_norm": "语境已注入",
+        "apple12_cos": "开始分道扬镳",
+        "role": "把 16 个头提取到的前文语境汇总，注入回每个词自己的向量里"
+      },
+      {
+        "step": "6. SwiGLU 前馈网络 (MLP 升维激活再降维)",
+        "math_type": "线性升维 -> SiLU非线性 -> 线性降维",
+        "input_shape": "[1, 6, 2048] -> [1, 6, 5504]",
+        "weight_shape": "up/gate [2048,5504], down [5504,2048]",
+        "output_shape": "[1, 6, 2048] (第1层最终输出)",
+        "apple1_norm": 16.72,
+        "apple2_norm": 15.92,
+        "apple12_cos": 0.8757,
+        "role": "在 5504 维高维空间做非线性知识加工，输出第 1 层崭新的语义张量"
+      }
+    ],
+    "layer_evolution": [
+      {
+        "layer": 0,
+        "cos": 1.0,
+        "l2": 0.0,
+        "norm_a": 8.07,
+        "norm_b": 8.07
+      },
+      {
+        "layer": 1,
+        "cos": 0.8757,
+        "l2": 8.175,
+        "norm_a": 16.723,
+        "norm_b": 15.917
+      },
+      {
+        "layer": 2,
+        "cos": 0.6904,
+        "l2": 12.803,
+        "norm_a": 16.955,
+        "norm_b": 15.38
+      },
+      {
+        "layer": 3,
+        "cos": 0.6756,
+        "l2": 13.434,
+        "norm_a": 17.542,
+        "norm_b": 15.487
+      },
+      {
+        "layer": 4,
+        "cos": 0.5592,
+        "l2": 16.704,
+        "norm_a": 18.954,
+        "norm_b": 16.263
+      },
+      {
+        "layer": 5,
+        "cos": 0.5202,
+        "l2": 18.035,
+        "norm_a": 19.741,
+        "norm_b": 16.674
+      },
+      {
+        "layer": 6,
+        "cos": 0.4921,
+        "l2": 19.748,
+        "norm_a": 20.798,
+        "norm_b": 18.121
+      },
+      {
+        "layer": 7,
+        "cos": 0.4629,
+        "l2": 22.542,
+        "norm_a": 23.52,
+        "norm_b": 19.461
+      },
+      {
+        "layer": 8,
+        "cos": 0.4417,
+        "l2": 23.576,
+        "norm_a": 23.598,
+        "norm_b": 20.794
+      },
+      {
+        "layer": 9,
+        "cos": 0.4617,
+        "l2": 25.708,
+        "norm_a": 25.49,
+        "norm_b": 23.999
+      },
+      {
+        "layer": 10,
+        "cos": 0.4807,
+        "l2": 26.937,
+        "norm_a": 26.901,
+        "norm_b": 25.937
+      },
+      {
+        "layer": 11,
+        "cos": 0.4704,
+        "l2": 30.223,
+        "norm_a": 29.28,
+        "norm_b": 29.452
+      },
+      {
+        "layer": 12,
+        "cos": 0.5067,
+        "l2": 31.732,
+        "norm_a": 32.721,
+        "norm_b": 31.113
+      },
+      {
+        "layer": 13,
+        "cos": 0.4996,
+        "l2": 35.612,
+        "norm_a": 36.353,
+        "norm_b": 34.793
+      },
+      {
+        "layer": 14,
+        "cos": 0.5147,
+        "l2": 40.127,
+        "norm_a": 41.104,
+        "norm_b": 40.344
+      },
+      {
+        "layer": 15,
+        "cos": 0.548,
+        "l2": 41.641,
+        "norm_a": 44.721,
+        "norm_b": 42.797
+      },
+      {
+        "layer": 16,
+        "cos": 0.5802,
+        "l2": 43.036,
+        "norm_a": 47.963,
+        "norm_b": 45.89
+      },
+      {
+        "layer": 17,
+        "cos": 0.5993,
+        "l2": 47.985,
+        "norm_a": 54.784,
+        "norm_b": 52.312
+      },
+      {
+        "layer": 18,
+        "cos": 0.6238,
+        "l2": 51.603,
+        "norm_a": 61.011,
+        "norm_b": 57.779
+      },
+      {
+        "layer": 19,
+        "cos": 0.629,
+        "l2": 57.298,
+        "norm_a": 68.512,
+        "norm_b": 64.228
+      },
+      {
+        "layer": 20,
+        "cos": 0.6373,
+        "l2": 62.61,
+        "norm_a": 75.604,
+        "norm_b": 71.099
+      },
+      {
+        "layer": 21,
+        "cos": 0.6464,
+        "l2": 69.411,
+        "norm_a": 85.075,
+        "norm_b": 79.581
+      },
+      {
+        "layer": 22,
+        "cos": 0.65,
+        "l2": 77.737,
+        "norm_a": 95.132,
+        "norm_b": 90.413
+      },
+      {
+        "layer": 23,
+        "cos": 0.6721,
+        "l2": 84.87,
+        "norm_a": 106.352,
+        "norm_b": 103.14
+      },
+      {
+        "layer": 24,
+        "cos": 0.859,
+        "l2": 9.614,
+        "norm_a": 17.992,
+        "norm_b": 18.202
+      }
+    ],
+    "param_buckets": {
+      "embedding": {
+        "count": 66060288,
+        "pct": 4.91
+      },
+      "attention": {
+        "count": 402653184,
+        "pct": 29.9
+      },
+      "mlp": {
+        "count": 811597824,
+        "pct": 60.28
+      },
+      "norm": {
+        "count": 100352,
+        "pct": 0.01
+      },
+      "lm_head": {
+        "count": 66060288,
+        "pct": 4.91
+      }
+    }
+  },
+  "ep09_multihead_attention": {
+    "tokens": [
+      "我在",
+      "苹果",
+      "公司",
+      "吃",
+      "了一个",
+      "苹果"
+    ],
+    "top_chi_heads": [
+      {
+        "layer": 1,
+        "layer_0idx": 0,
+        "head": 10,
+        "head_0idx": 9,
+        "apple2_to_wozai": 0.0208,
+        "apple2_to_apple1": 0.1396,
+        "apple2_to_gongsi": 0.0498,
+        "apple2_to_chi": 0.6016,
+        "apple2_to_leyige": 0.04,
+        "apple2_to_self": 0.1484,
+        "gongsi_to_wozai": 0.0457,
+        "gongsi_to_apple1": 0.75,
+        "gongsi_to_self": 0.2051,
+        "chi_to_wozai": 0.0075,
+        "chi_to_apple1": 0.1348,
+        "chi_to_gongsi": 0.0393,
+        "chi_to_self": 0.8203
+      },
+      {
+        "layer": 2,
+        "layer_0idx": 1,
+        "head": 9,
+        "head_0idx": 8,
+        "apple2_to_wozai": 0.0957,
+        "apple2_to_apple1": 0.0292,
+        "apple2_to_gongsi": 0.0303,
+        "apple2_to_chi": 0.5195,
+        "apple2_to_leyige": 0.2041,
+        "apple2_to_self": 0.1191,
+        "gongsi_to_wozai": 0.4062,
+        "gongsi_to_apple1": 0.5391,
+        "gongsi_to_self": 0.0537,
+        "chi_to_wozai": 0.4316,
+        "chi_to_apple1": 0.3574,
+        "chi_to_gongsi": 0.103,
+        "chi_to_self": 0.1079
+      },
+      {
+        "layer": 24,
+        "layer_0idx": 23,
+        "head": 8,
+        "head_0idx": 7,
+        "apple2_to_wozai": 0.1758,
+        "apple2_to_apple1": 0.0123,
+        "apple2_to_gongsi": 0.0232,
+        "apple2_to_chi": 0.4199,
+        "apple2_to_leyige": 0.2676,
+        "apple2_to_self": 0.1016,
+        "gongsi_to_wozai": 0.4824,
+        "gongsi_to_apple1": 0.2754,
+        "gongsi_to_self": 0.2422,
+        "chi_to_wozai": 0.5391,
+        "chi_to_apple1": 0.0284,
+        "chi_to_gongsi": 0.0515,
+        "chi_to_self": 0.3809
+      },
+      {
+        "layer": 8,
+        "layer_0idx": 7,
+        "head": 9,
+        "head_0idx": 8,
+        "apple2_to_wozai": 0.2832,
+        "apple2_to_apple1": 0.0155,
+        "apple2_to_gongsi": 0.0052,
+        "apple2_to_chi": 0.3867,
+        "apple2_to_leyige": 0.2578,
+        "apple2_to_self": 0.0542,
+        "gongsi_to_wozai": 0.6797,
+        "gongsi_to_apple1": 0.1729,
+        "gongsi_to_self": 0.1465,
+        "chi_to_wozai": 0.8516,
+        "chi_to_apple1": 0.052,
+        "chi_to_gongsi": 0.0513,
+        "chi_to_self": 0.0454
+      },
+      {
+        "layer": 6,
+        "layer_0idx": 5,
+        "head": 7,
+        "head_0idx": 6,
+        "apple2_to_wozai": 0.2334,
+        "apple2_to_apple1": 0.0168,
+        "apple2_to_gongsi": 0.017,
+        "apple2_to_chi": 0.3789,
+        "apple2_to_leyige": 0.3438,
+        "apple2_to_self": 0.0098,
+        "gongsi_to_wozai": 0.9062,
+        "gongsi_to_apple1": 0.0718,
+        "gongsi_to_self": 0.021,
+        "chi_to_wozai": 0.9219,
+        "chi_to_apple1": 0.0408,
+        "chi_to_gongsi": 0.0143,
+        "chi_to_self": 0.0234
+      }
+    ],
+    "top_leyige_heads": [
+      {
+        "layer": 14,
+        "layer_0idx": 13,
+        "head": 5,
+        "head_0idx": 4,
+        "apple2_to_wozai": 0.0776,
+        "apple2_to_apple1": 0.0033,
+        "apple2_to_gongsi": 0.0035,
+        "apple2_to_chi": 0.0864,
+        "apple2_to_leyige": 0.793,
+        "apple2_to_self": 0.0352,
+        "gongsi_to_wozai": 0.2246,
+        "gongsi_to_apple1": 0.6602,
+        "gongsi_to_self": 0.1147,
+        "chi_to_wozai": 0.7031,
+        "chi_to_apple1": 0.0957,
+        "chi_to_gongsi": 0.1216,
+        "chi_to_self": 0.0801
+      },
+      {
+        "layer": 2,
+        "layer_0idx": 1,
+        "head": 5,
+        "head_0idx": 4,
+        "apple2_to_wozai": 0.0017,
+        "apple2_to_apple1": 0.0055,
+        "apple2_to_gongsi": 0.0206,
+        "apple2_to_chi": 0.0928,
+        "apple2_to_leyige": 0.7383,
+        "apple2_to_self": 0.1426,
+        "gongsi_to_wozai": 0.3652,
+        "gongsi_to_apple1": 0.3652,
+        "gongsi_to_self": 0.2676,
+        "chi_to_wozai": 0.5195,
+        "chi_to_apple1": 0.168,
+        "chi_to_gongsi": 0.1895,
+        "chi_to_self": 0.124
+      },
+      {
+        "layer": 13,
+        "layer_0idx": 12,
+        "head": 12,
+        "head_0idx": 11,
+        "apple2_to_wozai": 0.1196,
+        "apple2_to_apple1": 0.0283,
+        "apple2_to_gongsi": 0.0444,
+        "apple2_to_chi": 0.0479,
+        "apple2_to_leyige": 0.6992,
+        "apple2_to_self": 0.0596,
+        "gongsi_to_wozai": 0.3828,
+        "gongsi_to_apple1": 0.543,
+        "gongsi_to_self": 0.0732,
+        "chi_to_wozai": 0.5977,
+        "chi_to_apple1": 0.2236,
+        "chi_to_gongsi": 0.1221,
+        "chi_to_self": 0.0581
+      },
+      {
+        "layer": 9,
+        "layer_0idx": 8,
+        "head": 16,
+        "head_0idx": 15,
+        "apple2_to_wozai": 0.2695,
+        "apple2_to_apple1": 0.0112,
+        "apple2_to_gongsi": 0.0189,
+        "apple2_to_chi": 0.0518,
+        "apple2_to_leyige": 0.5898,
+        "apple2_to_self": 0.0581,
+        "gongsi_to_wozai": 0.7773,
+        "gongsi_to_apple1": 0.1235,
+        "gongsi_to_self": 0.0986,
+        "chi_to_wozai": 0.6758,
+        "chi_to_apple1": 0.0825,
+        "chi_to_gongsi": 0.1562,
+        "chi_to_self": 0.0869
+      },
+      {
+        "layer": 11,
+        "layer_0idx": 10,
+        "head": 3,
+        "head_0idx": 2,
+        "apple2_to_wozai": 0.3242,
+        "apple2_to_apple1": 0.0242,
+        "apple2_to_gongsi": 0.016,
+        "apple2_to_chi": 0.0806,
+        "apple2_to_leyige": 0.5352,
+        "apple2_to_self": 0.0217,
+        "gongsi_to_wozai": 0.6953,
+        "gongsi_to_apple1": 0.2422,
+        "gongsi_to_self": 0.0615,
+        "chi_to_wozai": 0.8359,
+        "chi_to_apple1": 0.0645,
+        "chi_to_gongsi": 0.0437,
+        "chi_to_self": 0.0544
+      }
+    ],
+    "top_gongsi_apple1_heads": [
+      {
+        "layer": 7,
+        "layer_0idx": 6,
+        "head": 5,
+        "head_0idx": 4,
+        "apple2_to_wozai": 0.6133,
+        "apple2_to_apple1": 0.0576,
+        "apple2_to_gongsi": 0.0325,
+        "apple2_to_chi": 0.1221,
+        "apple2_to_leyige": 0.0962,
+        "apple2_to_self": 0.0776,
+        "gongsi_to_wozai": 0.0889,
+        "gongsi_to_apple1": 0.8828,
+        "gongsi_to_self": 0.0288,
+        "chi_to_wozai": 0.2256,
+        "chi_to_apple1": 0.5586,
+        "chi_to_gongsi": 0.1206,
+        "chi_to_self": 0.0967
+      },
+      {
+        "layer": 1,
+        "layer_0idx": 0,
+        "head": 10,
+        "head_0idx": 9,
+        "apple2_to_wozai": 0.0208,
+        "apple2_to_apple1": 0.1396,
+        "apple2_to_gongsi": 0.0498,
+        "apple2_to_chi": 0.6016,
+        "apple2_to_leyige": 0.04,
+        "apple2_to_self": 0.1484,
+        "gongsi_to_wozai": 0.0457,
+        "gongsi_to_apple1": 0.75,
+        "gongsi_to_self": 0.2051,
+        "chi_to_wozai": 0.0075,
+        "chi_to_apple1": 0.1348,
+        "chi_to_gongsi": 0.0393,
+        "chi_to_self": 0.8203
+      },
+      {
+        "layer": 2,
+        "layer_0idx": 1,
+        "head": 2,
+        "head_0idx": 1,
+        "apple2_to_wozai": 0.0311,
+        "apple2_to_apple1": 0.0391,
+        "apple2_to_gongsi": 0.0549,
+        "apple2_to_chi": 0.1562,
+        "apple2_to_leyige": 0.2246,
+        "apple2_to_self": 0.4941,
+        "gongsi_to_wozai": 0.209,
+        "gongsi_to_apple1": 0.7305,
+        "gongsi_to_self": 0.0601,
+        "chi_to_wozai": 0.2617,
+        "chi_to_apple1": 0.1982,
+        "chi_to_gongsi": 0.1904,
+        "chi_to_self": 0.3496
+      },
+      {
+        "layer": 2,
+        "layer_0idx": 1,
+        "head": 7,
+        "head_0idx": 6,
+        "apple2_to_wozai": 0.0,
+        "apple2_to_apple1": 0.0005,
+        "apple2_to_gongsi": 0.0309,
+        "apple2_to_chi": 0.3457,
+        "apple2_to_leyige": 0.3301,
+        "apple2_to_self": 0.2949,
+        "gongsi_to_wozai": 0.1592,
+        "gongsi_to_apple1": 0.7188,
+        "gongsi_to_self": 0.1201,
+        "chi_to_wozai": 0.0342,
+        "chi_to_apple1": 0.252,
+        "chi_to_gongsi": 0.3633,
+        "chi_to_self": 0.3496
+      },
+      {
+        "layer": 1,
+        "layer_0idx": 0,
+        "head": 4,
+        "head_0idx": 3,
+        "apple2_to_wozai": 0.0245,
+        "apple2_to_apple1": 0.0378,
+        "apple2_to_gongsi": 0.2988,
+        "apple2_to_chi": 0.3496,
+        "apple2_to_leyige": 0.1309,
+        "apple2_to_self": 0.1602,
+        "gongsi_to_wozai": 0.0864,
+        "gongsi_to_apple1": 0.6992,
+        "gongsi_to_self": 0.2139,
+        "chi_to_wozai": 0.1982,
+        "chi_to_apple1": 0.3652,
+        "chi_to_gongsi": 0.1865,
+        "chi_to_self": 0.25
+      }
+    ],
+    "top_apple2_apple1_heads": [
+      {
+        "layer": 2,
+        "layer_0idx": 1,
+        "head": 10,
+        "head_0idx": 9,
+        "apple2_to_wozai": 0.1172,
+        "apple2_to_apple1": 0.8398,
+        "apple2_to_gongsi": 0.0033,
+        "apple2_to_chi": 0.0004,
+        "apple2_to_leyige": 0.0005,
+        "apple2_to_self": 0.0381,
+        "gongsi_to_wozai": 0.3457,
+        "gongsi_to_apple1": 0.21,
+        "gongsi_to_self": 0.4434,
+        "chi_to_wozai": 0.6328,
+        "chi_to_apple1": 0.0645,
+        "chi_to_gongsi": 0.0053,
+        "chi_to_self": 0.2988
+      },
+      {
+        "layer": 4,
+        "layer_0idx": 3,
+        "head": 9,
+        "head_0idx": 8,
+        "apple2_to_wozai": 0.1475,
+        "apple2_to_apple1": 0.7734,
+        "apple2_to_gongsi": 0.0381,
+        "apple2_to_chi": 0.001,
+        "apple2_to_leyige": 0.003,
+        "apple2_to_self": 0.0352,
+        "gongsi_to_wozai": 0.8008,
+        "gongsi_to_apple1": 0.0026,
+        "gongsi_to_self": 0.1963,
+        "chi_to_wozai": 0.875,
+        "chi_to_apple1": 0.0009,
+        "chi_to_gongsi": 0.0005,
+        "chi_to_self": 0.124
+      },
+      {
+        "layer": 3,
+        "layer_0idx": 2,
+        "head": 16,
+        "head_0idx": 15,
+        "apple2_to_wozai": 0.4043,
+        "apple2_to_apple1": 0.4219,
+        "apple2_to_gongsi": 0.0145,
+        "apple2_to_chi": 0.0029,
+        "apple2_to_leyige": 0.001,
+        "apple2_to_self": 0.1553,
+        "gongsi_to_wozai": 0.832,
+        "gongsi_to_apple1": 0.0242,
+        "gongsi_to_self": 0.1436,
+        "chi_to_wozai": 0.7383,
+        "chi_to_apple1": 0.0302,
+        "chi_to_gongsi": 0.0062,
+        "chi_to_self": 0.2256
+      },
+      {
+        "layer": 1,
+        "layer_0idx": 0,
+        "head": 3,
+        "head_0idx": 2,
+        "apple2_to_wozai": 0.1621,
+        "apple2_to_apple1": 0.3672,
+        "apple2_to_gongsi": 0.0664,
+        "apple2_to_chi": 0.0082,
+        "apple2_to_leyige": 0.0146,
+        "apple2_to_self": 0.3809,
+        "gongsi_to_wozai": 0.2754,
+        "gongsi_to_apple1": 0.6211,
+        "gongsi_to_self": 0.1025,
+        "chi_to_wozai": 0.2832,
+        "chi_to_apple1": 0.6172,
+        "chi_to_gongsi": 0.0918,
+        "chi_to_self": 0.0091
+      },
+      {
+        "layer": 24,
+        "layer_0idx": 23,
+        "head": 4,
+        "head_0idx": 3,
+        "apple2_to_wozai": 0.0016,
+        "apple2_to_apple1": 0.3613,
+        "apple2_to_gongsi": 0.1416,
+        "apple2_to_chi": 0.1069,
+        "apple2_to_leyige": 0.1709,
+        "apple2_to_self": 0.2188,
+        "gongsi_to_wozai": 0.0012,
+        "gongsi_to_apple1": 0.5703,
+        "gongsi_to_self": 0.4297,
+        "chi_to_wozai": 0.0004,
+        "chi_to_apple1": 0.165,
+        "chi_to_gongsi": 0.1992,
+        "chi_to_self": 0.6328
+      }
+    ],
+    "top_apple2_gongsi_heads": [
+      {
+        "layer": 1,
+        "layer_0idx": 0,
+        "head": 11,
+        "head_0idx": 10,
+        "apple2_to_wozai": 0.0061,
+        "apple2_to_apple1": 0.001,
+        "apple2_to_gongsi": 0.9297,
+        "apple2_to_chi": 0.0415,
+        "apple2_to_leyige": 0.0209,
+        "apple2_to_self": 0.001,
+        "gongsi_to_wozai": 0.0041,
+        "gongsi_to_apple1": 0.0006,
+        "gongsi_to_self": 0.9961,
+        "chi_to_wozai": 0.0035,
+        "chi_to_apple1": 0.0005,
+        "chi_to_gongsi": 0.9688,
+        "chi_to_self": 0.0255
+      },
+      {
+        "layer": 1,
+        "layer_0idx": 0,
+        "head": 9,
+        "head_0idx": 8,
+        "apple2_to_wozai": 0.0332,
+        "apple2_to_apple1": 0.1484,
+        "apple2_to_gongsi": 0.707,
+        "apple2_to_chi": 0.0342,
+        "apple2_to_leyige": 0.0018,
+        "apple2_to_self": 0.0747,
+        "gongsi_to_wozai": 0.0967,
+        "gongsi_to_apple1": 0.1406,
+        "gongsi_to_self": 0.7617,
+        "chi_to_wozai": 0.0869,
+        "chi_to_apple1": 0.0928,
+        "chi_to_gongsi": 0.7266,
+        "chi_to_self": 0.0928
+      },
+      {
+        "layer": 1,
+        "layer_0idx": 0,
+        "head": 4,
+        "head_0idx": 3,
+        "apple2_to_wozai": 0.0245,
+        "apple2_to_apple1": 0.0378,
+        "apple2_to_gongsi": 0.2988,
+        "apple2_to_chi": 0.3496,
+        "apple2_to_leyige": 0.1309,
+        "apple2_to_self": 0.1602,
+        "gongsi_to_wozai": 0.0864,
+        "gongsi_to_apple1": 0.6992,
+        "gongsi_to_self": 0.2139,
+        "chi_to_wozai": 0.1982,
+        "chi_to_apple1": 0.3652,
+        "chi_to_gongsi": 0.1865,
+        "chi_to_self": 0.25
+      },
+      {
+        "layer": 7,
+        "layer_0idx": 6,
+        "head": 16,
+        "head_0idx": 15,
+        "apple2_to_wozai": 0.6094,
+        "apple2_to_apple1": 0.0295,
+        "apple2_to_gongsi": 0.293,
+        "apple2_to_chi": 0.0322,
+        "apple2_to_leyige": 0.0014,
+        "apple2_to_self": 0.0349,
+        "gongsi_to_wozai": 0.918,
+        "gongsi_to_apple1": 0.0197,
+        "gongsi_to_self": 0.0618,
+        "chi_to_wozai": 0.9844,
+        "chi_to_apple1": 0.0151,
+        "chi_to_gongsi": 0.0012,
+        "chi_to_self": 0.0006
+      },
+      {
+        "layer": 22,
+        "layer_0idx": 21,
+        "head": 1,
+        "head_0idx": 0,
+        "apple2_to_wozai": 0.3242,
+        "apple2_to_apple1": 0.2598,
+        "apple2_to_gongsi": 0.2656,
+        "apple2_to_chi": 0.011,
+        "apple2_to_leyige": 0.1006,
+        "apple2_to_self": 0.0386,
+        "gongsi_to_wozai": 0.375,
+        "gongsi_to_apple1": 0.3203,
+        "gongsi_to_self": 0.3047,
+        "chi_to_wozai": 0.8633,
+        "chi_to_apple1": 0.0669,
+        "chi_to_gongsi": 0.0403,
+        "chi_to_self": 0.0287
+      }
+    ],
+    "layer1_all_16_heads": [
+      {
+        "layer": 1,
+        "layer_0idx": 0,
+        "head": 1,
+        "head_0idx": 0,
+        "apple2_to_wozai": 0.0294,
+        "apple2_to_apple1": 0.0435,
+        "apple2_to_gongsi": 0.084,
+        "apple2_to_chi": 0.1895,
+        "apple2_to_leyige": 0.2988,
+        "apple2_to_self": 0.3555,
+        "gongsi_to_wozai": 0.2676,
+        "gongsi_to_apple1": 0.4258,
+        "gongsi_to_self": 0.3066,
+        "chi_to_wozai": 0.0962,
+        "chi_to_apple1": 0.2412,
+        "chi_to_gongsi": 0.2832,
+        "chi_to_self": 0.3809
+      },
+      {
+        "layer": 1,
+        "layer_0idx": 0,
+        "head": 2,
+        "head_0idx": 1,
+        "apple2_to_wozai": 0.1455,
+        "apple2_to_apple1": 0.2246,
+        "apple2_to_gongsi": 0.1748,
+        "apple2_to_chi": 0.124,
+        "apple2_to_leyige": 0.1201,
+        "apple2_to_self": 0.2109,
+        "gongsi_to_wozai": 0.2314,
+        "gongsi_to_apple1": 0.5234,
+        "gongsi_to_self": 0.2461,
+        "chi_to_wozai": 0.2422,
+        "chi_to_apple1": 0.375,
+        "chi_to_gongsi": 0.2275,
+        "chi_to_self": 0.1562
+      },
+      {
+        "layer": 1,
+        "layer_0idx": 0,
+        "head": 3,
+        "head_0idx": 2,
+        "apple2_to_wozai": 0.1621,
+        "apple2_to_apple1": 0.3672,
+        "apple2_to_gongsi": 0.0664,
+        "apple2_to_chi": 0.0082,
+        "apple2_to_leyige": 0.0146,
+        "apple2_to_self": 0.3809,
+        "gongsi_to_wozai": 0.2754,
+        "gongsi_to_apple1": 0.6211,
+        "gongsi_to_self": 0.1025,
+        "chi_to_wozai": 0.2832,
+        "chi_to_apple1": 0.6172,
+        "chi_to_gongsi": 0.0918,
+        "chi_to_self": 0.0091
+      },
+      {
+        "layer": 1,
+        "layer_0idx": 0,
+        "head": 4,
+        "head_0idx": 3,
+        "apple2_to_wozai": 0.0245,
+        "apple2_to_apple1": 0.0378,
+        "apple2_to_gongsi": 0.2988,
+        "apple2_to_chi": 0.3496,
+        "apple2_to_leyige": 0.1309,
+        "apple2_to_self": 0.1602,
+        "gongsi_to_wozai": 0.0864,
+        "gongsi_to_apple1": 0.6992,
+        "gongsi_to_self": 0.2139,
+        "chi_to_wozai": 0.1982,
+        "chi_to_apple1": 0.3652,
+        "chi_to_gongsi": 0.1865,
+        "chi_to_self": 0.25
+      },
+      {
+        "layer": 1,
+        "layer_0idx": 0,
+        "head": 5,
+        "head_0idx": 4,
+        "apple2_to_wozai": 0.2275,
+        "apple2_to_apple1": 0.2734,
+        "apple2_to_gongsi": 0.1826,
+        "apple2_to_chi": 0.1216,
+        "apple2_to_leyige": 0.0762,
+        "apple2_to_self": 0.1182,
+        "gongsi_to_wozai": 0.3828,
+        "gongsi_to_apple1": 0.2988,
+        "gongsi_to_self": 0.3184,
+        "chi_to_wozai": 0.3535,
+        "chi_to_apple1": 0.2354,
+        "chi_to_gongsi": 0.1895,
+        "chi_to_self": 0.2217
+      },
+      {
+        "layer": 1,
+        "layer_0idx": 0,
+        "head": 6,
+        "head_0idx": 5,
+        "apple2_to_wozai": 0.0591,
+        "apple2_to_apple1": 0.2559,
+        "apple2_to_gongsi": 0.2637,
+        "apple2_to_chi": 0.1138,
+        "apple2_to_leyige": 0.1006,
+        "apple2_to_self": 0.2061,
+        "gongsi_to_wozai": 0.0894,
+        "gongsi_to_apple1": 0.4414,
+        "gongsi_to_self": 0.4688,
+        "chi_to_wozai": 0.0386,
+        "chi_to_apple1": 0.4023,
+        "chi_to_gongsi": 0.4277,
+        "chi_to_self": 0.1309
+      },
+      {
+        "layer": 1,
+        "layer_0idx": 0,
+        "head": 7,
+        "head_0idx": 6,
+        "apple2_to_wozai": 0.6016,
+        "apple2_to_apple1": 0.126,
+        "apple2_to_gongsi": 0.0006,
+        "apple2_to_chi": 0.0276,
+        "apple2_to_leyige": 0.1162,
+        "apple2_to_self": 0.1299,
+        "gongsi_to_wozai": 0.8555,
+        "gongsi_to_apple1": 0.1445,
+        "gongsi_to_self": 0.0003,
+        "chi_to_wozai": 0.8398,
+        "chi_to_apple1": 0.1338,
+        "chi_to_gongsi": 0.0002,
+        "chi_to_self": 0.026
+      },
+      {
+        "layer": 1,
+        "layer_0idx": 0,
+        "head": 8,
+        "head_0idx": 7,
+        "apple2_to_wozai": 0.3125,
+        "apple2_to_apple1": 0.1045,
+        "apple2_to_gongsi": 0.083,
+        "apple2_to_chi": 0.0203,
+        "apple2_to_leyige": 0.4141,
+        "apple2_to_self": 0.0654,
+        "gongsi_to_wozai": 0.6211,
+        "gongsi_to_apple1": 0.2139,
+        "gongsi_to_self": 0.167,
+        "chi_to_wozai": 0.5586,
+        "chi_to_apple1": 0.2471,
+        "chi_to_gongsi": 0.1602,
+        "chi_to_self": 0.0356
+      },
+      {
+        "layer": 1,
+        "layer_0idx": 0,
+        "head": 9,
+        "head_0idx": 8,
+        "apple2_to_wozai": 0.0332,
+        "apple2_to_apple1": 0.1484,
+        "apple2_to_gongsi": 0.707,
+        "apple2_to_chi": 0.0342,
+        "apple2_to_leyige": 0.0018,
+        "apple2_to_self": 0.0747,
+        "gongsi_to_wozai": 0.0967,
+        "gongsi_to_apple1": 0.1406,
+        "gongsi_to_self": 0.7617,
+        "chi_to_wozai": 0.0869,
+        "chi_to_apple1": 0.0928,
+        "chi_to_gongsi": 0.7266,
+        "chi_to_self": 0.0928
+      },
+      {
+        "layer": 1,
+        "layer_0idx": 0,
+        "head": 10,
+        "head_0idx": 9,
+        "apple2_to_wozai": 0.0208,
+        "apple2_to_apple1": 0.1396,
+        "apple2_to_gongsi": 0.0498,
+        "apple2_to_chi": 0.6016,
+        "apple2_to_leyige": 0.04,
+        "apple2_to_self": 0.1484,
+        "gongsi_to_wozai": 0.0457,
+        "gongsi_to_apple1": 0.75,
+        "gongsi_to_self": 0.2051,
+        "chi_to_wozai": 0.0075,
+        "chi_to_apple1": 0.1348,
+        "chi_to_gongsi": 0.0393,
+        "chi_to_self": 0.8203
+      },
+      {
+        "layer": 1,
+        "layer_0idx": 0,
+        "head": 11,
+        "head_0idx": 10,
+        "apple2_to_wozai": 0.0061,
+        "apple2_to_apple1": 0.001,
+        "apple2_to_gongsi": 0.9297,
+        "apple2_to_chi": 0.0415,
+        "apple2_to_leyige": 0.0209,
+        "apple2_to_self": 0.001,
+        "gongsi_to_wozai": 0.0041,
+        "gongsi_to_apple1": 0.0006,
+        "gongsi_to_self": 0.9961,
+        "chi_to_wozai": 0.0035,
+        "chi_to_apple1": 0.0005,
+        "chi_to_gongsi": 0.9688,
+        "chi_to_self": 0.0255
+      },
+      {
+        "layer": 1,
+        "layer_0idx": 0,
+        "head": 12,
+        "head_0idx": 11,
+        "apple2_to_wozai": 0.0986,
+        "apple2_to_apple1": 0.1787,
+        "apple2_to_gongsi": 0.1787,
+        "apple2_to_chi": 0.2295,
+        "apple2_to_leyige": 0.0791,
+        "apple2_to_self": 0.2363,
+        "gongsi_to_wozai": 0.2012,
+        "gongsi_to_apple1": 0.418,
+        "gongsi_to_self": 0.3809,
+        "chi_to_wozai": 0.1338,
+        "chi_to_apple1": 0.291,
+        "chi_to_gongsi": 0.2656,
+        "chi_to_self": 0.3105
+      },
+      {
+        "layer": 1,
+        "layer_0idx": 0,
+        "head": 13,
+        "head_0idx": 12,
+        "apple2_to_wozai": 0.0747,
+        "apple2_to_apple1": 0.0942,
+        "apple2_to_gongsi": 0.0889,
+        "apple2_to_chi": 0.1211,
+        "apple2_to_leyige": 0.1846,
+        "apple2_to_self": 0.4355,
+        "gongsi_to_wozai": 0.1973,
+        "gongsi_to_apple1": 0.3301,
+        "gongsi_to_self": 0.4727,
+        "chi_to_wozai": 0.1377,
+        "chi_to_apple1": 0.1914,
+        "chi_to_gongsi": 0.2793,
+        "chi_to_self": 0.3926
+      },
+      {
+        "layer": 1,
+        "layer_0idx": 0,
+        "head": 14,
+        "head_0idx": 13,
+        "apple2_to_wozai": 0.1689,
+        "apple2_to_apple1": 0.1602,
+        "apple2_to_gongsi": 0.1157,
+        "apple2_to_chi": 0.2383,
+        "apple2_to_leyige": 0.1157,
+        "apple2_to_self": 0.2021,
+        "gongsi_to_wozai": 0.3848,
+        "gongsi_to_apple1": 0.3848,
+        "gongsi_to_self": 0.2305,
+        "chi_to_wozai": 0.2793,
+        "chi_to_apple1": 0.3125,
+        "chi_to_gongsi": 0.166,
+        "chi_to_self": 0.2432
+      },
+      {
+        "layer": 1,
+        "layer_0idx": 0,
+        "head": 15,
+        "head_0idx": 14,
+        "apple2_to_wozai": 0.0503,
+        "apple2_to_apple1": 0.2773,
+        "apple2_to_gongsi": 0.1289,
+        "apple2_to_chi": 0.209,
+        "apple2_to_leyige": 0.0276,
+        "apple2_to_self": 0.3086,
+        "gongsi_to_wozai": 0.0884,
+        "gongsi_to_apple1": 0.5586,
+        "gongsi_to_self": 0.3535,
+        "chi_to_wozai": 0.0649,
+        "chi_to_apple1": 0.4297,
+        "chi_to_gongsi": 0.2295,
+        "chi_to_self": 0.2773
+      },
+      {
+        "layer": 1,
+        "layer_0idx": 0,
+        "head": 16,
+        "head_0idx": 15,
+        "apple2_to_wozai": 0.0664,
+        "apple2_to_apple1": 0.2422,
+        "apple2_to_gongsi": 0.1562,
+        "apple2_to_chi": 0.1406,
+        "apple2_to_leyige": 0.0369,
+        "apple2_to_self": 0.3574,
+        "gongsi_to_wozai": 0.0947,
+        "gongsi_to_apple1": 0.6602,
+        "gongsi_to_self": 0.2461,
+        "chi_to_wozai": 0.0703,
+        "chi_to_apple1": 0.5117,
+        "chi_to_gongsi": 0.2002,
+        "chi_to_self": 0.2168
+      }
+    ],
+    "layer3_all_16_heads": [
+      {
+        "layer": 3,
+        "layer_0idx": 2,
+        "head": 1,
+        "head_0idx": 0,
+        "apple2_to_wozai": 0.7656,
+        "apple2_to_apple1": 0.0251,
+        "apple2_to_gongsi": 0.0601,
+        "apple2_to_chi": 0.0879,
+        "apple2_to_leyige": 0.0239,
+        "apple2_to_self": 0.0359,
+        "gongsi_to_wozai": 0.9375,
+        "gongsi_to_apple1": 0.016,
+        "gongsi_to_self": 0.0469,
+        "chi_to_wozai": 0.8047,
+        "chi_to_apple1": 0.0454,
+        "chi_to_gongsi": 0.0776,
+        "chi_to_self": 0.0732
+      },
+      {
+        "layer": 3,
+        "layer_0idx": 2,
+        "head": 2,
+        "head_0idx": 1,
+        "apple2_to_wozai": 0.9023,
+        "apple2_to_apple1": 0.0115,
+        "apple2_to_gongsi": 0.0349,
+        "apple2_to_chi": 0.0177,
+        "apple2_to_leyige": 0.0239,
+        "apple2_to_self": 0.0082,
+        "gongsi_to_wozai": 0.9453,
+        "gongsi_to_apple1": 0.014,
+        "gongsi_to_self": 0.0408,
+        "chi_to_wozai": 0.8594,
+        "chi_to_apple1": 0.0284,
+        "chi_to_gongsi": 0.085,
+        "chi_to_self": 0.0272
+      },
+      {
+        "layer": 3,
+        "layer_0idx": 2,
+        "head": 3,
+        "head_0idx": 2,
+        "apple2_to_wozai": 0.8672,
+        "apple2_to_apple1": 0.0251,
+        "apple2_to_gongsi": 0.019,
+        "apple2_to_chi": 0.04,
+        "apple2_to_leyige": 0.0204,
+        "apple2_to_self": 0.0265,
+        "gongsi_to_wozai": 0.9414,
+        "gongsi_to_apple1": 0.0258,
+        "gongsi_to_self": 0.0312,
+        "chi_to_wozai": 0.9258,
+        "chi_to_apple1": 0.0244,
+        "chi_to_gongsi": 0.0225,
+        "chi_to_self": 0.028
+      },
+      {
+        "layer": 3,
+        "layer_0idx": 2,
+        "head": 4,
+        "head_0idx": 3,
+        "apple2_to_wozai": 0.9922,
+        "apple2_to_apple1": 0.0012,
+        "apple2_to_gongsi": 0.0015,
+        "apple2_to_chi": 0.0016,
+        "apple2_to_leyige": 0.0031,
+        "apple2_to_self": 0.001,
+        "gongsi_to_wozai": 1.0,
+        "gongsi_to_apple1": 0.0009,
+        "gongsi_to_self": 0.001,
+        "chi_to_wozai": 1.0,
+        "chi_to_apple1": 0.0006,
+        "chi_to_gongsi": 0.0006,
+        "chi_to_self": 0.0007
+      },
+      {
+        "layer": 3,
+        "layer_0idx": 2,
+        "head": 5,
+        "head_0idx": 4,
+        "apple2_to_wozai": 0.7773,
+        "apple2_to_apple1": 0.0547,
+        "apple2_to_gongsi": 0.0044,
+        "apple2_to_chi": 0.0004,
+        "apple2_to_leyige": 0.0003,
+        "apple2_to_self": 0.1631,
+        "gongsi_to_wozai": 0.8945,
+        "gongsi_to_apple1": 0.001,
+        "gongsi_to_self": 0.1035,
+        "chi_to_wozai": 0.7422,
+        "chi_to_apple1": 0.0006,
+        "chi_to_gongsi": 0.003,
+        "chi_to_self": 0.2559
+      },
+      {
+        "layer": 3,
+        "layer_0idx": 2,
+        "head": 6,
+        "head_0idx": 5,
+        "apple2_to_wozai": 0.8945,
+        "apple2_to_apple1": 0.0084,
+        "apple2_to_gongsi": 0.0031,
+        "apple2_to_chi": 0.0157,
+        "apple2_to_leyige": 0.0112,
+        "apple2_to_self": 0.0674,
+        "gongsi_to_wozai": 0.7812,
+        "gongsi_to_apple1": 0.1934,
+        "gongsi_to_self": 0.0255,
+        "chi_to_wozai": 0.8047,
+        "chi_to_apple1": 0.062,
+        "chi_to_gongsi": 0.0322,
+        "chi_to_self": 0.1006
+      },
+      {
+        "layer": 3,
+        "layer_0idx": 2,
+        "head": 7,
+        "head_0idx": 6,
+        "apple2_to_wozai": 0.7578,
+        "apple2_to_apple1": 0.0017,
+        "apple2_to_gongsi": 0.0101,
+        "apple2_to_chi": 0.0564,
+        "apple2_to_leyige": 0.1006,
+        "apple2_to_self": 0.0752,
+        "gongsi_to_wozai": 0.7227,
+        "gongsi_to_apple1": 0.1816,
+        "gongsi_to_self": 0.0977,
+        "chi_to_wozai": 0.5234,
+        "chi_to_apple1": 0.1113,
+        "chi_to_gongsi": 0.2559,
+        "chi_to_self": 0.1069
+      },
+      {
+        "layer": 3,
+        "layer_0idx": 2,
+        "head": 8,
+        "head_0idx": 7,
+        "apple2_to_wozai": 0.9062,
+        "apple2_to_apple1": 0.0142,
+        "apple2_to_gongsi": 0.0025,
+        "apple2_to_chi": 0.0118,
+        "apple2_to_leyige": 0.0454,
+        "apple2_to_self": 0.0217,
+        "gongsi_to_wozai": 0.9102,
+        "gongsi_to_apple1": 0.0786,
+        "gongsi_to_self": 0.0104,
+        "chi_to_wozai": 0.957,
+        "chi_to_apple1": 0.0063,
+        "chi_to_gongsi": 0.0073,
+        "chi_to_self": 0.0283
+      },
+      {
+        "layer": 3,
+        "layer_0idx": 2,
+        "head": 9,
+        "head_0idx": 8,
+        "apple2_to_wozai": 0.8672,
+        "apple2_to_apple1": 0.006,
+        "apple2_to_gongsi": 0.0035,
+        "apple2_to_chi": 0.0527,
+        "apple2_to_leyige": 0.0366,
+        "apple2_to_self": 0.0322,
+        "gongsi_to_wozai": 0.8477,
+        "gongsi_to_apple1": 0.127,
+        "gongsi_to_self": 0.0254,
+        "chi_to_wozai": 0.9062,
+        "chi_to_apple1": 0.016,
+        "chi_to_gongsi": 0.0126,
+        "chi_to_self": 0.0659
+      },
+      {
+        "layer": 3,
+        "layer_0idx": 2,
+        "head": 10,
+        "head_0idx": 9,
+        "apple2_to_wozai": 0.9688,
+        "apple2_to_apple1": 0.002,
+        "apple2_to_gongsi": 0.0033,
+        "apple2_to_chi": 0.006,
+        "apple2_to_leyige": 0.0038,
+        "apple2_to_self": 0.0175,
+        "gongsi_to_wozai": 0.9883,
+        "gongsi_to_apple1": 0.0073,
+        "gongsi_to_self": 0.0044,
+        "chi_to_wozai": 0.9844,
+        "chi_to_apple1": 0.0053,
+        "chi_to_gongsi": 0.0064,
+        "chi_to_self": 0.0032
+      },
+      {
+        "layer": 3,
+        "layer_0idx": 2,
+        "head": 11,
+        "head_0idx": 10,
+        "apple2_to_wozai": 0.8867,
+        "apple2_to_apple1": 0.0002,
+        "apple2_to_gongsi": 0.0003,
+        "apple2_to_chi": 0.0055,
+        "apple2_to_leyige": 0.0062,
+        "apple2_to_self": 0.1006,
+        "gongsi_to_wozai": 0.9531,
+        "gongsi_to_apple1": 0.0211,
+        "gongsi_to_self": 0.0253,
+        "chi_to_wozai": 0.8711,
+        "chi_to_apple1": 0.0025,
+        "chi_to_gongsi": 0.0116,
+        "chi_to_self": 0.1138
+      },
+      {
+        "layer": 3,
+        "layer_0idx": 2,
+        "head": 12,
+        "head_0idx": 11,
+        "apple2_to_wozai": 0.8008,
+        "apple2_to_apple1": 0.0182,
+        "apple2_to_gongsi": 0.012,
+        "apple2_to_chi": 0.1216,
+        "apple2_to_leyige": 0.0284,
+        "apple2_to_self": 0.0201,
+        "gongsi_to_wozai": 0.9648,
+        "gongsi_to_apple1": 0.0261,
+        "gongsi_to_self": 0.0095,
+        "chi_to_wozai": 0.8711,
+        "chi_to_apple1": 0.0161,
+        "chi_to_gongsi": 0.0108,
+        "chi_to_self": 0.1006
+      },
+      {
+        "layer": 3,
+        "layer_0idx": 2,
+        "head": 13,
+        "head_0idx": 12,
+        "apple2_to_wozai": 0.582,
+        "apple2_to_apple1": 0.0461,
+        "apple2_to_gongsi": 0.0801,
+        "apple2_to_chi": 0.0825,
+        "apple2_to_leyige": 0.1377,
+        "apple2_to_self": 0.0732,
+        "gongsi_to_wozai": 0.7969,
+        "gongsi_to_apple1": 0.0952,
+        "gongsi_to_self": 0.1084,
+        "chi_to_wozai": 0.5977,
+        "chi_to_apple1": 0.1357,
+        "chi_to_gongsi": 0.1719,
+        "chi_to_self": 0.0947
+      },
+      {
+        "layer": 3,
+        "layer_0idx": 2,
+        "head": 14,
+        "head_0idx": 13,
+        "apple2_to_wozai": 0.6562,
+        "apple2_to_apple1": 0.017,
+        "apple2_to_gongsi": 0.011,
+        "apple2_to_chi": 0.2422,
+        "apple2_to_leyige": 0.04,
+        "apple2_to_self": 0.0322,
+        "gongsi_to_wozai": 0.8594,
+        "gongsi_to_apple1": 0.1279,
+        "gongsi_to_self": 0.0129,
+        "chi_to_wozai": 0.8125,
+        "chi_to_apple1": 0.0308,
+        "chi_to_gongsi": 0.0253,
+        "chi_to_self": 0.1299
+      },
+      {
+        "layer": 3,
+        "layer_0idx": 2,
+        "head": 15,
+        "head_0idx": 14,
+        "apple2_to_wozai": 0.9062,
+        "apple2_to_apple1": 0.011,
+        "apple2_to_gongsi": 0.003,
+        "apple2_to_chi": 0.0099,
+        "apple2_to_leyige": 0.0041,
+        "apple2_to_self": 0.0669,
+        "gongsi_to_wozai": 0.6562,
+        "gongsi_to_apple1": 0.2715,
+        "gongsi_to_self": 0.0703,
+        "chi_to_wozai": 0.8672,
+        "chi_to_apple1": 0.0737,
+        "chi_to_gongsi": 0.0281,
+        "chi_to_self": 0.032
+      },
+      {
+        "layer": 3,
+        "layer_0idx": 2,
+        "head": 16,
+        "head_0idx": 15,
+        "apple2_to_wozai": 0.4043,
+        "apple2_to_apple1": 0.4219,
+        "apple2_to_gongsi": 0.0145,
+        "apple2_to_chi": 0.0029,
+        "apple2_to_leyige": 0.001,
+        "apple2_to_self": 0.1553,
+        "gongsi_to_wozai": 0.832,
+        "gongsi_to_apple1": 0.0242,
+        "gongsi_to_self": 0.1436,
+        "chi_to_wozai": 0.7383,
+        "chi_to_apple1": 0.0302,
+        "chi_to_gongsi": 0.0062,
+        "chi_to_self": 0.2256
+      }
+    ],
+    "best_eat_head_full": {
+      "layer": 0,
+      "head": 9,
+      "weight": 0.6016,
+      "matrix": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0952,
+          0.9062,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0457,
+          0.75,
+          0.2051,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0075,
+          0.1348,
+          0.0393,
+          0.8203,
+          0.0,
+          0.0
+        ],
+        [
+          0.0145,
+          0.167,
+          0.0461,
+          0.7227,
+          0.0493,
+          0.0
+        ],
+        [
+          0.0208,
+          0.1396,
+          0.0498,
+          0.6016,
+          0.04,
+          0.1484
+        ]
+      ],
+      "last_row": [
+        0.0208,
+        0.1396,
+        0.0498,
+        0.6016,
+        0.04,
+        0.1484
+      ]
+    }
+  },
+  "ep10_training": {
+    "training_simulation_trace": [
+      {
+        "step": 0,
+        "loss": 41.4465,
+        "prob_eat_to_apple": 0.0,
+        "cos_eat_apple": 0.0171,
+        "angle_eat_apple_deg": 89.02,
+        "cos_apple_fruit": 0.0231,
+        "angle_apple_fruit_deg": 88.68,
+        "cos_apple_calculus": -0.0212,
+        "angle_apple_calculus_deg": 91.21
+      },
+      {
+        "step": 1,
+        "loss": 41.4465,
+        "prob_eat_to_apple": 0.0,
+        "cos_eat_apple": 0.0171,
+        "angle_eat_apple_deg": 89.02,
+        "cos_apple_fruit": 0.0231,
+        "angle_apple_fruit_deg": 88.68,
+        "cos_apple_calculus": -0.0212,
+        "angle_apple_calculus_deg": 91.21
+      },
+      {
+        "step": 2,
+        "loss": 41.4465,
+        "prob_eat_to_apple": 0.0,
+        "cos_eat_apple": 0.0171,
+        "angle_eat_apple_deg": 89.02,
+        "cos_apple_fruit": 0.0231,
+        "angle_apple_fruit_deg": 88.68,
+        "cos_apple_calculus": -0.0212,
+        "angle_apple_calculus_deg": 91.21
+      },
+      {
+        "step": 5,
+        "loss": 41.4465,
+        "prob_eat_to_apple": 0.0,
+        "cos_eat_apple": 0.0171,
+        "angle_eat_apple_deg": 89.02,
+        "cos_apple_fruit": 0.0231,
+        "angle_apple_fruit_deg": 88.68,
+        "cos_apple_calculus": -0.0212,
+        "angle_apple_calculus_deg": 91.21
+      },
+      {
+        "step": 15,
+        "loss": 41.4465,
+        "prob_eat_to_apple": 0.0,
+        "cos_eat_apple": 0.0171,
+        "angle_eat_apple_deg": 89.02,
+        "cos_apple_fruit": 0.0231,
+        "angle_apple_fruit_deg": 88.68,
+        "cos_apple_calculus": -0.0212,
+        "angle_apple_calculus_deg": 91.21
+      },
+      {
+        "step": 30,
+        "loss": 41.4465,
+        "prob_eat_to_apple": 0.0,
+        "cos_eat_apple": 0.0171,
+        "angle_eat_apple_deg": 89.02,
+        "cos_apple_fruit": 0.0231,
+        "angle_apple_fruit_deg": 88.68,
+        "cos_apple_calculus": -0.0212,
+        "angle_apple_calculus_deg": 91.21
+      },
+      {
+        "step": 60,
+        "loss": 41.4465,
+        "prob_eat_to_apple": 0.0,
+        "cos_eat_apple": 0.0171,
+        "angle_eat_apple_deg": 89.02,
+        "cos_apple_fruit": 0.0231,
+        "angle_apple_fruit_deg": 88.68,
+        "cos_apple_calculus": -0.0212,
+        "angle_apple_calculus_deg": 91.21
+      }
+    ],
+    "random_vs_trained_pairs": [
+      {
+        "pair": "苹果 ↔ 水果",
+        "w1": "苹果",
+        "w2": "水果",
+        "trained_cos": 0.2454,
+        "random_cos": -0.0094
+      },
+      {
+        "pair": "苹果 ↔ 公司",
+        "w1": "苹果",
+        "w2": "公司",
+        "trained_cos": 0.1178,
+        "random_cos": 0.0064
+      },
+      {
+        "pair": "苹果 ↔ 手机",
+        "w1": "苹果",
+        "w2": "手机",
+        "trained_cos": 0.1084,
+        "random_cos": -0.0013
+      },
+      {
+        "pair": "猫 ↔ 狗",
+        "w1": "猫",
+        "w2": "狗",
+        "trained_cos": 0.3205,
+        "random_cos": -0.0116
+      },
+      {
+        "pair": "水 ↔ 茶",
+        "w1": "水",
+        "w2": "茶",
+        "trained_cos": 0.0965,
+        "random_cos": -0.0377
+      },
+      {
+        "pair": "吃 ↔ 喝",
+        "w1": "吃",
+        "w2": "喝",
+        "trained_cos": 0.357,
+        "random_cos": 0.0139
+      },
+      {
+        "pair": "红 ↔ 蓝",
+        "w1": "红",
+        "w2": "蓝",
+        "trained_cos": 0.2216,
+        "random_cos": -0.0149
+      },
+      {
+        "pair": "大 ↔ 小",
+        "w1": "大",
+        "w2": "小",
+        "trained_cos": 0.4042,
+        "random_cos": -0.0018
+      },
+      {
+        "pair": "书 ↔ 学校",
+        "w1": "书",
+        "w2": "学校",
+        "trained_cos": 0.1041,
+        "random_cos": 0.0314
+      },
+      {
+        "pair": "北京 ↔ 上海",
+        "w1": "北京",
+        "w2": "上海",
+        "trained_cos": 0.4825,
+        "random_cos": -0.0165
+      },
+      {
+        "pair": "电脑 ↔ 手机",
+        "w1": "电脑",
+        "w2": "手机",
+        "trained_cos": 0.2816,
+        "random_cos": 0.0013
+      },
+      {
+        "pair": "男 ↔ 女",
+        "w1": "男",
+        "w2": "女",
+        "trained_cos": 0.5774,
+        "random_cos": -0.0119
+      }
+    ],
+    "nn_random_mean": 0.0911,
+    "nn_trained_mean": 0.5135
+  },
+  "ep11_frozen_inference": {
+    "frozen_weights_proof": {
+      "total_tensors": 219,
+      "total_params": 1346471936,
+      "changed_tensors": 0,
+      "exact_match": true,
+      "samples": [
+        {
+          "name": "model.embed_tokens.weight",
+          "before": "aca97c6467b7",
+          "after": "aca97c6467b7",
+          "same": true
+        },
+        {
+          "name": "model.layers.0.self_attn.q_proj.weight",
+          "before": "5d6291418469",
+          "after": "5d6291418469",
+          "same": true
+        },
+        {
+          "name": "model.layers.12.mlp.up_proj.weight",
+          "before": "ce65fce94d44",
+          "after": "ce65fce94d44",
+          "same": true
+        },
+        {
+          "name": "model.layers.23.self_attn.o_proj.weight",
+          "before": "c98b2802d06b",
+          "after": "c98b2802d06b",
+          "same": true
+        },
+        {
+          "name": "lm_head.weight",
+          "before": "a2df31529069",
+          "after": "a2df31529069",
+          "same": true
+        }
+      ]
+    },
+    "static_embedding": {
+      "vocab_size": 32256,
+      "hidden_dim": 2048,
+      "apple_token": "苹果",
+      "apple_id": 17144,
+      "apple_pos1": 2,
+      "apple_pos2": 6,
+      "apple_l2": 8.0703,
+      "apple_mean": -0.00131,
+      "apple_std": 0.17837,
+      "apple_min": -0.5898,
+      "apple_max": 0.5273,
+      "apple_first_32": [
+        0.0398,
+        -0.2314,
+        0.1011,
+        0.2002,
+        -0.1553,
+        0.0908,
+        -0.0135,
+        0.1387,
+        0.1475,
+        0.1177,
+        -0.1885,
+        0.0522,
+        -0.0132,
+        0.0024,
+        0.0306,
+        -0.2734,
+        0.002,
+        0.0972,
+        0.3066,
+        0.0143,
+        -0.0067,
+        -0.041,
+        0.0159,
+        0.0559,
+        0.168,
+        -0.1592,
+        -0.4922,
+        0.0067,
+        -0.0339,
+        0.032,
+        0.0918,
+        0.1729
+      ],
+      "apple_last_8": [
+        0.0723,
+        -0.2168,
+        -0.1748,
+        -0.1309,
+        -0.1611,
+        -0.0021,
+        0.0713,
+        -0.2715
+      ],
+      "pos2_eq_pos6": true,
+      "pos2_pos6_cos": 1.0,
+      "cos_with_refs": {
+        "水果": 0.2454,
+        "公司": 0.1178,
+        "手机": 0.1084,
+        "吃": 0.083,
+        "商": 0.0161,
+        "店": 0.0252,
+        "我在": 0.0634,
+        "了一个": 0.0581
+      },
+      "apple_hist_counts": [
+        3,
+        1,
+        9,
+        9,
+        24,
+        43,
+        64,
+        94,
+        114,
+        150,
+        177,
+        160,
+        236,
+        222,
+        190,
+        171,
+        122,
+        87,
+        70,
+        53,
+        25,
+        15,
+        2,
+        7
+      ],
+      "apple_hist_edges": [
+        -0.5898,
+        -0.5433,
+        -0.4967,
+        -0.4502,
+        -0.4036,
+        -0.3571,
+        -0.3105,
+        -0.264,
+        -0.2174,
+        -0.1709,
+        -0.1243,
+        -0.0778,
+        -0.0313,
+        0.0153,
+        0.0618,
+        0.1084,
+        0.1549,
+        0.2015,
+        0.248,
+        0.2946,
+        0.3411,
+        0.3877,
+        0.4342,
+        0.4808,
+        0.5273
+      ]
+    },
+    "context_control_disambig": {
+      "details": [
+        {
+          "label": "数码·一台",
+          "sentence": "我买了一台全新的苹果",
+          "tokens": [
+            {
+              "text": "我",
+              "id": 848
+            },
+            {
+              "text": "买",
+              "id": 4214
+            },
+            {
+              "text": "了一",
+              "id": 5405
+            },
+            {
+              "text": "台",
+              "id": 3228
+            },
+            {
+              "text": "全",
+              "id": 1440
+            },
+            {
+              "text": "新的",
+              "id": 9061
+            },
+            {
+              "text": "苹果",
+              "id": 17144
+            }
+          ],
+          "n_tokens": 7,
+          "last_token": "苹果",
+          "last_token_id": 17144,
+          "layer0_head10_last": [
+            0.3574,
+            0.0231,
+            0.0052,
+            0.4746,
+            0.0145,
+            0.124,
+            0.0005
+          ],
+          "next_top5": [
+            {
+              "token": "电脑",
+              "prob": 0.3388
+            },
+            {
+              "token": "手机",
+              "prob": 0.2328
+            },
+            {
+              "token": "笔",
+              "prob": 0.0667
+            },
+            {
+              "token": "i",
+              "prob": 0.038
+            },
+            {
+              "token": "，",
+              "prob": 0.0278
+            }
+          ]
+        },
+        {
+          "label": "数码·公司",
+          "sentence": "他入职了著名的苹果",
+          "tokens": [
+            {
+              "text": "他",
+              "id": 1145
+            },
+            {
+              "text": "入",
+              "id": 1886
+            },
+            {
+              "text": "职",
+              "id": 4973
+            },
+            {
+              "text": "了",
+              "id": 613
+            },
+            {
+              "text": "著",
+              "id": 10800
+            },
+            {
+              "text": "名的",
+              "id": 17051
+            },
+            {
+              "text": "苹果",
+              "id": 17144
+            }
+          ],
+          "n_tokens": 7,
+          "last_token": "苹果",
+          "last_token_id": 17144,
+          "layer0_head10_last": [
+            0.0991,
+            0.5625,
+            0.249,
+            0.0703,
+            0.0082,
+            0.0118,
+            0.0002
+          ],
+          "next_top5": [
+            {
+              "token": "公司",
+              "prob": 0.7522
+            },
+            {
+              "token": "电脑",
+              "prob": 0.0207
+            },
+            {
+              "token": "公司的",
+              "prob": 0.0125
+            },
+            {
+              "token": "软件",
+              "prob": 0.0104
+            },
+            {
+              "token": "集团",
+              "prob": 0.0071
+            }
+          ]
+        },
+        {
+          "label": "水果·一口",
+          "sentence": "我咬了一口脆甜的苹果",
+          "tokens": [
+            {
+              "text": "我",
+              "id": 848
+            },
+            {
+              "text": "咬",
+              "id": 30249
+            },
+            {
+              "text": "了一",
+              "id": 5405
+            },
+            {
+              "text": "口",
+              "id": 2817
+            },
+            {
+              "text": "脆",
+              "id": 24563
+            },
+            {
+              "text": "甜",
+              "id": 13169
+            },
+            {
+              "text": "的",
+              "id": 337
+            },
+            {
+              "text": "苹果",
+              "id": 17144
+            }
+          ],
+          "n_tokens": 8,
+          "last_token": "苹果",
+          "last_token_id": 17144,
+          "layer0_head10_last": [
+            0.1641,
+            0.0001,
+            0.0024,
+            0.7969,
+            0.0,
+            0.0003,
+            0.0378,
+            0.0003
+          ],
+          "next_top5": [
+            {
+              "token": "，",
+              "prob": 0.5682
+            },
+            {
+              "token": "。",
+              "prob": 0.1288
+            },
+            {
+              "token": "\n",
+              "prob": 0.0316
+            },
+            {
+              "token": "�",
+              "prob": 0.0144
+            },
+            {
+              "token": "汁",
+              "prob": 0.014
+            }
+          ]
+        },
+        {
+          "label": "水果·一颗",
+          "sentence": "我洗了一颗新鲜的苹果",
+          "tokens": [
+            {
+              "text": "我",
+              "id": 848
+            },
+            {
+              "text": "洗",
+              "id": 7411
+            },
+            {
+              "text": "了一",
+              "id": 5405
+            },
+            {
+              "text": "颗",
+              "id": 16662
+            },
+            {
+              "text": "新鲜",
+              "id": 26834
+            },
+            {
+              "text": "的",
+              "id": 337
+            },
+            {
+              "text": "苹果",
+              "id": 17144
+            }
+          ],
+          "n_tokens": 7,
+          "last_token": "苹果",
+          "last_token_id": 17144,
+          "layer0_head10_last": [
+            0.793,
+            0.0077,
+            0.0115,
+            0.0105,
+            0.0008,
+            0.1748,
+            0.0012
+          ],
+          "next_top5": [
+            {
+              "token": "，",
+              "prob": 0.4772
+            },
+            {
+              "token": "。",
+              "prob": 0.2326
+            },
+            {
+              "token": "\n",
+              "prob": 0.0278
+            },
+            {
+              "token": "树",
+              "prob": 0.0149
+            },
+            {
+              "token": "\"",
+              "prob": 0.014
+            }
+          ]
+        }
+      ],
+      "cos_matrices": {
+        "0": [
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ]
+        ],
+        "8": [
+          [
+            1.0,
+            0.8371,
+            0.7643,
+            0.8434
+          ],
+          [
+            0.8371,
+            1.0,
+            0.6864,
+            0.7406
+          ],
+          [
+            0.7643,
+            0.6864,
+            1.0,
+            0.9273
+          ],
+          [
+            0.8434,
+            0.7406,
+            0.9273,
+            1.0
+          ]
+        ],
+        "16": [
+          [
+            1.0,
+            0.7785,
+            0.6949,
+            0.7531
+          ],
+          [
+            0.7785,
+            1.0,
+            0.637,
+            0.6673
+          ],
+          [
+            0.6949,
+            0.637,
+            1.0,
+            0.9468
+          ],
+          [
+            0.7531,
+            0.6673,
+            0.9468,
+            1.0
+          ]
+        ],
+        "23": [
+          [
+            1.0,
+            0.566,
+            0.4492,
+            0.5504
+          ],
+          [
+            0.566,
+            1.0,
+            0.4334,
+            0.5057
+          ],
+          [
+            0.4492,
+            0.4334,
+            1.0,
+            0.8818
+          ],
+          [
+            0.5504,
+            0.5057,
+            0.8818,
+            1.0
+          ]
+        ],
+        "24": [
+          [
+            1.0,
+            0.7792,
+            0.6605,
+            0.7389
+          ],
+          [
+            0.7792,
+            1.0,
+            0.6255,
+            0.696
+          ],
+          [
+            0.6605,
+            0.6255,
+            1.0,
+            0.9375
+          ],
+          [
+            0.7389,
+            0.696,
+            0.9375,
+            1.0
+          ]
+        ]
+      }
+    }
+  },
+  "ep12_finale": {
+    "hallucination_probe": [
+      {
+        "kind": "真事实",
+        "prompt": "《红楼梦》的作者是",
+        "entropy": 2.34,
+        "continuation": "曹雪��，《",
+        "top5": [
+          {
+            "token": "曹",
+            "prob": 0.614
+          },
+          {
+            "token": "贾",
+            "prob": 0.0678
+          },
+          {
+            "token": "谁",
+            "prob": 0.0438
+          },
+          {
+            "token": "《",
+            "prob": 0.0253
+          },
+          {
+            "token": "�",
+            "prob": 0.0233
+          }
+        ]
+      },
+      {
+        "kind": "真事实",
+        "prompt": "苹果公司成立于",
+        "entropy": 1.1,
+        "continuation": "1989年，",
+        "top5": [
+          {
+            "token": "1",
+            "prob": 0.6735
+          },
+          {
+            "token": "2",
+            "prob": 0.173
+          },
+          {
+            "token": " ",
+            "prob": 0.1227
+          },
+          {
+            "token": "上",
+            "prob": 0.002
+          },
+          {
+            "token": "一",
+            "prob": 0.0017
+          }
+        ]
+      },
+      {
+        "kind": "假前提",
+        "prompt": "鲁迅在 2019 年发布了",
+        "entropy": 3.84,
+        "continuation": "《在那遥远的",
+        "top5": [
+          {
+            "token": "《",
+            "prob": 0.3792
+          },
+          {
+            "token": "他的",
+            "prob": 0.0747
+          },
+          {
+            "token": " ",
+            "prob": 0.0482
+          },
+          {
+            "token": "自己的",
+            "prob": 0.0311
+          },
+          {
+            "token": "他",
+            "prob": 0.0292
+          }
+        ]
+      },
+      {
+        "kind": "假前提",
+        "prompt": "托马斯·谢尔比是唐朝著名的",
+        "entropy": 5.41,
+        "continuation": "政治家、军事家、",
+        "top5": [
+          {
+            "token": "政治",
+            "prob": 0.1225
+          },
+          {
+            "token": "诗",
+            "prob": 0.0896
+          },
+          {
+            "token": "作",
+            "prob": 0.0495
+          },
+          {
+            "token": "历史",
+            "prob": 0.0265
+          },
+          {
+            "token": "画",
+            "prob": 0.022
+          }
+        ]
+      },
+      {
+        "kind": "虚构实体",
+        "prompt": "王小虎发明的量子彩虹机的工作原理是",
+        "entropy": 3.91,
+        "continuation": "通过将一个量子态",
+        "top5": [
+          {
+            "token": "通过",
+            "prob": 0.127
+          },
+          {
+            "token": "，",
+            "prob": 0.1193
+          },
+          {
+            "token": "�",
+            "prob": 0.1121
+          },
+          {
+            "token": "利用",
+            "prob": 0.0959
+          },
+          {
+            "token": "将",
+            "prob": 0.0873
+          }
+        ]
+      }
+    ]
+  }
+}
