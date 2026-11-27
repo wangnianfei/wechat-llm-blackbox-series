@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
 """
 WeChat Official Account HTML Typesetting & Editorial Workbench Builder for:
-《掀开大模型的黑盒子》（全 12 期硬核科普连载）
+《掀开大模型的黑盒子》（全 15 期硬核科普连载）
 
 Design System: Warm-Tech Ceramic Optical Lab (「晨光瓷感 · 光学实验室」)
 Harmonized with scripts/render_editorial_figures.mjs
 Outputs:
-1. html/ep01.html .. html/ep12.html
+1. html/ep01.html .. html/ep15.html
    (Standalone WeChat-styled HTML articles with inline CSS ready for mp.weixin.qq.com)
 2. index.html
    (All-in-one editorial preview & one-click WeChat copy workbench)
@@ -50,8 +50,8 @@ PART_PALETTE = {
     2: {"roman": "PART II",  "accent": "#B04A22", "glow": "#DC7F4F", "soft": "#FDF4EC", "border": "#F2D5BE"},
     3: {"roman": "PART III", "accent": "#196473", "glow": "#3D92A3", "soft": "#EEF7F9", "border": "#C7E4EA"},
     4: {"roman": "PART IV",  "accent": "#564787", "glow": "#8271B8", "soft": "#F3F1FA", "border": "#D9D2EE"},
-    5: {"roman": "PART V",   "accent": "#A83E35", "glow": "#D67065", "soft": "#FCF1F0", "border": "#F0CFCB"},
-    6: {"roman": "PART VI",  "accent": "#2E6F5E", "glow": "#4F9A86", "soft": "#EEF7F4", "border": "#C5E3DA"},
+    5: {"roman": "PART V",   "accent": "#2E6F5E", "glow": "#4F9A86", "soft": "#EEF7F4", "border": "#C5E3DA"},
+    6: {"roman": "PART VI",  "accent": "#A83E35", "glow": "#D67065", "soft": "#FCF1F0", "border": "#F0CFCB"},
 }
 
 EPISODE_META = [
@@ -64,12 +64,12 @@ EPISODE_META = [
     {"ep": 7,  "part_no": 3, "part": "第三部分：张量与几何空间表示语义", "tag": "几何与点积篇"},
     {"ep": 8,  "part_no": 4, "part": "第四部分：分层解剖 Transformer",  "tag": "分层学习与注意力篇"},
     {"ep": 9,  "part_no": 4, "part": "第四部分：分层解剖 Transformer",  "tag": "多头注意力实操篇"},
-    {"ep": 10, "part_no": 5, "part": "第五部分：训练与推理的终极闭环",   "tag": "训练过程篇"},
-    {"ep": 11, "part_no": 5, "part": "第五部分：训练与推理的终极闭环",   "tag": "训练 vs 推理对比篇"},
-    {"ep": 12, "part_no": 5, "part": "第五部分：训练与推理的终极闭环",   "tag": "大结局·全景贯通篇"},
-    {"ep": 13, "part_no": 6, "part": "第六部分（进阶篇）：FFN 前馈层与激活函数", "tag": "进阶·FFN 升维提炼篇"},
-    {"ep": 14, "part_no": 6, "part": "第六部分（进阶篇）：FFN 前馈层与激活函数", "tag": "进阶·激活函数本质篇"},
-    {"ep": 15, "part_no": 6, "part": "第六部分（进阶篇）：FFN 前馈层与激活函数", "tag": "进阶·进化与大厂全景篇"},
+    {"ep": 10, "part_no": 5, "part": "第五部分：FFN 知识库与激活函数本质", "tag": "FFN 升维提炼篇"},
+    {"ep": 11, "part_no": 5, "part": "第五部分：FFN 知识库与激活函数本质", "tag": "激活函数本质篇"},
+    {"ep": 12, "part_no": 6, "part": "第六部分：训练、梯度进化与终极闭环", "tag": "训练过程篇"},
+    {"ep": 13, "part_no": 6, "part": "第六部分：训练、梯度进化与终极闭环", "tag": "梯度与激活进化篇"},
+    {"ep": 14, "part_no": 6, "part": "第六部分：训练、梯度进化与终极闭环", "tag": "训练 vs 推理对比篇"},
+    {"ep": 15, "part_no": 6, "part": "第六部分：训练、梯度进化与终极闭环", "tag": "大结局·全景贯通篇"},
 ]
 
 TOTAL_EPS = len(EPISODE_META)
@@ -1019,7 +1019,7 @@ def md_to_wechat_html(md_text: str, meta: dict, asset_prefix: str = "../assets/"
 
 
 # =============================================================================
-# 5. Standalone Episode Preview HTML (html/ep01.html .. html/ep12.html)
+# 5. Standalone Episode Preview HTML (html/ep01.html .. html/ep15.html)
 # =============================================================================
 
 def write_standalone_episode_html(ep_data: dict):
