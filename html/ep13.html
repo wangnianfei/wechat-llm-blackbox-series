@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>第 13 期｜上完课还要回家复习：为什么说大模型 2/3 的世界知识都藏在 FFN 前馈层？ · 《掀开大模型的黑盒子》</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; }
+  :root {
+    --desk: #F2EFE9;
+    --bar: rgba(250, 249, 246, 0.86);
+    --paper: #FFFEFC;
+    --ink: #18202C;
+    --ink-sub: #475569;
+    --ink-mute: #556173;
+    --indigo: #2B548A;
+    --indigo-hover: #1F416E;
+    --warm-glow: #E08B5A;
+    --accent: #2E6F5E;
+  }
+  body {
+    margin: 0;
+    min-height: 100vh;
+    background:
+      radial-gradient(58% 44% at 92% 4%, rgba(232, 160, 112, 0.19) 0%, rgba(232, 160, 112, 0) 68%),
+      radial-gradient(50% 42% at 8% 92%, rgba(66, 125, 198, 0.11) 0%, rgba(66, 125, 198, 0) 65%),
+      var(--desk);
+    background-attachment: fixed;
+    color: var(--ink);
+    font-family: -apple-system,BlinkMacSystemFont,'PingFang SC','Hiragino Sans GB','Noto Sans SC','Microsoft YaHei',sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  .toolbar {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--bar);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border-bottom: 1px solid rgba(43, 84, 138, 0.08);
+    padding: 0 22px;
+    height: 58px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+  }
+  .read-progress {
+    position: absolute;
+    left: 0;
+    bottom: -1px;
+    height: 2.5px;
+    width: 0%;
+    background: linear-gradient(90deg, var(--indigo) 0%, #4C82C2 55%, var(--warm-glow) 100%);
+    transition: width 0.08s linear;
+    pointer-events: none;
+  }
+  .toolbar-left, .toolbar-right {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 0;
+  }
+  .back-link {
+    color: var(--ink-sub);
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 7px 12px;
+    border-radius: 9px;
+    background: rgba(255, 255, 255, 0.85);
+    box-shadow: 0 1px 2px rgba(24, 32, 44, 0.05), 0 0 0 1px rgba(43, 84, 138, 0.09);
+    white-space: nowrap;
+    transition: color 0.16s, box-shadow 0.16s, background 0.16s;
+  }
+  .back-link:hover {
+    color: var(--indigo);
+    background: #FFFFFF;
+    box-shadow: 0 2px 8px rgba(43, 84, 138, 0.12), 0 0 0 1px rgba(43, 84, 138, 0.24);
+  }
+  .issue-pill {
+    font-family: 'JetBrains Mono','SF Mono',Menlo,Consolas,monospace;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--accent);
+    background: #EEF7F4;
+    padding: 4.5px 10px;
+    border-radius: 999px;
+    white-space: nowrap;
+  }
+  .issue-title-mini {
+    font-size: 13.5px;
+    font-weight: 600;
+    color: var(--ink);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 340px;
+  }
+  .seg {
+    display: inline-flex;
+    background: rgba(43, 84, 138, 0.06);
+    border-radius: 9px;
+    padding: 3px;
+  }
+  .seg button {
+    border: none;
+    background: transparent;
+    color: var(--ink-sub);
+    font-size: 12.5px;
+    font-weight: 600;
+    padding: 5px 11px;
+    border-radius: 7px;
+    cursor: pointer;
+    font-family: inherit;
+    transition: all 0.16s;
+  }
+  .seg button.active {
+    background: var(--paper);
+    color: var(--ink);
+    box-shadow: 0 1px 4px rgba(24, 32, 44, 0.09);
+  }
+  .btn-copy {
+    background: linear-gradient(135deg, var(--indigo) 0%, #3768A6 100%);
+    color: #FFFFFF;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 9px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: inherit;
+    white-space: nowrap;
+    box-shadow: 0 2px 8px rgba(43, 84, 138, 0.22);
+    transition: transform 0.15s, box-shadow 0.15s, background 0.15s;
+  }
+  .btn-copy:hover {
+    transform: translateY(-0.5px);
+    box-shadow: 0 4px 12px rgba(43, 84, 138, 0.30);
+    background: linear-gradient(135deg, var(--indigo-hover) 0%, var(--indigo) 100%);
+  }
+  .btn-copy.copied {
+    background: linear-gradient(135deg, #196473 0%, #247F91 100%);
+  }
+  .preview-shell {
+    margin: 30px auto 26px auto;
+    max-width: 677px;
+    background: var(--paper);
+    border-radius: 16px;
+    box-shadow: 0 1px 2px rgba(24, 32, 44, 0.04), 0 18px 48px rgba(34, 52, 78, 0.09), 0 0 0 1px rgba(43, 84, 138, 0.06);
+    overflow: hidden;
+    transition: max-width 0.24s ease, border-radius 0.24s ease;
+  }
+  .preview-shell.mobile {
+    max-width: 390px;
+    border: 10px solid #1C2533;
+    border-radius: 36px;
+    box-shadow: 0 22px 52px rgba(24, 32, 44, 0.20);
+  }
+  .bottom-nav {
+    max-width: 677px;
+    margin: 0 auto 52px auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    padding: 0 2px;
+  }
+  .pager-link {
+    color: var(--ink);
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 10px 16px;
+    background: var(--paper);
+    border-radius: 10px;
+    box-shadow: 0 1px 3px rgba(24, 32, 44, 0.05), 0 0 0 1px rgba(43, 84, 138, 0.08);
+    transition: color 0.16s, box-shadow 0.16s, transform 0.16s;
+  }
+  .pager-link:hover {
+    color: var(--indigo);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(43, 84, 138, 0.12), 0 0 0 1px rgba(43, 84, 138, 0.22);
+  }
+  .pager-disabled {
+    color: var(--ink-mute);
+    background: rgba(255, 255, 255, 0.55);
+    border-radius: 10px;
+    font-size: 13px;
+    padding: 10px 16px;
+  }
+  @media (max-width: 720px) {
+    .toolbar { padding: 0 14px; }
+    .issue-title-mini, .seg { display: none; }
+    .preview-shell, .preview-shell.mobile { max-width: 100%; margin: 0; border-radius: 0; border: none; box-shadow: none; }
+    .bottom-nav { padding: 18px 14px 0 14px; }
+  }
+</style>
+</head>
+<body>
+  <header class="toolbar">
+    <div class="toolbar-left">
+      <a href="../index.html#ep13" class="back-link">← 返回全系列工作台</a>
+      <span class="issue-pill">第 13 / 15 期</span>
+      <span class="issue-title-mini">上完课还要回家复习：为什么说大模型 2/3 的世界知识都藏在 FFN 前馈层？</span>
+    </div>
+    <div class="toolbar-right">
+      <div class="seg" role="group" aria-label="视口宽度切换">
+        <button id="btnDesktop" class="active" onclick="setWidthMode(false)">公众号 677px</button>
+        <button id="btnMobile" onclick="setWidthMode(true)">手机 390px</button>
+      </div>
+      <button class="btn-copy" id="copyBtn" onclick="copyArticle()">复制公众号排版</button>
+    </div>
+    <div class="read-progress" id="readProgress"></div>
+  </header>
+
+  <main class="preview-shell" id="previewShell">
+    <section id="wechat-article-body" style="max-width:677px;margin:0 auto;background:#FFFEFC;font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Hiragino Sans GB','Noto Sans SC','Microsoft YaHei',sans-serif;color:#2B3544;box-sizing:border-box;">
+<div style="height:3.5px;background:linear-gradient(90deg,#2E6F5E 0%,#4F9A86 54%,#E08B5A 100%);"></div>
+<section style="padding:28px 28px 36px;padding-inline:min(28px,5vw);">
+<section style="margin-bottom:28px;padding-bottom:18px;border-bottom:1px solid #EFECE4;">
+      <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:16px;">
+        <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+          <span style="display:inline-block;background:#2E6F5E;color:#FFFFFF;font-family:'JetBrains Mono','SF Mono',Menlo,Consolas,monospace;font-size:11.5px;font-weight:700;padding:3.5px 11px;border-radius:999px;letter-spacing:0.7px;">ISSUE 13 / 15</span>
+          <span style="font-size:12.5px;font-weight:600;color:#2E6F5E;letter-spacing:0.25px;">进阶·FFN 升维提炼篇</span>
+        </div>
+        <span style="font-size:12px;color:#556173;letter-spacing:0.2px;">PART VI · 第六部分（进阶篇）：FFN 前馈层与激活函数</span>
+      </div>
+      <h1 style="margin:0 0 14px 0;font-family:'Source Han Serif SC','Noto Serif SC','Songti SC','STSong',Georgia,serif;font-size:23.5px;line-height:1.4;font-weight:700;color:#18202C;text-wrap:balance;">上完课还要回家复习：为什么说<span style="white-space:nowrap;">大模型</span> 2/3 的世界知识都藏在 FFN 前馈层？</h1>
+      <div style="width:54px;height:3px;border-radius:99px;background:linear-gradient(90deg,#2E6F5E 0%,#E08B5A 100%);margin-bottom:14px;"></div>
+      <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:4px 12px;font-size:12.5px;color:#475569;">
+        <span>《掀开大模型的黑盒子》 · 约 10 分钟（2,806 字）</span>
+        <span style="color:#556173;">DeepSeek-Coder-1.3B 真机实测</span>
+      </div>
+    </section>
+<section style="margin:18px 0 26px 0;padding:11px 14px 8px 14px;background:linear-gradient(135deg,#EEF7F4 0%,#FFFEFC 72%);border-left:2px solid #2E6F5E;border-radius:0 10px 10px 0;"><div style="font-family:'Source Han Serif SC','Noto Serif SC','Songti SC','STSong',Georgia,serif;font-size:16.5px;font-weight:700;color:#2E6F5E;margin-bottom:7px;">本期核心要点 · 1 分钟先抓主干</div><ul style="margin:0;padding-left:20px;"><li style="margin:8px 0;line-height:1.82;color:#2B3544;font-size:14.8px;"><strong style="color:#18202C;font-weight:700;">“上课”与“回家复习”的分工</strong>：在每一层 Transformer 中，自注意力（Attention）像<strong style="color:#18202C;font-weight:700;">在学校上课听讲</strong>，让词与词之间横向交流、吸收上下文语境；而紧随其后的前馈网络（FFN）则像<strong style="color:#18202C;font-weight:700;">暑假关起门在家复习升华</strong>，把零散吸收的信息提炼成精华特征与解题通法。</li><li style="margin:8px 0;line-height:1.82;color:#2B3544;font-size:14.8px;"><strong style="color:#18202C;font-weight:700;">破除输入维度的最大误区</strong>：画神经网络示意图时，输入节点 <span style="font-family:Georgia,'Cambria Math','Times New Roman',serif;font-style:italic;font-size:15px;color:#18202C;background:#F7F5F0;padding:1px 6px;border-radius:5px;margin:0 1px;">x<sub style="font-size:0.80em;line-height:0;vertical-align:-0.22em;"><span style="font-style:normal;">1</span></sub><span style="font-style:normal;">,</span> x<sub style="font-size:0.80em;line-height:0;vertical-align:-0.22em;"><span style="font-style:normal;">2</span></sub><span style="font-style:normal;">,</span> <span style="font-style:normal;">…</span><span style="font-style:normal;">,</span> x<sub style="font-size:0.80em;line-height:0;vertical-align:-0.22em;">d</sub></span> 指的绝不是“第 1 个词、第 2 个词”，而是<strong style="color:#18202C;font-weight:700;">单个 Token 语义向量内部的各个维度</strong>。进入 FFN 时，句子里的 6 个词互不串门，各自独立穿过同一套网络。</li><li style="margin:8px 0;line-height:1.82;color:#2B3544;font-size:14.8px;"><strong style="color:#18202C;font-weight:700;">大模型 2/3 的参数重地</strong>：在 <code style="font-family:'JetBrains Mono','SF Mono',Menlo,Consolas,monospace;font-size:13.2px;background-color:#EEF3FA;color:#1F416E;padding:1.5px 6px;border-radius:5px;margin:0 2px;">deepseek-coder-1.3b-base</code> 真机实测中，24 层 FFN 共独占 <strong style="color:#18202C;font-weight:700;">8.12 亿参数</strong>（占总参数 <strong style="color:#18202C;font-weight:700;">60.28%</strong>，占 24 层 Transformer 核心主体参数的 <strong style="color:#18202C;font-weight:700;">66.84% ≈ 2/3</strong>），是当之无愧的“隐式世界知识库”。</li><li style="margin:8px 0;line-height:1.82;color:#2B3544;font-size:14.8px;"><strong style="color:#18202C;font-weight:700;">“升维 → 激活 → 降维”的几何真相</strong>：为什么 FFN 非要把 2048 维先撑大到 5504 维再压回 2048 维？桌面散落红蓝小球只靠纯线性升维依然切不开，唯有<strong style="color:#18202C;font-weight:700;">先升维摊开特征，再用非线性激活把空间折弯</strong>，才能干脆利落地筛出精华、滤除噪音。</li></ul></section>
+<h2 style="margin:36px 0 16px 0;font-family:'Source Han Serif SC','Noto Serif SC','Songti SC','STSong',Georgia,serif;font-size:19.5px;line-height:1.42;font-weight:700;color:#18202C;display:flex;align-items:center;gap:10px;"><span style="display:inline-block;width:4px;height:19px;background:linear-gradient(180deg,#2E6F5E 0%,#E08B5A 100%);border-radius:99px;flex-shrink:0;"></span><span style="min-width:0;text-wrap:pretty;">一、 “上课听讲”之后，每个词都要“回家自我修炼”</span></h2>
+<p style="margin:16px 0;font-size:15.5px;line-height:1.88;color:#2B3544;letter-spacing:0.25px;text-align:justify;">在前面的基础 12 期里，我们用一句<strong style="color:#18202C;font-weight:700;">“我在苹果公司吃了一个苹果”</strong>彻底拆解了自注意力机制（Attention）。你还记得第 9 期的真机结果吗？刚查完冻结词表时，句中两个“苹果”的 2048 维向量 100% 一模一样（<span style="font-family:Georgia,'Cambria Math','Times New Roman',serif;font-style:italic;font-size:15px;color:#18202C;background:#F7F5F0;padding:1px 6px;border-radius:5px;margin:0 1px;"><span style="font-style:normal;">cos</span>&thinsp;<span style="font-style:normal;">θ</span> <span style="font-style:normal;">=</span> <span style="font-style:normal;">1</span><span style="font-style:normal;">.</span><span style="font-style:normal;">0</span><span style="font-style:normal;">0</span><span style="font-style:normal;">0</span><span style="font-style:normal;">0</span></span>）；经过多头注意力交互后，第一个“苹果”吸收了“公司”的语境，第二个“苹果”吸收了“吃”的语境，它们在几何空间里挪到了两个截然不同的新位置。</p>
+<p style="margin:16px 0;font-size:15.5px;line-height:1.88;color:#2B3544;letter-spacing:0.25px;text-align:justify;">到这里，很多同学会产生一个直觉误解：既然注意力层已经让两个“苹果”听懂了上下文，大模型为什么不把 24 层全做成注意力层，非要在每一层注意力后面再挂一个笨重的<strong style="color:#18202C;font-weight:700;">前馈神经网络（FFN，Feed-Forward Network）</strong>呢？</p>
+<p style="margin:16px 0;font-size:15.5px;line-height:1.88;color:#2B3544;letter-spacing:0.25px;text-align:justify;">我们可以打一个非常贴切的比方：<strong style="color:#18202C;font-weight:700;">自注意力是“在学校上课”，FFN 则是“暑假在家复习升华”</strong>。</p>
+<p style="margin:16px 0;font-size:15.5px;line-height:1.88;color:#2B3544;letter-spacing:0.25px;text-align:justify;">想象一个叫小明的小学生，在学校上了语文、数学、科学课，和不同老师、同学交流互动，记下了厚厚一摞笔记——这就好比“苹果”这个 Token 在注意力层里四处张望、吸收前文信息，得到了一个包含上下文的新向量。但此时的知识还比较零散、停留在表面。</p>
+<p style="margin:16px 0;font-size:15.5px;line-height:1.88;color:#2B3544;letter-spacing:0.25px;text-align:justify;">真正让小明脱胎换骨的，是暑假回到家关起门来的<strong style="color:#18202C;font-weight:700;">自我复习与整理</strong>：</p>
+<ul style="margin:15px 0;padding-left:22px;"><li style="margin:8px 0;font-size:15.2px;line-height:1.86;color:#2B3544;">翻开杂乱的数学错题本，他发现之前一道一道死记的几何题，其实可以提炼出“平移法、割补法、旋转法”三种通用大招；</li><li style="margin:8px 0;font-size:15.2px;line-height:1.86;color:#2B3544;">哪些考点是重难点要拼命加强，哪些无关干扰项要果断划掉，都在这个独立思考的阶段完成内化。</li></ul>
+<p style="margin:16px 0;font-size:15.5px;line-height:1.88;color:#2B3544;letter-spacing:0.25px;text-align:justify;">Transformer 里的每个 Token 也是如此。<strong style="color:#18202C;font-weight:700;">Attention 负责把信息“搬过来”，FFN 负责把信息“嚼碎了、提炼出规律、调出记忆里的世界知识”</strong>。这正是为什么学术界普遍认为：大模型记住的事实与常识，主要就储存在 FFN 层里——因为只有经过自己消化整理的知识，才是最精华的知识。</p>
+<section style="margin:24px 0;padding:17px 20px 15px 20px;background:linear-gradient(135deg,#F0F5FC 0%,#F7FAFE 100%);border-left:3.5px solid #2B548A;border-radius:0 14px 14px 0;"><div style="font-family:'JetBrains Mono','SF Mono',Menlo,Consolas,monospace;font-size:12px;font-weight:700;letter-spacing:0.8px;color:#2B548A;margin-bottom:6px;">FIRST PRINCIPLES · 底层思想</div><p style="margin:6px 0;font-size:15px;line-height:1.84;color:#2B3544;text-align:justify;"><strong style="color:#18202C;font-weight:700;">底层思想提炼</strong>：<strong style="color:#18202C;font-weight:700;">横向交流与纵向思考的节拍分离</strong>。Transformer 每一层都在重复一套极简的认知节拍——先靠 <strong style="color:#18202C;font-weight:700;">Attention 做跨 Token 横向沟通</strong>（交换语境），再靠 <strong style="color:#18202C;font-weight:700;">FFN 做单 Token 纵向升华</strong>（特征提炼与知识检索），两者交替 24 轮，浅层字面便逐级炼成深层语义。</p></section>
+<section style="margin:30px auto;max-width:260px;height:1px;background:linear-gradient(90deg,transparent 0%,#DBD5CA 28%,#E08B5A 50%,#DBD5CA 72%,transparent 100%);"></section>
+<h2 style="margin:36px 0 16px 0;font-family:'Source Han Serif SC','Noto Serif SC','Songti SC','STSong',Georgia,serif;font-size:19.5px;line-height:1.42;font-weight:700;color:#18202C;display:flex;align-items:center;gap:10px;"><span style="display:inline-block;width:4px;height:19px;background:linear-gradient(180deg,#2E6F5E 0%,#E08B5A 100%);border-radius:99px;flex-shrink:0;"></span><span style="min-width:0;text-wrap:pretty;">二、 破除高频误区：送进 FFN 的 <span style="font-family:Georgia,'Cambria Math','Times New Roman',serif;font-style:italic;font-size:15px;color:#18202C;background:#F7F5F0;padding:1px 6px;border-radius:5px;margin:0 1px;"><span style="font-style:normal;">(</span>x<sub style="font-size:0.80em;line-height:0;vertical-align:-0.22em;"><span style="font-style:normal;">1</span></sub><span style="font-style:normal;">,</span> x<sub style="font-size:0.80em;line-height:0;vertical-align:-0.22em;"><span style="font-style:normal;">2</span></sub><span style="font-style:normal;">,</span> <span style="font-style:normal;">…</span><span style="font-style:normal;">)</span></span> 到底是什么？</span></h2>
+<p style="margin:16px 0;font-size:15.5px;line-height:1.88;color:#2B3544;letter-spacing:0.25px;text-align:justify;">当大家第一次在教科书上看到多层神经网络的圆圈连线图（输入层 <span style="font-family:Georgia,'Cambria Math','Times New Roman',serif;font-style:italic;font-size:15px;color:#18202C;background:#F7F5F0;padding:1px 6px;border-radius:5px;margin:0 1px;">x<sub style="font-size:0.80em;line-height:0;vertical-align:-0.22em;"><span style="font-style:normal;">1</span></sub><span style="font-style:normal;">,</span> x<sub style="font-size:0.80em;line-height:0;vertical-align:-0.22em;"><span style="font-style:normal;">2</span></sub> <span style="font-style:normal;"> → </span></span> 隐藏层 <span style="font-family:Georgia,'Cambria Math','Times New Roman',serif;font-style:italic;font-size:15px;color:#18202C;background:#F7F5F0;padding:1px 6px;border-radius:5px;margin:0 1px;"><span style="font-style:normal;"> → </span></span> 输出层）时，最容易卡在一个关键问题上：<strong style="color:#18202C;font-weight:700;">在真实大模型里，输入节点的 <span style="font-family:Georgia,'Cambria Math','Times New Roman',serif;font-style:italic;font-size:15px;color:#18202C;background:#F7F5F0;padding:1px 6px;border-radius:5px;margin:0 1px;">x<sub style="font-size:0.80em;line-height:0;vertical-align:-0.22em;"><span style="font-style:normal;">1</span></sub><span style="font-style:normal;">,</span> x<sub style="font-size:0.80em;line-height:0;vertical-align:-0.22em;"><span style="font-style:normal;">2</span></sub></span> 到底指的是“第 1 个词、第 2 个词”，还是别的什么？</strong></p>
+<p style="margin:16px 0;font-size:15.5px;line-height:1.88;color:#2B3544;letter-spacing:0.25px;text-align:justify;">请一定记住这个核心答案：<strong style="color:#18202C;font-weight:700;">在 FFN 里，<span style="font-family:Georgia,'Cambria Math','Times New Roman',serif;font-style:italic;font-size:15px;color:#18202C;background:#F7F5F0;padding:1px 6px;border-radius:5px;margin:0 1px;"><span style="font-style:normal;">(</span>x<sub style="font-size:0.80em;line-height:0;vertical-align:-0.22em;"><span style="font-style:normal;">1</span></sub><span style="font-style:normal;">,</span> x<sub style="font-size:0.80em;line-height:0;vertical-align:-0.22em;"><span style="font-style:normal;">2</span></sub><span style="font-style:normal;">,</span> <span style="font-style:normal;">…</span><span style="font-style:normal;">,</span> x<sub style="font-size:0.80em;line-height:0;vertical-align:-0.22em;"><span style="font-style:normal;">2</span><span style="font-style:normal;">0</span><span style="font-style:normal;">4</span><span style="font-style:normal;">8</span></sub><span style="font-style:normal;">)</span></span> 指的是“同一个 Token 语义向量内部的各个维度坐标”，而不是不同的词！</strong></p>
+<p style="margin:16px 0;font-size:15.5px;line-height:1.88;color:#2B3544;letter-spacing:0.25px;text-align:justify;">让我们紧盯张量形状，用<strong style="color:#18202C;font-weight:700;">分层输入输出追踪法</strong>核验 <code style="font-family:'JetBrains Mono','SF Mono',Menlo,Consolas,monospace;font-size:13.2px;background-color:#EEF3FA;color:#1F416E;padding:1.5px 6px;border-radius:5px;margin:0 2px;">deepseek-coder-1.3b-base</code> 第 1 层（Layer 0）处理“我在苹果公司吃了一个苹果”（6 个 Token）时的真实数据流：</p>
+<section style="margin:24px 0;"><section style="overflow-x:auto;-webkit-overflow-scrolling:touch;border-radius:8px;"><table style="width:100%;border-collapse:collapse;font-size:12px;"><thead><tr><th style="padding:8px 8px;background:#F1F5FC;color:#18202C;font-weight:700;font-size:11.5px;line-height:1.4;vertical-align:bottom;text-align:left;border-top:2px solid #2B548A;border-bottom:1.5px solid #C6D6EC;">处理阶段</th><th style="padding:8px 8px;background:#F1F5FC;color:#18202C;font-weight:700;font-size:11.5px;line-height:1.4;vertical-align:bottom;text-align:left;border-top:2px solid #2B548A;border-bottom:1.5px solid #C6D6EC;">运算模块</th><th style="padding:8px 8px;background:#F1F5FC;color:#18202C;font-weight:700;font-size:11.5px;line-height:1.4;vertical-align:bottom;text-align:left;border-top:2px solid #2B548A;border-bottom:1.5px solid #C6D6EC;">输入张量形状</th><th style="padding:8px 8px;background:#F1F5FC;color:#18202C;font-weight:700;font-size:11.5px;line-height:1.4;vertical-align:bottom;text-align:left;border-top:2px solid #2B548A;border-bottom:1.5px solid #C6D6EC;">输出张量形状</th><th style="padding:8px 8px;background:#F1F5FC;color:#18202C;font-weight:700;font-size:11.5px;line-height:1.4;vertical-align:bottom;text-align:left;border-top:2px solid #2B548A;border-bottom:1.5px solid #C6D6EC;">词与词是否串门？</th><th style="padding:8px 8px;background:#F1F5FC;color:#18202C;font-weight:700;font-size:11.5px;line-height:1.4;vertical-align:bottom;text-align:left;border-top:2px solid #2B548A;border-bottom:1.5px solid #C6D6EC;">物理直觉与核心作用</th></tr></thead><tbody><tr><td style="padding:8px 8px;border-bottom:1px solid #EFECE4;font-size:12px;line-height:1.54;color:#2B3544;background:#FFFEFC;font-variant-numeric:tabular-nums;vertical-align:top;"><strong style="color:#18202C;font-weight:700;">前半层</strong></td><td style="padding:8px 8px;border-bottom:1px solid #EFECE4;font-size:12px;line-height:1.54;color:#2B3544;background:#FFFEFC;font-variant-numeric:tabular-nums;vertical-align:top;">多头自注意力 (<code style="font-family:'JetBrains Mono','SF Mono',Menlo,Consolas,monospace;font-size:13.2px;background-color:#EEF3FA;color:#1F416E;padding:1.5px 6px;border-radius:5px;margin:0 2px;">self_attn</code>)</td><td style="padding:8px 8px;border-bottom:1px solid #EFECE4;font-size:12px;line-height:1.54;color:#2B3544;background:#FFFEFC;font-variant-numeric:tabular-nums;vertical-align:top;"><code style="font-family:'JetBrains Mono','SF Mono',Menlo,Consolas,monospace;font-size:13.2px;background-color:#EEF3FA;color:#1F416E;padding:1.5px 6px;border-radius:5px;margin:0 2px;">[1, 6, 2048]</code></td><td style="padding:8px 8px;border-bottom:1px solid #EFECE4;font-size:12px;line-height:1.54;color:#2B3544;background:#FFFEFC;font-variant-numeric:tabular-nums;vertical-align:top;"><code style="font-family:'JetBrains Mono','SF Mono',Menlo,Consolas,monospace;font-size:13.2px;background-color:#EEF3FA;color:#1F416E;padding:1.5px 6px;border-radius:5px;margin:0 2px;">[1, 6, 2048]</code></td><td style="padding:8px 8px;border-bottom:1px solid #EFECE4;font-size:12px;line-height:1.54;color:#2B3544;background:#FFFEFC;font-variant-numeric:tabular-nums;vertical-align:top;"><strong style="color:#18202C;font-weight:700;">是（横向交流）</strong></td><td style="padding:8px 8px;border-bottom:1px solid #EFECE4;font-size:12px;line-height:1.54;color:#2B3544;background:#FFFEFC;font-variant-numeric:tabular-nums;vertical-align:top;">6 个词彼此点积打分，把“公司”“吃”的语境注入对应“苹果”</td></tr><tr><td style="padding:8px 8px;border-bottom:1px solid #EFECE4;font-size:12px;line-height:1.54;color:#2B3544;background:#FAF9F6;font-variant-numeric:tabular-nums;vertical-align:top;"><strong style="color:#18202C;font-weight:700;">后半层①</strong></td><td style="padding:8px 8px;border-bottom:1px solid #EFECE4;font-size:12px;line-height:1.54;color:#2B3544;background:#FAF9F6;font-variant-numeric:tabular-nums;vertical-align:top;">FFN 升维投影 (<code style="font-family:'JetBrains Mono','SF Mono',Menlo,Consolas,monospace;font-size:13.2px;background-color:#EEF3FA;color:#1F416E;padding:1.5px 6px;border-radius:5px;margin:0 2px;">gate</code> & <code style="font-family:'JetBrains Mono','SF Mono',Menlo,Consolas,monospace;font-size:13.2px;background-color:#EEF3FA;color:#1F416E;padding:1.5px 6px;border-radius:5px;margin:0 2px;">up</code>)</td><td style="padding:8px 8px;border-bottom:1px solid #EFECE4;font-size:12px;line-height:1.54;color:#2B3544;background:#FAF9F6;font-variant-numeric:tabular-nums;vertical-align:top;"><code style="font-family:'JetBrains Mono','SF Mono',Menlo,Consolas,monospace;font-size:13.2px;background-color:#EEF3FA;color:#1F416E;padding:1.5px 6px;border-radius:5px;margin:0 2px;">[1, 6, 2048]</code></td><td style="padding:8px 8px;border-bottom:1px solid #EFECE4;font-size:12px;line-height:1.54;color:#2B3544;background:#FAF9F6;font-variant-numeric:tabular-nums;vertical-align:top;"><strong style="color:#18202C;font-weight:700;"><code style="font-family:'JetBrains Mono','SF Mono',Menlo,Consolas,monospace;font-size:13.2px;background-color:#EEF3FA;color:#1F416E;padding:1.5px 6px;border-radius:5px;margin:0 2px;">[1, 6, 5504]</code></strong></td><td style="padding:8px 8px;border-bottom:1px solid #EFECE4;font-size:12px;line-height:1.54;color:#2B3544;background:#FAF9F6;font-variant-numeric:tabular-nums;vertical-align:top;"><strong style="color:#18202C;font-weight:700;">否（各自独立）</strong></td><td style="padding:8px 8px;border-bottom:1px solid #EFECE4;font-size:12px;line-height:1.54;color:#2B3544;background:#FAF9F6;font-variant-numeric:tabular-nums;vertical-align:top;">每个词的 2048 维各自独立扩维至 <strong style="color:#18202C;font-weight:700;">5504 维</strong>，把特征摊开审查</td></tr><tr><td style="padding:8px 8px;border-bottom:1px solid #EFECE4;font-size:12px;line-height:1.54;color:#2B3544;background:#FFFEFC;font-variant-numeric:tabular-nums;vertical-align:top;"><strong style="color:#18202C;font-weight:700;">后半层②</strong></td><td style="padding:8px 8px;border-bottom:1px solid #EFECE4;font-size:12px;line-height:1.54;color:#2B3544;background:#FFFEFC;font-variant-numeric:tabular-nums;vertical-align:top;">非线性激活与门控 (<code style="font-family:'JetBrains Mono','SF Mono',Menlo,Consolas,monospace;font-size:13.2px;background-color:#EEF3FA;color:#1F416E;padding:1.5px 6px;border-radius:5px;margin:0 2px;">SiLU</code> <span style="font-family:Georgia,'Cambria Math','Times New Roman',serif;font-style:italic;font-size:15px;color:#18202C;background:#F7F5F0;padding:1px 6px;border-radius:5px;margin:0 1px;"><span style="font-style:normal;"> ⊙ </span></span>)</td><td style="padding:8px 8px;border-bottom:1px solid #EFECE4;font-size:12px;line-height:1.54;color:#2B3544;background:#FFFEFC;font-variant-numeric:tabular-nums;vertical-align:top;"><code style="font-family:'JetBrains Mono','SF Mono',Menlo,Consolas,monospace;font-size:13.2px;background-color:#EEF3FA;color:#1F416E;padding:1.5px 6px;border-radius:5px;margin:0 2px;">[1, 6, 5504]</code></td><td style="padding:8px 8px;border-bottom:1px solid #EFECE4;font-size:12px;line-height:1.54;color:#2B3544;background:#FFFEFC;font-variant-numeric:tabular-nums;vertical-align:top;"><code style="font-family:'JetBrains Mono','SF Mono',Menlo,Consolas,monospace;font-size:13.2px;background-color:#EEF3FA;color:#1F416E;padding:1.5px 6px;border-radius:5px;margin:0 2px;">[1, 6, 5504]</code></td><td style="padding:8px 8px;border-bottom:1px solid #EFECE4;font-size:12px;line-height:1.54;color:#2B3544;background:#FFFEFC;font-variant-numeric:tabular-nums;vertical-align:top;"><strong style="color:#18202C;font-weight:700;">否（逐维筛选）</strong></td><td style="padding:8px 8px;border-bottom:1px solid #EFECE4;font-size:12px;line-height:1.54;color:#2B3544;background:#FFFEFC;font-variant-numeric:tabular-nums;vertical-align:top;">5504 个维度逐一过筛：强化重难点特征，压扁无关负噪音</td></tr><tr><td style="padding:8px 8px;border-bottom:1.5px solid #2B548A;font-size:12px;line-height:1.54;color:#2B3544;background:#FAF9F6;font-variant-numeric:tabular-nums;vertical-align:top;"><strong style="color:#18202C;font-weight:700;">后半层③</strong></td><td style="padding:8px 8px;border-bottom:1.5px solid #2B548A;font-size:12px;line-height:1.54;color:#2B3544;background:#FAF9F6;font-variant-numeric:tabular-nums;vertical-align:top;">FFN 降维投影 (<code style="font-family:'JetBrains Mono','SF Mono',Menlo,Consolas,monospace;font-size:13.2px;background-color:#EEF3FA;color:#1F416E;padding:1.5px 6px;border-radius:5px;margin:0 2px;">down_proj</code>)</td><td style="padding:8px 8px;border-bottom:1.5px solid #2B548A;font-size:12px;line-height:1.54;color:#2B3544;background:#FAF9F6;font-variant-numeric:tabular-nums;vertical-align:top;"><code style="font-family:'JetBrains Mono','SF Mono',Menlo,Consolas,monospace;font-size:13.2px;background-color:#EEF3FA;color:#1F416E;padding:1.5px 6px;border-radius:5px;margin:0 2px;">[1, 6, 5504]</code></td><td style="padding:8px 8px;border-bottom:1.5px solid #2B548A;font-size:12px;line-height:1.54;color:#2B3544;background:#FAF9F6;font-variant-numeric:tabular-nums;vertical-align:top;"><strong style="color:#18202C;font-weight:700;"><code style="font-family:'JetBrains Mono','SF Mono',Menlo,Consolas,monospace;font-size:13.2px;background-color:#EEF3FA;color:#1F416E;padding:1.5px 6px;border-radius:5px;margin:0 2px;">[1, 6, 2048]</code></strong></td><td style="padding:8px 8px;border-bottom:1.5px solid #2B548A;font-size:12px;line-height:1.54;color:#2B3544;background:#FAF9F6;font-variant-numeric:tabular-nums;vertical-align:top;"><strong style="color:#18202C;font-weight:700;">否（各自归纳）</strong></td><td style="padding:8px 8px;border-bottom:1.5px solid #2B548A;font-size:12px;line-height:1.54;color:#2B3544;background:#FAF9F6;font-variant-numeric:tabular-nums;vertical-align:top;">将提炼后的 5504 维精华浓缩回 <strong style="color:#18202C;font-weight:700;">2048 维</strong>，叠加残差传给下层</td></tr></tbody></table></section></section>
+<p style="margin:16px 0;font-size:15.5px;line-height:1.88;color:#2B3544;letter-spacing:0.25px;text-align:justify;">看清张量维度后一切豁然开朗：句子里有 6 个词，每个词是一条 2048 维的向量。走进 FFN 时，这 6 个词<strong style="color:#18202C;font-weight:700;">完全互不干扰、并行独立计算</strong>——就像放学后全班 6 个同学各自回家，但每个人桌上翻开的都是同一本《复习大纲》（共享同一套 FFN 权重矩阵）。</p>
+<p style="margin:16px 0;font-size:15.5px;line-height:1.88;color:#2B3544;letter-spacing:0.25px;text-align:justify;">而且你绝对想不到，这本《复习大纲》有多厚！我们直接拉出 DeepSeek 1.3B（共 <code style="font-family:'JetBrains Mono','SF Mono',Menlo,Consolas,monospace;font-size:13.2px;background-color:#EEF3FA;color:#1F416E;padding:1.5px 6px;border-radius:5px;margin:0 2px;">1,346,471,936</code> 个参数）的真机参数账本：</p>
+<section style="margin:24px 0;"><section style="overflow-x:auto;-webkit-overflow-scrolling:touch;border-radius:8px;"><table style="width:100%;border-collapse:collapse;font-size:12px;"><thead><tr><th style="padding:8px 8px;background:#F1F5FC;color:#18202C;font-weight:700;font-size:11.5px;line-height:1.4;vertical-align:bottom;text-align:left;border-top:2px solid #2B548A;border-bottom:1.5px solid #C6D6EC;">模块归属</th><th style="padding:8px 8px;background:#F1F5FC;color:#18202C;font-weight:700;font-size:11.5px;line-height:1.4;vertical-align:bottom;text-align:left;border-top:2px solid #2B548A;border-bottom:1.5px solid #C6D6EC;">权重构成（DeepSeek-1.3B 实测）</th><th style="padding:8px 8px;background:#F1F5FC;color:#18202C;font-weight:700;font-size:11.5px;line-height:1.4;vertical-align:bottom;text-align:left;border-top:2px solid #2B548A;border-bottom:1.5px solid #C6D6EC;">参数总量</th><th style="padding:8px 8px;background:#F1F5FC;color:#18202C;font-weight:700;font-size:11.5px;line-height:1.4;vertical-align:bottom;text-align:left;border-top:2px solid #2B548A;border-bottom:1.5px solid #C6D6EC;">占全模型比例</th><th style="padding:8px 8px;background:#F1F5FC;color:#18202C;font-weight:700;font-size:11.5px;line-height:1.4;vertical-align:bottom;text-align:left;border-top:2px solid #2B548A;border-bottom:1.5px solid #C6D6EC;">占 24 层主体比例</th><th style="padding:8px 8px;background:#F1F5FC;color:#18202C;font-weight:700;font-size:11.5px;line-height:1.4;vertical-align:bottom;text-align:left;border-top:2px solid #2B548A;border-bottom:1.5px solid #C6D6EC;">核心职责</th></tr></thead><tbody><tr><td style="padding:8px 8px;border-bottom:1px solid #EFECE4;font-size:12px;line-height:1.54;color:#2B3544;background:#FFFEFC;font-variant-numeric:tabular-nums;vertical-align:top;"><strong style="color:#18202C;font-weight:700;">词表输入层 (<code style="font-family:'JetBrains Mono','SF Mono',Menlo,Consolas,monospace;font-size:13.2px;background-color:#EEF3FA;color:#1F416E;padding:1.5px 6px;border-radius:5px;margin:0 2px;">embed_tokens</code>)</strong></td><td style="padding:8px 8px;border-bottom:1px solid #EFECE4;font-size:12px;line-height:1.54;color:#2B3544;background:#FFFEFC;font-variant-numeric:tabular-nums;vertical-align:top;"><code style="font-family:'JetBrains Mono','SF Mono',Menlo,Consolas,monospace;font-size:13.2px;background-color:#EEF3FA;color:#1F416E;padding:1.5px 6px;border-radius:5px;margin:0 2px;">[32256, 2048]</code></td><td style="padding:8px 8px;border-bottom:1px solid #EFECE4;font-size:12px;line-height:1.54;color:#2B3544;background:#FFFEFC;font-variant-numeric:tabular-nums;vertical-align:top;">66,060,288</td><td style="padding:8px 8px;border-bottom:1px solid #EFECE4;font-size:12px;line-height:1.54;color:#2B3544;background:#FFFEFC;font-variant-numeric:tabular-nums;vertical-align:top;">4.91%</td><td style="padding:8px 8px;border-bottom:1px solid #EFECE4;font-size:12px;line-height:1.54;color:#2B3544;background:#FFFEFC;font-variant-numeric:tabular-nums;vertical-align:top;">—</td><td style="padding:8px 8px;border-bottom:1px solid #EFECE4;font-size:12px;line-height:1.54;color:#2B3544;background:#FFFEFC;font-variant-numeric:tabular-nums;vertical-align:top;">静态词向量查表底座</td></tr><tr><td style="padding:8px 8px;border-bottom:1px solid #EFECE4;font-size:12px;line-height:1.54;color:#2B3544;background:#FAF9F6;font-variant-numeric:tabular-nums;vertical-align:top;"><strong style="color:#18202C;font-weight:700;">24 层自注意力 (<code style="font-family:'JetBrains Mono','SF Mono',Menlo,Consolas,monospace;font-size:13.2px;background-color:#EEF3FA;color:#1F416E;padding:1.5px 6px;border-radius:5px;margin:0 2px;">self_attn</code>)</strong></td><td style="padding:8px 8px;border-bottom:1px solid #EFECE4;font-size:12px;line-height:1.54;color:#2B3544;background:#FAF9F6;font-variant-numeric:tabular-nums;vertical-align:top;"><span style="font-family:Georgia,'Cambria Math','Times New Roman',serif;font-style:italic;font-size:15px;color:#18202C;background:#F7F5F0;padding:1px 6px;border-radius:5px;margin:0 1px;"><span style="font-style:normal;">2</span><span style="font-style:normal;">4</span> <span style="font-style:normal;"> × </span> <span style="font-style:normal;">4</span> <span style="font-style:normal;"> × </span> <span style="font-style:normal;">[</span><span style="font-style:normal;">2</span><span style="font-style:normal;">0</span><span style="font-style:normal;">4</span><span style="font-style:normal;">8</span><span style="font-style:normal;">,</span> <span style="font-style:normal;">2</span><span style="font-style:normal;">0</span><span style="font-style:normal;">4</span><span style="font-style:normal;">8</span><span style="font-style:normal;">]</span></span></td><td style="padding:8px 8px;border-bottom:1px solid #EFECE4;font-size:12px;line-height:1.54;color:#2B3544;background:#FAF9F6;font-variant-numeric:tabular-nums;vertical-align:top;">402,653,184</td><td style="padding:8px 8px;border-bottom:1px solid #EFECE4;font-size:12px;line-height:1.54;color:#2B3544;background:#FAF9F6;font-variant-numeric:tabular-nums;vertical-align:top;">29.90%</td><td style="padding:8px 8px;border-bottom:1px solid #EFECE4;font-size:12px;line-height:1.54;color:#2B3544;background:#FAF9F6;font-variant-numeric:tabular-nums;vertical-align:top;"><strong style="color:#18202C;font-weight:700;">33.16%（约 1/3）</strong></td><td style="padding:8px 8px;border-bottom:1px solid #EFECE4;font-size:12px;line-height:1.54;color:#2B3544;background:#FAF9F6;font-variant-numeric:tabular-nums;vertical-align:top;">跨词语境路由与信息搬运</td></tr><tr><td style="padding:8px 8px;border-bottom:1px solid #EFECE4;font-size:12px;line-height:1.54;color:#2B3544;background:#FFFEFC;font-variant-numeric:tabular-nums;vertical-align:top;"><strong style="color:#18202C;font-weight:700;">24 层前馈网络 (<code style="font-family:'JetBrains Mono','SF Mono',Menlo,Consolas,monospace;font-size:13.2px;background-color:#EEF3FA;color:#1F416E;padding:1.5px 6px;border-radius:5px;margin:0 2px;">mlp / FFN</code>)</strong></td><td style="padding:8px 8px;border-bottom:1px solid #EFECE4;font-size:12px;line-height:1.54;color:#2B3544;background:#FFFEFC;font-variant-numeric:tabular-nums;vertical-align:top;"><span style="font-family:Georgia,'Cambria Math','Times New Roman',serif;font-style:italic;font-size:15px;color:#18202C;background:#F7F5F0;padding:1px 6px;border-radius:5px;margin:0 1px;"><span style="font-style:normal;">2</span><span style="font-style:normal;">4</span> <span style="font-style:normal;"> × </span> <span style="font-style:normal;">3</span> <span style="font-style:normal;"> × </span> <span style="font-style:normal;">[</span><span style="font-style:normal;">2</span><span style="font-style:normal;">0</span><span style="font-style:normal;">4</span><span style="font-style:normal;">8</span><span style="font-style:normal;">,</span> <span style="font-style:normal;">5</span><span style="font-style:normal;">5</span><span style="font-style:normal;">0</span><span style="font-style:normal;">4</span><span style="font-style:normal;">]</span></span></td><td style="padding:8px 8px;border-bottom:1px solid #EFECE4;font-size:12px;line-height:1.54;color:#2B3544;background:#FFFEFC;font-variant-numeric:tabular-nums;vertical-align:top;"><strong style="color:#18202C;font-weight:700;">811,597,824</strong></td><td style="padding:8px 8px;border-bottom:1px solid #EFECE4;font-size:12px;line-height:1.54;color:#2B3544;background:#FFFEFC;font-variant-numeric:tabular-nums;vertical-align:top;"><strong style="color:#18202C;font-weight:700;">60.28%</strong></td><td style="padding:8px 8px;border-bottom:1px solid #EFECE4;font-size:12px;line-height:1.54;color:#2B3544;background:#FFFEFC;font-variant-numeric:tabular-nums;vertical-align:top;"><strong style="color:#18202C;font-weight:700;">66.84%（整整 2/3）</strong></td><td style="padding:8px 8px;border-bottom:1px solid #EFECE4;font-size:12px;line-height:1.54;color:#2B3544;background:#FFFEFC;font-variant-numeric:tabular-nums;vertical-align:top;">特征升维提炼与世界知识存储</td></tr><tr><td style="padding:8px 8px;border-bottom:1px solid #EFECE4;font-size:12px;line-height:1.54;color:#2B3544;background:#FAF9F6;font-variant-numeric:tabular-nums;vertical-align:top;"><strong style="color:#18202C;font-weight:700;">层归一化 (<code style="font-family:'JetBrains Mono','SF Mono',Menlo,Consolas,monospace;font-size:13.2px;background-color:#EEF3FA;color:#1F416E;padding:1.5px 6px;border-radius:5px;margin:0 2px;">RMSNorm</code>)</strong></td><td style="padding:8px 8px;border-bottom:1px solid #EFECE4;font-size:12px;line-height:1.54;color:#2B3544;background:#FAF9F6;font-variant-numeric:tabular-nums;vertical-align:top;"><span style="font-family:Georgia,'Cambria Math','Times New Roman',serif;font-style:italic;font-size:15px;color:#18202C;background:#F7F5F0;padding:1px 6px;border-radius:5px;margin:0 1px;"><span style="font-style:normal;">4</span><span style="font-style:normal;">9</span> <span style="font-style:normal;"> × </span> <span style="font-style:normal;">[</span><span style="font-style:normal;">2</span><span style="font-style:normal;">0</span><span style="font-style:normal;">4</span><span style="font-style:normal;">8</span><span style="font-style:normal;">]</span></span></td><td style="padding:8px 8px;border-bottom:1px solid #EFECE4;font-size:12px;line-height:1.54;color:#2B3544;background:#FAF9F6;font-variant-numeric:tabular-nums;vertical-align:top;">100,352</td><td style="padding:8px 8px;border-bottom:1px solid #EFECE4;font-size:12px;line-height:1.54;color:#2B3544;background:#FAF9F6;font-variant-numeric:tabular-nums;vertical-align:top;">0.01%</td><td style="padding:8px 8px;border-bottom:1px solid #EFECE4;font-size:12px;line-height:1.54;color:#2B3544;background:#FAF9F6;font-variant-numeric:tabular-nums;vertical-align:top;">—</td><td style="padding:8px 8px;border-bottom:1px solid #EFECE4;font-size:12px;line-height:1.54;color:#2B3544;background:#FAF9F6;font-variant-numeric:tabular-nums;vertical-align:top;">校准向量模长，防止数值爆炸</td></tr><tr><td style="padding:8px 8px;border-bottom:1.5px solid #2B548A;font-size:12px;line-height:1.54;color:#2B3544;background:#FFFEFC;font-variant-numeric:tabular-nums;vertical-align:top;"><strong style="color:#18202C;font-weight:700;">词表输出头 (<code style="font-family:'JetBrains Mono','SF Mono',Menlo,Consolas,monospace;font-size:13.2px;background-color:#EEF3FA;color:#1F416E;padding:1.5px 6px;border-radius:5px;margin:0 2px;">lm_head</code>)</strong></td><td style="padding:8px 8px;border-bottom:1.5px solid #2B548A;font-size:12px;line-height:1.54;color:#2B3544;background:#FFFEFC;font-variant-numeric:tabular-nums;vertical-align:top;"><code style="font-family:'JetBrains Mono','SF Mono',Menlo,Consolas,monospace;font-size:13.2px;background-color:#EEF3FA;color:#1F416E;padding:1.5px 6px;border-radius:5px;margin:0 2px;">[2048, 32256]</code></td><td style="padding:8px 8px;border-bottom:1.5px solid #2B548A;font-size:12px;line-height:1.54;color:#2B3544;background:#FFFEFC;font-variant-numeric:tabular-nums;vertical-align:top;">66,060,288</td><td style="padding:8px 8px;border-bottom:1.5px solid #2B548A;font-size:12px;line-height:1.54;color:#2B3544;background:#FFFEFC;font-variant-numeric:tabular-nums;vertical-align:top;">4.91%</td><td style="padding:8px 8px;border-bottom:1.5px solid #2B548A;font-size:12px;line-height:1.54;color:#2B3544;background:#FFFEFC;font-variant-numeric:tabular-nums;vertical-align:top;">—</td><td style="padding:8px 8px;border-bottom:1.5px solid #2B548A;font-size:12px;line-height:1.54;color:#2B3544;background:#FFFEFC;font-variant-numeric:tabular-nums;vertical-align:top;">最终向量投影为 32,256 词得分</td></tr></tbody></table></section></section>
+<p style="margin:16px 0;font-size:15.5px;line-height:1.88;color:#2B3544;letter-spacing:0.25px;text-align:justify;">整整 <strong style="color:#18202C;font-weight:700;">8.12 亿参数</strong>，占据 24 层核心主体的 <strong style="color:#18202C;font-weight:700;">66.84%</strong>！单层 FFN 的三个矩阵（<code style="font-family:'JetBrains Mono','SF Mono',Menlo,Consolas,monospace;font-size:13.2px;background-color:#EEF3FA;color:#1F416E;padding:1.5px 6px;border-radius:5px;margin:0 2px;">gate_proj</code>、<code style="font-family:'JetBrains Mono','SF Mono',Menlo,Consolas,monospace;font-size:13.2px;background-color:#EEF3FA;color:#1F416E;padding:1.5px 6px;border-radius:5px;margin:0 2px;">up_proj</code>、<code style="font-family:'JetBrains Mono','SF Mono',Menlo,Consolas,monospace;font-size:13.2px;background-color:#EEF3FA;color:#1F416E;padding:1.5px 6px;border-radius:5px;margin:0 2px;">down_proj</code>）加起来高达 <strong style="color:#18202C;font-weight:700;">3,382 万参数</strong>，是同一层 16 个注意力头总参数（1,678 万）的整整 <strong style="color:#18202C;font-weight:700;">2 倍</strong>。</p>
+<section style="margin:30px auto;max-width:260px;height:1px;background:linear-gradient(90deg,transparent 0%,#DBD5CA 28%,#E08B5A 50%,#DBD5CA 72%,transparent 100%);"></section>
+<h2 style="margin:36px 0 16px 0;font-family:'Source Han Serif SC','Noto Serif SC','Songti SC','STSong',Georgia,serif;font-size:19.5px;line-height:1.42;font-weight:700;color:#18202C;display:flex;align-items:center;gap:10px;"><span style="display:inline-block;width:4px;height:19px;background:linear-gradient(180deg,#2E6F5E 0%,#E08B5A 100%);border-radius:99px;flex-shrink:0;"></span><span style="min-width:0;text-wrap:pretty;">三、 升维、激活、降维：桌面上散落的红蓝小球如何一刀切开？</span></h2>
+<p style="margin:16px 0;font-size:15.5px;line-height:1.88;color:#2B3544;letter-spacing:0.25px;text-align:justify;">既然进入 FFN 是 2048 维，出去还是 2048 维，为什么工程师偏偏要多此一举，在中间把它先<strong style="color:#18202C;font-weight:700;">撑大到 5504 维</strong>（主流大模型通常扩维 <strong style="color:#18202C;font-weight:700;">2.7 倍到 4 倍</strong>，例如 Llama-3-8B 是 <code style="font-family:'JetBrains Mono','SF Mono',Menlo,Consolas,monospace;font-size:13.2px;background-color:#EEF3FA;color:#1F416E;padding:1.5px 6px;border-radius:5px;margin:0 2px;">4096 → 14336</code>），再压缩回去呢？</p>
+<figure style="margin:28px 0 26px 0;padding:0;text-align:center;"><div style="padding:16px 12px 12px 12px;background:#FAF9F6;border-radius:14px;overflow-x:auto;box-shadow:0 2px 12px rgba(24,32,44,0.04);"><svg viewBox="0 0 680 310" style="width:100%;max-width:640px;height:auto;display:block;margin:0 auto;font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Hiragino Sans GB','Noto Sans SC','Microsoft YaHei',sans-serif;">
+  <rect x="0" y="0" width="680" height="310" rx="12" fill="#FAF9F6" stroke="#D8D4CA" stroke-width="1.5"/>
+  <text x="340" y="25" text-anchor="middle" font-size="14" font-weight="bold" fill="#18202C">FFN 核心三部曲：先升维摊开 → 再非线性折弯 → 最后降维归纳</text>
+  <!-- Top flow -->
+  <rect x="20" y="44" width="128" height="72" rx="8" fill="#F0F5FC" stroke="#396EB0" stroke-width="1.5"/>
+  <text x="84" y="66" text-anchor="middle" font-size="11.5" font-weight="bold" fill="#234778">单 Token 输入</text>
+  <text x="84" y="84" text-anchor="middle" font-size="10.5" fill="#3B4759">2048 维向量</text>
+  <text x="84" y="102" text-anchor="middle" font-size="9.5" fill="#475569">“苹果₂”(已含“吃”)</text>
+
+  <path d="M148 80 L178 80" stroke="#396EB0" stroke-width="2"/><polygon points="182,80 175,76 175,84" fill="#396EB0"/>
+
+  <rect x="184" y="38" width="136" height="84" rx="8" fill="#FDF7EE" stroke="#C8812D" stroke-width="1.5"/>
+  <text x="252" y="59" text-anchor="middle" font-size="11.5" font-weight="bold" fill="#985517">① 线性升维</text>
+  <text x="252" y="77" text-anchor="middle" font-size="10.5" fill="#3B4759">2048 → 5504 维</text>
+  <text x="252" y="95" text-anchor="middle" font-size="9.5" fill="#7C4312">把混杂特征摊到高维</text>
+  <text x="252" y="110" text-anchor="middle" font-size="9" fill="#7C4312">（匹配 5504 个模式键）</text>
+
+  <path d="M320 80 L350 80" stroke="#6A5A9E" stroke-width="2"/><polygon points="354,80 347,76 347,84" fill="#6A5A9E"/>
+
+  <rect x="356" y="38" width="136" height="84" rx="8" fill="#E6E1F5" stroke="#6A5A9E" stroke-width="1.8"/>
+  <text x="424" y="59" text-anchor="middle" font-size="11.5" font-weight="bold" fill="#493B74">② 非线性激活</text>
+  <text x="424" y="77" text-anchor="middle" font-size="10.5" fill="#3B4759">SiLU 弯折 14.24°</text>
+  <text x="424" y="95" text-anchor="middle" font-size="9.5" fill="#3C3061">放行 3386 正特征</text>
+  <text x="424" y="110" text-anchor="middle" font-size="9" fill="#3C3061">压扁 2118 负噪音</text>
+
+  <path d="M492 80 L522 80" stroke="#267E8D" stroke-width="2"/><polygon points="526,80 519,76 519,84" fill="#267E8D"/>
+
+  <rect x="528" y="44" width="132" height="72" rx="8" fill="#EEF7F8" stroke="#267E8D" stroke-width="1.5"/>
+  <text x="594" y="66" text-anchor="middle" font-size="11.5" font-weight="bold" fill="#196473">③ 线性降维输出</text>
+  <text x="594" y="84" text-anchor="middle" font-size="10.5" fill="#3B4759">5504 → 2048 维</text>
+  <text x="594" y="102" text-anchor="middle" font-size="9.5" fill="#14505C">凝练精华 + 残差相加</text>
+
+  <!-- Bottom geometric analogy -->
+  <line x1="20" y1="142" x2="660" y2="142" stroke="#E7E3DA" stroke-width="1.2" stroke-dasharray="5,4"/>
+  <text x="340" y="162" text-anchor="middle" font-size="12" font-weight="bold" fill="#2B3544">几何直觉：桌面散落的红蓝小球，为什么“升维 + 非线性”才能一刀切开？</text>
+
+  <!-- Panel 1: 2D table -->
+  <rect x="24" y="174" width="196" height="120" rx="8" fill="#FFFEFC" stroke="#D8D4CA" stroke-width="1.2"/>
+  <text x="122" y="192" text-anchor="middle" font-size="10.5" font-weight="bold" fill="#475569">A. 2D 桌面：画直线切不开</text>
+  <rect x="52" y="202" width="140" height="66" rx="4" fill="#F2F5FA" stroke="#6C798C" stroke-width="1"/>
+  <circle cx="84" cy="218" r="7" fill="#C85A38"/><circle cx="160" cy="252" r="7" fill="#C85A38"/>
+  <circle cx="160" cy="218" r="7" fill="#2B548A"/><circle cx="84" cy="252" r="7" fill="#2B548A"/>
+  <line x1="60" y1="264" x2="184" y2="206" stroke="#B04A22" stroke-width="1.6" stroke-dasharray="4,3"/>
+  <text x="122" y="285" text-anchor="middle" font-size="9.5" fill="#B04A22">无论怎么摆尺子，总有球分错边</text>
+
+  <!-- Panel 2: Pure linear lift -->
+  <rect x="242" y="174" width="196" height="120" rx="8" fill="#FFFEFC" stroke="#D8D4CA" stroke-width="1.2"/>
+  <text x="340" y="192" text-anchor="middle" font-size="10.5" font-weight="bold" fill="#985517">B. 仅纯线性升维：仍是平板</text>
+  <polygon points="274,256 320,206 410,214 364,264" fill="#F8E9D2" stroke="#B26B1F" stroke-width="1.2"/>
+  <circle cx="318" cy="222" r="6.5" fill="#C85A38"/><circle cx="364" cy="250" r="6.5" fill="#C85A38"/>
+  <circle cx="378" cy="224" r="6.5" fill="#2B548A"/><circle cx="304" cy="248" r="6.5" fill="#2B548A"/>
+  <text x="340" y="285" text-anchor="middle" font-size="9.5" fill="#985517">把桌板斜着端起，平面依然一刀切不开</text>
+
+  <!-- Panel 3: Lift + Nonlinearity -->
+  <rect x="460" y="174" width="196" height="120" rx="8" fill="#FFFEFC" stroke="#267E8D" stroke-width="1.5"/>
+  <text x="558" y="192" text-anchor="middle" font-size="10.5" font-weight="bold" fill="#196473">C. 升维 + 非线性：红球被拎起！</text>
+  <polygon points="486,258 524,228 630,234 592,264" fill="#F0F5FC" stroke="#396EB0" stroke-width="1"/>
+  <polygon points="486,236 524,208 630,214 592,242" fill="#EEF7F8" fill-opacity="0.78" stroke="#267E8D" stroke-width="1.6" stroke-dasharray="4,2"/>
+  <circle cx="528" cy="248" r="6.5" fill="#2B548A"/><circle cx="592" cy="244" r="6.5" fill="#2B548A"/>
+  <line x1="532" y1="246" x2="532" y2="207" stroke="#C85A38" stroke-width="1.3" stroke-dasharray="2,2"/>
+  <line x1="588" y1="248" x2="588" y2="210" stroke="#C85A38" stroke-width="1.3" stroke-dasharray="2,2"/>
+  <circle cx="532" cy="205" r="6.5" fill="#C85A38"/><circle cx="588" cy="208" r="6.5" fill="#C85A38"/>
+  <text x="558" y="285" text-anchor="middle" font-size="9.5" fill="#196473">绿平面从中间横切一刀，红蓝彻底分离</text>
+</svg></div><figcaption style="margin-top:10px;font-size:12.5px;color:#556173;letter-spacing:0.15px;"><span style="font-family:'JetBrains Mono','SF Mono',Menlo,Consolas,monospace;font-size:11.5px;font-weight:700;color:#2E6F5E;margin-right:6px;">DIAGRAM</span>第 13 期核心机理结构图解</figcaption></figure>
+<p style="margin:16px 0;font-size:15.5px;line-height:1.88;color:#2B3544;letter-spacing:0.25px;text-align:justify;">想象桌面上交错散落着红球和蓝球（如图 A 的对角分布）：在二维桌面上，无论你怎么旋转直尺，都<strong style="color:#18202C;font-weight:700;">不可能只画一条直线</strong>就把红球和蓝球彻底隔开。</p>
+<p style="margin:16px 0;font-size:15.5px;line-height:1.88;color:#2B3544;letter-spacing:0.25px;text-align:justify;">这时候，你可能直觉会想：“把它们抬到三维空间去，站高一点俯视不就好切了吗？”——这个直觉<strong style="color:#18202C;font-weight:700;">对了大半，但必须补上一块最关键的数学拼图</strong>：</p>
+<ul style="margin:15px 0;padding-left:22px;"><li style="margin:8px 0;font-size:15.2px;line-height:1.86;color:#2B3544;">如果你只做<strong style="color:#18202C;font-weight:700;">纯线性升维</strong>（如图 B），相当于把整张木桌斜着端到半空中——桌板依然是平的，四个球仍然共面，用菜刀砍下去还是切不开！</li><li style="margin:8px 0;font-size:15.2px;line-height:1.86;color:#2B3544;">必须靠 <strong style="color:#18202C;font-weight:700;">「升维 + 非线性激活函数」</strong> 打配合（如图 C）：先升维留出施展拳脚的高维空间，再由非线性激活函数把满足条件的特征（红球）猛地往上“拎起来”或把空间“折一道弯”，红球和蓝球立刻落到了不同高度！此时只需用一块平坦的绿色平面横切一刀，就能干脆利落地一分为二。</li></ul>
+<p style="margin:16px 0;font-size:15.5px;line-height:1.88;color:#2B3544;letter-spacing:0.25px;text-align:justify;">最后一步<strong style="color:#18202C;font-weight:700;">降维（<code style="font-family:'JetBrains Mono','SF Mono',Menlo,Consolas,monospace;font-size:13.2px;background-color:#EEF3FA;color:#1F416E;padding:1.5px 6px;border-radius:5px;margin:0 2px;">5504 → 2048</code>）</strong>则像小明把 5504 条零散笔记重新归纳回几条核心大招：把刚才在高维空间里激活的“可食用水果”“甜脆多汁”等关键特征加权合并，写回标准的 2048 维主干道，以便无缝送进下一层继续深造。</p>
+<p style="margin:16px 0;font-size:15.5px;line-height:1.88;color:#2B3544;letter-spacing:0.25px;text-align:justify;">因此，FFN 内部有着不可颠倒的<strong style="color:#18202C;font-weight:700;">黄金顺序铁律</strong>：<strong style="color:#18202C;font-weight:700;">必须先升维、在宽敞的高维空间里立刻做非线性激活筛选，最后再降维输出</strong>。</p>
+<section style="margin:24px 0;padding:17px 20px 15px 20px;background:linear-gradient(135deg,#F0F5FC 0%,#F7FAFE 100%);border-left:3.5px solid #2B548A;border-radius:0 14px 14px 0;"><div style="font-family:'JetBrains Mono','SF Mono',Menlo,Consolas,monospace;font-size:12px;font-weight:700;letter-spacing:0.8px;color:#2B548A;margin-bottom:6px;">FIRST PRINCIPLES · 底层思想</div><p style="margin:6px 0;font-size:15px;line-height:1.84;color:#2B3544;text-align:justify;"><strong style="color:#18202C;font-weight:700;">底层思想提炼</strong>：<strong style="color:#18202C;font-weight:700;">FFN 是隐式的“键值记忆库（Key-Value Memory）”</strong>。2021 年的一篇经典论文发现，FFN 的升维矩阵就像 5504 把“特征检测锁（Key）”，当“吃 + 苹果”的向量撞上来时，只有对应的锁被激活函数打开；随后的降维矩阵则像“知识抽屉（Value）”，把与“水果、很甜、削皮”相关的记忆向量精准注入当前词，让模型“想起”世界知识。</p></section>
+<section style="margin:30px auto;max-width:260px;height:1px;background:linear-gradient(90deg,transparent 0%,#DBD5CA 28%,#E08B5A 50%,#DBD5CA 72%,transparent 100%);"></section>
+<section style="margin:32px 0;padding:22px 22px 16px 22px;background:linear-gradient(145deg,#FDF6EE 0%,#FAF2E8 100%);border-top:3px solid #D97A4A;border-radius:14px;"><div style="font-family:'JetBrains Mono','SF Mono',Menlo,Consolas,monospace;font-size:12px;font-weight:700;letter-spacing:0.8px;color:#B04A22;margin-bottom:6px;">HISTORY OF SCIENCE · 科学史故事专栏</div><h3 style="margin:0 0 13px 0;font-family:'Source Han Serif SC','Noto Serif SC','Songti SC','STSong',Georgia,serif;font-size:18px;line-height:1.45;font-weight:700;color:#5A2B16;">1969 年的一盆冷水——一道 XOR 题如何冻住 AI 整整十五年</h3><p style="margin:11px 0;font-size:15px;line-height:1.88;color:#352D28;text-align:justify;">今天我们在桌面上画红蓝四颗小球觉得轻而易举，但在人工智能历史上，这四颗小球曾掀起过一场足以写进教科书的世纪风暴。</p><p style="margin:11px 0;font-size:15px;line-height:1.88;color:#352D28;text-align:justify;">1957 年，心理学家<strong style="color:#18202C;font-weight:700;">弗兰克·罗森布拉特（Frank Rosenblatt）</strong>造出了历史上第一台硬件神经网络——<strong style="color:#18202C;font-weight:700;">感知机（Perceptron）</strong>，它能识别简单字母，媒体甚至欢呼“能够自主思考的机器即将诞生”。</p><p style="margin:11px 0;font-size:15px;line-height:1.88;color:#352D28;text-align:justify;">然而 12 年后的 1969 年，MIT 人工智能泰斗<strong style="color:#18202C;font-weight:700;">马文·明斯基（Marvin Minsky）</strong>与<strong style="color:#18202C;font-weight:700;">西摩·帕佩特（Seymour Papert）</strong>出版了冷峻的数学专著《感知机》。书里只用了一道连小学生都能看懂的<strong style="color:#18202C;font-weight:700;">异或（XOR）四点分类题</strong>——正是图 A 里对角摆放的两红两蓝四个点——从几何上宣判了单层线性感知机的死刑：没有隐藏层和非线性弯折，一根直尺永远不可能切开对角分布的红蓝点。</p><p style="margin:11px 0;font-size:15px;line-height:1.88;color:#352D28;text-align:justify;">这盆冷水直接浇灭了全球资本与科研界对神经网络的热情，酿成了长达十几年的<strong style="color:#18202C;font-weight:700;">第一次 AI 寒冬</strong>。可笑又悲壮的是，其实只要在输入和输出之间夹一层极小的隐藏层、塞进一个非线性激活函数，这道“绝世难题”瞬间迎刃而解——而这正是今天支撑千亿参数大模型 2/3 知识容量的 FFN 雏形。</p></section>
+<section style="margin:28px 0;padding:20px 22px 16px 22px;background:linear-gradient(135deg,#F0F5FC 0%,#FDF6EE 100%);border-left:3.5px solid #2B548A;border-radius:0 14px 14px 0;"><div style="font-family:'JetBrains Mono','SF Mono',Menlo,Consolas,monospace;font-size:12px;font-weight:700;letter-spacing:0.8px;color:#2B548A;margin-bottom:5px;">NEXT ISSUE · 下期预告</div><div style="font-family:'Source Han Serif SC','Noto Serif SC','Songti SC','STSong',Georgia,serif;font-size:16.5px;font-weight:700;color:#18202C;margin-bottom:8px;">下期预告</div><p style="margin:10px 0;font-size:14.8px;line-height:1.84;color:#2B3544;text-align:justify;">既然我们说 FFN 必须靠“升维 + 非线性激活”才能把红蓝小球切开，那如果我偏不信邪，把隐藏层中间的<strong style="color:#18202C;font-weight:700;">激活函数拔掉</strong>，哪怕把网络堆叠到 100 层，会发生什么惊人的数学灾难？</p><p style="margin:10px 0;font-size:14.8px;line-height:1.84;color:#2B3544;text-align:justify;">下一期，我们将把 13.5 亿参数的庞然大物压缩成一座只有 <strong style="color:#18202C;font-weight:700;">9 个参数</strong> 的 <strong style="color:#18202C;font-weight:700;"><code style="font-family:'JetBrains Mono','SF Mono',Menlo,Consolas,monospace;font-size:13.2px;background-color:#EEF3FA;color:#1F416E;padding:1.5px 6px;border-radius:5px;margin:0 2px;">2 → 2 → 1</code> 极简神经网络</strong>，打开本系列专属的<strong style="color:#18202C;font-weight:700;">在线交互实验室（LAB 01）</strong>，亲手拔掉再插上激活函数，用两行高中代数和动态“空间折纸”，让你亲眼看见 100 层瞬间坍缩成 1 层的全过程！</p></section>
+<section style="margin:28px 0 14px 0;padding:20px 22px 16px 22px;background:#F7F5F0;border-radius:14px;"><div style="font-family:'JetBrains Mono','SF Mono',Menlo,Consolas,monospace;font-size:12px;font-weight:700;letter-spacing:0.8px;color:#556173;margin-bottom:5px;">REFERENCES &amp; LAB</div><div style="font-family:'Source Han Serif SC','Noto Serif SC','Songti SC','STSong',Georgia,serif;font-size:16px;font-weight:700;color:#18202C;margin-bottom:10px;">拓展资源加油站（课后动手实验室）</div><ol style="margin:0;padding-left:20px;"><li style="margin:8px 0;font-size:14px;line-height:1.78;color:#475569;"><strong style="color:#18202C;font-weight:700;">本系列专属交互实验室（LAB 01）</strong>：<code style="font-family:'JetBrains Mono','SF Mono',Menlo,Consolas,monospace;font-size:13.2px;background-color:#EEF3FA;color:#1F416E;padding:1.5px 6px;border-radius:5px;margin:0 2px;">https://wangnianfei.github.io/wechat-llm-blackbox-series/demos/activation-221.html</code> —— 提前上手体验 <code style="font-family:'JetBrains Mono','SF Mono',Menlo,Consolas,monospace;font-size:13.2px;background-color:#EEF3FA;color:#1F416E;padding:1.5px 6px;border-radius:5px;margin:0 2px;">2→2→1</code> 神经网络与 XOR 空间折弯。</li><li style="margin:8px 0;font-size:14px;line-height:1.78;color:#475569;"><strong style="color:#18202C;font-weight:700;">经典论文《Transformer Feed-Forward Layers Are Key-Value Memories》</strong>（Geva et al., 2021）：首次从实验上揭示 FFN 充当大模型知识记忆库的惊人规律。</li><li style="margin:8px 0;font-size:14px;line-height:1.78;color:#475569;"><strong style="color:#18202C;font-weight:700;">3Blue1Brown 科普视频《How might LLMs store facts》</strong>：用极美的三维动画直观展示 FFN 如何在高维空间里存储“迈克尔·乔丹打篮球”这类世界知识。</li></ol></section>
+<section style="margin-top:38px;padding-top:18px;font-size:12.5px;line-height:1.78;color:#475569;display:flex;flex-direction:column;gap:5px;">
+      <div style="height:2px;border-radius:99px;background:linear-gradient(90deg,#2E6F5E 0%,#4F9A86 52%,#E08B5A 100%);margin-bottom:14px;"></div>
+      <div style="font-family:'Source Han Serif SC','Noto Serif SC','Songti SC','STSong',Georgia,serif;font-weight:700;color:#18202C;font-size:14px;letter-spacing:0.3px;">《掀开大模型的黑盒子》 · 全 15 期硬核科普连载</div>
+      <div>全部数据与图鉴均基于开源模型 <code style="font-family:'JetBrains Mono','SF Mono',Menlo,Consolas,monospace;font-size:12px;background:#EEF3FA;color:#1F416E;padding:1.5px 6px;border-radius:4px;">deepseek-coder-1.3b-base</code>（32,256 词表 · 24 层 · 13.46 亿参数）真机前向实测生成。</div>
+    </section>
+</section>
+</section>
+  </main>
+
+  <nav class="bottom-nav">
+    <a href="ep12.html" class="pager-link">← 上一期（第 12 期）</a>
+    <a href="ep14.html" class="pager-link">下一期（第 14 期）→</a>
+  </nav>
+
+<script>
+function setWidthMode(isMobile) {
+  const shell = document.getElementById('previewShell');
+  shell.classList.toggle('mobile', isMobile);
+  document.getElementById('btnDesktop').classList.toggle('active', !isMobile);
+  document.getElementById('btnMobile').classList.toggle('active', isMobile);
+}
+
+function updateProgress() {
+  const doc = document.documentElement;
+  const max = doc.scrollHeight - window.innerHeight;
+  const pct = max > 0 ? Math.min(100, Math.max(0, (window.scrollY / max) * 100)) : 0;
+  document.getElementById('readProgress').style.width = pct.toFixed(1) + '%';
+}
+window.addEventListener('scroll', updateProgress, { passive: true });
+updateProgress();
+
+async function copyArticle() {
+  const node = document.getElementById('wechat-article-body');
+  const btn = document.getElementById('copyBtn');
+  let ok = false;
+  try {
+    if (navigator.clipboard && window.ClipboardItem) {
+      const htmlBlob = new Blob([node.outerHTML], { type: 'text/html' });
+      const textBlob = new Blob([node.innerText], { type: 'text/plain' });
+      await navigator.clipboard.write([new ClipboardItem({ 'text/html': htmlBlob, 'text/plain': textBlob })]);
+      ok = true;
+    }
+  } catch (_) {}
+  if (!ok) {
+    const range = document.createRange();
+    range.selectNode(node);
+    const sel = window.getSelection();
+    sel.removeAllRanges();
+    sel.addRange(range);
+    try { ok = document.execCommand('copy'); } catch (_) {}
+    if (ok) sel.removeAllRanges();
+  }
+  btn.textContent = ok ? '已复制' : '请手动复制';
+  btn.classList.toggle('copied', ok);
+  setTimeout(() => {
+    btn.textContent = '复制公众号排版';
+    btn.classList.remove('copied');
+  }, 2600);
+}
+</script>
+</body>
+</html>

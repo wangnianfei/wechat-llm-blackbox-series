@@ -44,13 +44,14 @@ FONT_SANS = "-apple-system,BlinkMacSystemFont,'PingFang SC','Hiragino Sans GB','
 FONT_MONO = "'JetBrains Mono','SF Mono',Menlo,Consolas,monospace"
 FONT_MATH = "Georgia,'Cambria Math','Times New Roman',serif"
 
-# Five harmonious warm-tech optical accents (one per Part — luminous, warm, legible)
+# Six harmonious warm-tech optical accents (one per Part — luminous, warm, legible)
 PART_PALETTE = {
     1: {"roman": "PART I",   "accent": "#2B548A", "glow": "#4C82C2", "soft": "#F0F5FC", "border": "#CFE0F5"},
     2: {"roman": "PART II",  "accent": "#B04A22", "glow": "#DC7F4F", "soft": "#FDF4EC", "border": "#F2D5BE"},
     3: {"roman": "PART III", "accent": "#196473", "glow": "#3D92A3", "soft": "#EEF7F9", "border": "#C7E4EA"},
     4: {"roman": "PART IV",  "accent": "#564787", "glow": "#8271B8", "soft": "#F3F1FA", "border": "#D9D2EE"},
     5: {"roman": "PART V",   "accent": "#A83E35", "glow": "#D67065", "soft": "#FCF1F0", "border": "#F0CFCB"},
+    6: {"roman": "PART VI",  "accent": "#2E6F5E", "glow": "#4F9A86", "soft": "#EEF7F4", "border": "#C5E3DA"},
 }
 
 EPISODE_META = [
@@ -66,7 +67,12 @@ EPISODE_META = [
     {"ep": 10, "part_no": 5, "part": "第五部分：训练与推理的终极闭环",   "tag": "训练过程篇"},
     {"ep": 11, "part_no": 5, "part": "第五部分：训练与推理的终极闭环",   "tag": "训练 vs 推理对比篇"},
     {"ep": 12, "part_no": 5, "part": "第五部分：训练与推理的终极闭环",   "tag": "大结局·全景贯通篇"},
+    {"ep": 13, "part_no": 6, "part": "第六部分（进阶篇）：FFN 前馈层与激活函数", "tag": "进阶·FFN 升维提炼篇"},
+    {"ep": 14, "part_no": 6, "part": "第六部分（进阶篇）：FFN 前馈层与激活函数", "tag": "进阶·激活函数本质篇"},
+    {"ep": 15, "part_no": 6, "part": "第六部分（进阶篇）：FFN 前馈层与激活函数", "tag": "进阶·进化与大厂全景篇"},
 ]
+
+TOTAL_EPS = len(EPISODE_META)
 
 for _m in EPISODE_META:
     _p = PART_PALETTE[_m["part_no"]]
@@ -100,13 +106,21 @@ MATH_SYMBOLS = {
     "leftrightarrow": "↔",
     "times": "×",
     "cdot": "·",
+    "odot": "⊙",
     "div": "÷",
     "approx": "≈",
+    "propto": "∝",
     "neq": "≠",
     "leq": "≤",
     "geq": "≥",
     "infty": "∞",
     "theta": "θ",
+    "sigma": "σ",
+    "Phi": "Φ",
+    "alpha": "α",
+    "beta": "β",
+    "epsilon": "ε",
+    "partial": "∂",
     "cdots": "⋯",
     "dots": "…",
     "sim": "~",
@@ -114,9 +128,11 @@ MATH_SYMBOLS = {
     "circ": "°",
     "quad": "&emsp;",
     "qquad": "&emsp;&emsp;",
+    "big": "",
+    "Big": "",
 }
 
-UPRIGHT_FUNCS = {"cos", "sin", "tan", "arccos", "arcsin", "ln", "log", "exp", "softmax"}
+UPRIGHT_FUNCS = {"cos", "sin", "tan", "tanh", "arccos", "arcsin", "ln", "log", "exp", "max", "min", "softmax"}
 
 
 def _read_braced(s: str, pos: int) -> tuple[str, int]:
@@ -247,9 +263,9 @@ def render_latex_to_html(expr: str, display: bool = False) -> str:
 
             if cmd in MATH_SYMBOLS:
                 sym = MATH_SYMBOLS[cmd]
-                if cmd in ("rightarrow", "to", "leftrightarrow", "times", "cdot", "div", "approx", "neq", "leq", "geq", "sim"):
+                if cmd in ("rightarrow", "to", "leftrightarrow", "times", "cdot", "odot", "div", "approx", "propto", "neq", "leq", "geq", "sim"):
                     out.append(f'<span style="font-style:normal;"> {sym} </span>')
-                else:
+                elif sym:
                     out.append(f'<span style="font-style:normal;">{sym}</span>')
                 continue
 
@@ -653,7 +669,7 @@ def md_to_wechat_html(md_text: str, meta: dict, asset_prefix: str = "../assets/"
     <section style="margin-bottom:28px;padding-bottom:18px;border-bottom:1px solid {LINE_SOFT};">
       <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:16px;">
         <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
-          <span style="display:inline-block;background:{accent};color:#FFFFFF;font-family:{FONT_MONO};font-size:11.5px;font-weight:700;padding:3.5px 11px;border-radius:999px;letter-spacing:0.7px;">ISSUE {ep_num:02d} / 12</span>
+          <span style="display:inline-block;background:{accent};color:#FFFFFF;font-family:{FONT_MONO};font-size:11.5px;font-weight:700;padding:3.5px 11px;border-radius:999px;letter-spacing:0.7px;">ISSUE {ep_num:02d} / {TOTAL_EPS:02d}</span>
           <span style="font-size:12.5px;font-weight:600;color:{accent};letter-spacing:0.25px;">{tag_name}</span>
         </div>
         <span style="font-size:12px;color:{INK_MUTE};letter-spacing:0.2px;">{roman} · {part_name}</span>
@@ -966,7 +982,7 @@ def md_to_wechat_html(md_text: str, meta: dict, asset_prefix: str = "../assets/"
     footer = f"""
     <section style="margin-top:38px;padding-top:18px;font-size:12.5px;line-height:1.78;color:{INK_SUB};display:flex;flex-direction:column;gap:5px;">
       <div style="height:2px;border-radius:99px;background:linear-gradient(90deg,{accent} 0%,{glow} 52%,{WARM_GLOW} 100%);margin-bottom:14px;"></div>
-      <div style="font-family:{FONT_SERIF};font-weight:700;color:{INK};font-size:14px;letter-spacing:0.3px;">《掀开大模型的黑盒子》 · 全 12 期硬核科普连载</div>
+      <div style="font-family:{FONT_SERIF};font-weight:700;color:{INK};font-size:14px;letter-spacing:0.3px;">《掀开大模型的黑盒子》 · 全 {TOTAL_EPS} 期硬核科普连载</div>
       <div>全部数据与图鉴均基于开源模型 <code style="font-family:{FONT_MONO};font-size:12px;background:#EEF3FA;color:{INDIGO_HOVER};padding:1.5px 6px;border-radius:4px;">deepseek-coder-1.3b-base</code>（32,256 词表 · 24 层 · 13.46 亿参数）真机前向实测生成。</div>
     </section>
     """
@@ -1009,7 +1025,7 @@ def md_to_wechat_html(md_text: str, meta: dict, asset_prefix: str = "../assets/"
 def write_standalone_episode_html(ep_data: dict):
     ep = ep_data["ep"]
     prev_link = f'<a href="ep{ep-1:02d}.html" class="pager-link">← 上一期（第 {ep-1:02d} 期）</a>' if ep > 1 else '<span class="pager-disabled">已是开篇第 01 期</span>'
-    next_link = f'<a href="ep{ep+1:02d}.html" class="pager-link">下一期（第 {ep+1:02d} 期）→</a>' if ep < 12 else '<span class="pager-disabled">已是收官第 12 期</span>'
+    next_link = f'<a href="ep{ep+1:02d}.html" class="pager-link">下一期（第 {ep+1:02d} 期）→</a>' if ep < TOTAL_EPS else f'<span class="pager-disabled">已是最新第 {TOTAL_EPS:02d} 期</span>'
 
     page = f"""<!DOCTYPE html>
 <html lang="zh-CN">
@@ -1213,8 +1229,8 @@ def write_standalone_episode_html(ep_data: dict):
 <body>
   <header class="toolbar">
     <div class="toolbar-left">
-      <a href="../index.html#ep{ep:02d}" class="back-link">← 返回 12 期工作台</a>
-      <span class="issue-pill">第 {ep:02d} / 12 期</span>
+      <a href="../index.html#ep{ep:02d}" class="back-link">← 返回全系列工作台</a>
+      <span class="issue-pill">第 {ep:02d} / {TOTAL_EPS:02d} 期</span>
       <span class="issue-title-mini">{html.escape(ep_data['short_title'])}</span>
     </div>
     <div class="toolbar-right">
@@ -1296,12 +1312,12 @@ def write_master_portal(portal_eps: list[dict]):
     unique_figs = len(set(re.findall(r'<img[^>]+src="([^"]+)"', "".join(e["wechat_html"] for e in portal_eps))))
 
     sidebar_parts_html = []
-    for part_no in range(1, 6):
+    for part_no in sorted(PART_PALETTE.keys()):
         group_eps = [e for e in portal_eps if e["part_no"] == part_no]
         if not group_eps:
             continue
         pinfo = PART_PALETTE[part_no]
-        part_title = re.sub(r'^第[一二三四五]部分[：:\s]*', '', group_eps[0]["part"])
+        part_title = re.sub(r'^第[一二三四五六七八九十]+部分(?:（[^）]*）)?[：:\s]*', '', group_eps[0]["part"])
         items_html = []
         for e in group_eps:
             active_cls = "active" if e["ep"] == 1 else ""
@@ -1384,7 +1400,7 @@ def write_master_portal(portal_eps: list[dict]):
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>《掀开大模型的黑盒子》全 12 期专刊排版工作台</title>
+<title>《掀开大模型的黑盒子》全 {len(portal_eps)} 期专刊排版工作台</title>
 <style>
   *, *::before, *::after {{ box-sizing: border-box; }}
   :root {{
@@ -1932,7 +1948,7 @@ def write_master_portal(portal_eps: list[dict]):
           <button type="button" id="tbPrev" onclick="stepEp(-1)" title="上一期 (←)" aria-label="上一期">←</button>
           <button type="button" id="tbNext" onclick="stepEp(1)" title="下一期 (→)" aria-label="下一期">→</button>
         </div>
-        <span class="cur-pill" id="curEpPill">第 01 / 12 期</span>
+        <span class="cur-pill" id="curEpPill">第 01 / {len(portal_eps):02d} 期</span>
         <span class="cur-title" id="curEpTitle"></span>
       </div>
       <div class="tb-right">
@@ -1986,7 +2002,7 @@ function selectEp(ep, pushHash = true) {{
 
   const pad = String(ep).padStart(2, '0');
   const pill = document.getElementById('curEpPill');
-  pill.textContent = '第 ' + pad + ' / 12 期';
+  pill.textContent = '第 ' + pad + ' / ' + String(EP_META.length).padStart(2, '0') + ' 期';
   pill.style.color = meta.color;
   pill.style.background = meta.soft;
 
