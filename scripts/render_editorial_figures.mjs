@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /**
  * Unified Warm-Tech Ceramic Optical Lab Figure Generator
- * 《掀开大模型的黑盒子》全 12 期真机实验图鉴统一重绘脚本 (11 Figures, 2x Retina)
+ * 《掀开大模型的黑盒子》全 15 期真机实验图鉴统一重绘脚本 (11 Figures, 2x Retina)
  *
  * Reads exact measurements from data/*.csv and data/wechat_series_materials.json
  * and renders crisp HTML/SVG plates via local headless Chrome CDP to assets/*.png.
@@ -229,7 +229,7 @@ function wrapPlate({ figNum, epTag, title, subtitle, bodyHtml, footerNote, width
     ${bodyHtml}
     <div class="footer">
       <span>${esc(footerNote)}</span>
-      <span>《掀开大模型的黑盒子》全 12 期硬核科普连载</span>
+      <span>《掀开大模型的黑盒子》全 15 期科普连载</span>
     </div>
   </div>
 </body>
@@ -435,7 +435,7 @@ function buildFigRandomVsTrained() {
 
   return wrapPlate({
     figNum: "FIG. 02",
-    epTag: "第 02 / 10 期 · 从随机噪音表到语义几何空间",
+    epTag: "第 02 / 12 期 · 从随机噪音表到语义几何空间",
     title: "随机初始化噪音表 vs DeepSeek-1.3B 训练后语义表实测对比",
     subtitle: "高维空间里的随机词向量彼此正交（夹角 ≈ 90°）；海量语料预训练后，共现词对在 2048 维空间中自动旋转聚拢",
     bodyHtml,
@@ -1459,7 +1459,7 @@ function buildFigContextClusters() {
 
   return wrapPlate({
     figNum: "FIG. 10",
-    epTag: "第 11 期 · 冻结权重下的动态语境消歧",
+    epTag: "第 14 期 · 冻结权重下的动态语境消歧",
     title: "同一个词「苹果 (id=17144)」放句尾：只换前文，向量自动分簇",
     subtitle: "推理期间 13.46 亿参数纹丝不动（SHA-256 哈希 100% 校验一致），上下文通过注意力动态重塑向量方向",
     bodyHtml,
@@ -1521,7 +1521,7 @@ function buildFigHallucination() {
 
   return wrapPlate({
     figNum: "FIG. 11",
-    epTag: "第 12 期 · 大结局：概率采样与幻觉的数学本质",
+    epTag: "第 15 期 · 大结局：概率采样与幻觉的数学本质",
     title: "心里越没底（信息熵越高），大模型照样顺着语法硬往下接",
     subtitle: "32,256 个词表里没有「我不知道」——面对荒谬前提，预测分布急剧扁平化，但采样机制仍逼迫模型挑出下一个词",
     bodyHtml,

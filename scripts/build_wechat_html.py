@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 WeChat Official Account HTML Typesetting & Editorial Workbench Builder for:
-《掀开大模型的黑盒子》（全 15 期硬核科普连载）
+《掀开大模型的黑盒子》（全 15 期科普连载）
 
 Design System: Warm-Tech Ceramic Optical Lab (「晨光瓷感 · 光学实验室」)
 Harmonized with scripts/render_editorial_figures.mjs
@@ -982,7 +982,7 @@ def md_to_wechat_html(md_text: str, meta: dict, asset_prefix: str = "../assets/"
     footer = f"""
     <section style="margin-top:38px;padding-top:18px;font-size:12.5px;line-height:1.78;color:{INK_SUB};display:flex;flex-direction:column;gap:5px;">
       <div style="height:2px;border-radius:99px;background:linear-gradient(90deg,{accent} 0%,{glow} 52%,{WARM_GLOW} 100%);margin-bottom:14px;"></div>
-      <div style="font-family:{FONT_SERIF};font-weight:700;color:{INK};font-size:14px;letter-spacing:0.3px;">《掀开大模型的黑盒子》 · 全 {TOTAL_EPS} 期硬核科普连载</div>
+      <div style="font-family:{FONT_SERIF};font-weight:700;color:{INK};font-size:14px;letter-spacing:0.3px;">《掀开大模型的黑盒子》 · 全 {TOTAL_EPS} 期科普连载</div>
       <div>全部数据与图鉴均基于开源模型 <code style="font-family:{FONT_MONO};font-size:12px;background:#EEF3FA;color:{INDIGO_HOVER};padding:1.5px 6px;border-radius:4px;">deepseek-coder-1.3b-base</code>（32,256 词表 · 24 层 · 13.46 亿参数）真机前向实测生成。</div>
     </section>
     """
