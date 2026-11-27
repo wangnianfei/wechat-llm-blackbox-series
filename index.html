@@ -237,6 +237,34 @@
     color: var(--ink-mute);
     font-variant-numeric: tabular-nums;
   }
+  .lab-group {
+    margin-top: 18px;
+    padding-top: 14px;
+    border-top: 1px dashed rgba(43, 84, 138, 0.14);
+  }
+  .lab-item {
+    text-decoration: none;
+    background: linear-gradient(135deg, rgba(243, 241, 250, 0.72) 0%, rgba(255, 255, 255, 0.88) 100%);
+    box-shadow: 0 1px 4px rgba(34, 52, 78, 0.05), 0 0 0 1px rgba(86, 71, 135, 0.14);
+  }
+  .lab-item:hover {
+    background: #FFFFFF;
+    box-shadow: 0 4px 12px rgba(86, 71, 135, 0.14), 0 0 0 1px rgba(86, 71, 135, 0.30);
+    transform: translateY(-0.5px);
+  }
+  .lab-item .ep-num {
+    font-size: 11px;
+    padding: 1.5px 6px;
+    border-radius: 6px;
+    background: var(--ep-soft);
+    line-height: 1.5;
+    margin-top: 1px;
+  }
+  .lab-ext {
+    color: var(--ep-accent);
+    font-weight: 700;
+    margin-left: 2px;
+  }
   .empty-filter {
     display: none;
     text-align: center;
@@ -502,9 +530,9 @@
     <div class="sidebar-header">
       <div class="series-kicker"><span class="kicker-dot"></span>DEEPSEEK-1.3B · 真机实测专刊</div>
       <h1>《掀开大模型的黑盒子》</h1>
-      <p class="series-stats">全 12 期连载 · 累计 28,065 字 · 11 张编辑图鉴</p>
+      <p class="series-stats">全 12 期连载 · 累计 28,065 字 · 11 张图鉴 · 1 个交互实验</p>
       <div class="search-wrap">
-        <input type="text" class="search-input" id="searchInput" placeholder="筛选期数或主题关键词…" oninput="filterEpisodes()" />
+        <input type="text" class="search-input" id="searchInput" placeholder="筛选期数、主题或交互实验…" oninput="filterEpisodes()" />
         <button type="button" class="search-clear" id="searchClear" onclick="clearSearch()" aria-label="清空筛选">×</button>
       </div>
     </div>
@@ -653,7 +681,23 @@
               </span>
             </button>
         </div>
-      <div class="empty-filter" id="emptyFilter">没有匹配的期数</div>
+      
+        <div class="part-group lab-group" data-part="lab">
+          <div class="part-heading">
+            <span class="part-dot" style="background:#564787;"></span>
+            <span class="part-roman">LAB</span>
+            <span class="part-name">交互实验室 · 动手实验</span>
+          </div>
+          <a class="ep-item lab-item" href="demos/activation-221.html" target="_blank" rel="noopener"
+               data-search="lab 01 激活函数 activation relu sigmoid silu gelu tanh xor ffn 神经网络 交互 演示 2-2-1" style="--ep-accent:#564787;--ep-soft:#F3F1FA;">
+              <span class="ep-num">LAB 01</span>
+              <span class="ep-body">
+                <span class="ep-title">2→2→1 神经网络激活函数直观演示 <span class="lab-ext">↗</span></span>
+                <span class="ep-meta">有 vs 无激活对比 · 空间折弯 · XOR 实时训练</span>
+              </span>
+            </a>
+        </div>
+      <div class="empty-filter" id="emptyFilter">没有匹配的期数或实验</div>
     </div>
   </aside>
 

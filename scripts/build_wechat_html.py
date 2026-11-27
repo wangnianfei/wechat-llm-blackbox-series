@@ -76,6 +76,19 @@ for _m in EPISODE_META:
     _m["soft"] = _p["soft"]
     _m["border"] = _p["border"]
 
+INTERACTIVE_DEMOS = [
+    {
+        "id": "activation-221",
+        "code": "LAB 01",
+        "title": "2→2→1 神经网络激活函数直观演示",
+        "desc": "有 vs 无激活对比 · 空间折弯 · XOR 实时训练",
+        "href": "demos/activation-221.html",
+        "accent": "#564787",
+        "soft": "#F3F1FA",
+        "search": "lab 01 激活函数 activation relu sigmoid silu gelu tanh xor ffn 神经网络 交互 演示 2-2-1",
+    },
+]
+
 
 # =============================================================================
 # 1. Brace-Aware LaTeX -> WeChat-Safe Editorial HTML Math Renderer
@@ -1313,6 +1326,32 @@ def write_master_portal(portal_eps: list[dict]):
           {"".join(items_html).lstrip()}
         </div>""")
 
+    lab_items_html = []
+    for d in INTERACTIVE_DEMOS:
+        search_hay = html.escape(d["search"].lower())
+        lab_items_html.append(f"""
+            <a class="ep-item lab-item" href="{html.escape(d['href'])}" target="_blank" rel="noopener"
+               data-search="{search_hay}" style="--ep-accent:{d['accent']};--ep-soft:{d['soft']};">
+              <span class="ep-num">{html.escape(d['code'])}</span>
+              <span class="ep-body">
+                <span class="ep-title">{html.escape(d['title'])} <span class="lab-ext">↗</span></span>
+                <span class="ep-meta">{html.escape(d['desc'])}</span>
+              </span>
+            </a>""")
+    sidebar_labs_html = (
+        f"""
+        <div class="part-group lab-group" data-part="lab">
+          <div class="part-heading">
+            <span class="part-dot" style="background:#564787;"></span>
+            <span class="part-roman">LAB</span>
+            <span class="part-name">交互实验室 · 动手实验</span>
+          </div>
+          {"".join(lab_items_html).lstrip()}
+        </div>"""
+        if INTERACTIVE_DEMOS
+        else ""
+    )
+
     portal_articles = []
     for e in portal_eps:
         display_style = "block" if e["ep"] == 1 else "none"
@@ -1579,6 +1618,34 @@ def write_master_portal(portal_eps: list[dict]):
     color: var(--ink-mute);
     font-variant-numeric: tabular-nums;
   }}
+  .lab-group {{
+    margin-top: 18px;
+    padding-top: 14px;
+    border-top: 1px dashed rgba(43, 84, 138, 0.14);
+  }}
+  .lab-item {{
+    text-decoration: none;
+    background: linear-gradient(135deg, rgba(243, 241, 250, 0.72) 0%, rgba(255, 255, 255, 0.88) 100%);
+    box-shadow: 0 1px 4px rgba(34, 52, 78, 0.05), 0 0 0 1px rgba(86, 71, 135, 0.14);
+  }}
+  .lab-item:hover {{
+    background: #FFFFFF;
+    box-shadow: 0 4px 12px rgba(86, 71, 135, 0.14), 0 0 0 1px rgba(86, 71, 135, 0.30);
+    transform: translateY(-0.5px);
+  }}
+  .lab-item .ep-num {{
+    font-size: 11px;
+    padding: 1.5px 6px;
+    border-radius: 6px;
+    background: var(--ep-soft);
+    line-height: 1.5;
+    margin-top: 1px;
+  }}
+  .lab-ext {{
+    color: var(--ep-accent);
+    font-weight: 700;
+    margin-left: 2px;
+  }}
   .empty-filter {{
     display: none;
     text-align: center;
@@ -1844,15 +1911,16 @@ def write_master_portal(portal_eps: list[dict]):
     <div class="sidebar-header">
       <div class="series-kicker"><span class="kicker-dot"></span>DEEPSEEK-1.3B · 真机实测专刊</div>
       <h1>《掀开大模型的黑盒子》</h1>
-      <p class="series-stats">全 {len(portal_eps)} 期连载 · 累计 {total_chars:,} 字 · {unique_figs} 张编辑图鉴</p>
+      <p class="series-stats">全 {len(portal_eps)} 期连载 · 累计 {total_chars:,} 字 · {unique_figs} 张图鉴 · {len(INTERACTIVE_DEMOS)} 个交互实验</p>
       <div class="search-wrap">
-        <input type="text" class="search-input" id="searchInput" placeholder="筛选期数或主题关键词…" oninput="filterEpisodes()" />
+        <input type="text" class="search-input" id="searchInput" placeholder="筛选期数、主题或交互实验…" oninput="filterEpisodes()" />
         <button type="button" class="search-clear" id="searchClear" onclick="clearSearch()" aria-label="清空筛选">×</button>
       </div>
     </div>
     <div class="ep-list" id="epList">
       {"".join(sidebar_parts_html)}
-      <div class="empty-filter" id="emptyFilter">没有匹配的期数</div>
+      {sidebar_labs_html}
+      <div class="empty-filter" id="emptyFilter">没有匹配的期数或实验</div>
     </div>
   </aside>
 

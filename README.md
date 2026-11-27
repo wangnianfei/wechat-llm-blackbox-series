@@ -7,10 +7,21 @@
 
 ## 🌐 在线预览与微信公众号一键排版工作台
 
+- **在线总目录（GitHub Pages）**：<https://wangnianfei.github.io/wechat-llm-blackbox-series/>
 - **全 12 期交互式预览 & 一键复制公众号富文本工作台**：[`index.html`](./index.html)
   - 支持 **手机视图 (390px)** 与 **微信公众号标准宽视图 (677px)** 一键切换；
-  - 所有 CSS 样式均已内联化（`style="..."`），点击顶部 **「📋 一键复制当前期公众号排版」** 即可直接粘贴至微信公众号后台编辑器（`mp.weixin.qq.com`）。
+  - 所有 CSS 样式均已内联化（`style="..."`），点击顶部 **「复制公众号排版」** 即可直接粘贴至微信公众号后台编辑器（`mp.weixin.qq.com`）。
 - **全套创作 Prompt 指南（总控系统提示词 + 12 期大纲 + 单期生成模板）**：[`prompts/wechat_llm_series_prompt.md`](./prompts/wechat_llm_series_prompt.md)
+
+---
+
+## 🔬 交互实验室（Interactive Labs）
+
+可直接在浏览器打开的零依赖交互演示网页，适合配合科普文章与视频演示动手实验：
+
+| 编号 | 实验名称 | 核心演示内容 | 在线体验（GitHub Pages） | 本地源码 |
+| :--- | :--- | :--- | :--- | :--- |
+| **LAB 01** | **2→2→1 神经网络激活函数直观演示** | 切换无激活 / ReLU / Sigmoid / SiLU / GELU / Tanh，实时看公式坍缩证明、2D 空间折弯与 XOR 梯度下降训练 | [在线打开演示 ↗](https://wangnianfei.github.io/wechat-llm-blackbox-series/demos/activation-221.html) | [activation-221.html](./demos/activation-221.html) |
 
 ---
 
@@ -36,7 +47,8 @@
 ## 🗂️ 仓库目录结构
 
 ```text
-├── index.html                        # 全 12 期微信公众号排版预览与一键复制总工作台
+├── index.html                        # 全系列微信公众号排版预览与一键复制总工作台
+├── demos/                            # 独立交互演示实验室网页 (activation-221.html 等)
 ├── html/                             # 12 期独立微信公众号内联 CSS 推文网页 (ep01.html ~ ep12.html)
 ├── markdown/                         # 12 期 Markdown 源文件 (含内联 SVG 矢量图与实验数据表)
 ├── assets/                           # 300-DPI 高清真机实验配图 (R ggplot2/patchwork 渲染)

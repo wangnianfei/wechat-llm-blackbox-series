@@ -1,0 +1,1496 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>2-2-1 神经网络激活函数直观演示（Transformer 科普互动实验）</title>
+  <style>
+    :root {
+      --bg: #f6f8fc;
+      --card: #ffffff;
+      --border: #e2e8f0;
+      --text: #0f172a;
+      --muted: #64748b;
+      --blue: #2563eb;
+      --blue-soft: #eff6ff;
+      --orange: #ea580c;
+      --orange-soft: #fff7ed;
+      --purple: #7c3aed;
+      --purple-soft: #f5f3ff;
+      --green: #059669;
+      --green-soft: #ecfdf5;
+      --red: #dc2626;
+      --red-soft: #fef2f2;
+      --amber: #d97706;
+      --amber-soft: #fffbeb;
+      --shadow: 0 4px 20px rgba(15, 23, 42, 0.05);
+      --radius: 14px;
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Segoe UI", Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+    }
+
+    header {
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 60%, #1e3a8a 100%);
+      color: #fff;
+      padding: 20px 28px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+    header h1 {
+      margin: 0;
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: 0.2px;
+    }
+    header p {
+      margin: 4px 0 0;
+      font-size: 13px;
+      color: #cbd5e1;
+    }
+    .header-badges {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .badge {
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.2);
+      color: #f8fafc;
+      padding: 5px 11px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 500;
+    }
+    .back-link {
+      background: rgba(255,255,255,0.18);
+      border: 1px solid rgba(255,255,255,0.34);
+      color: #ffffff;
+      padding: 5px 12px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: background 0.15s ease, transform 0.15s ease;
+    }
+    .back-link:hover {
+      background: rgba(255,255,255,0.28);
+      transform: translateY(-0.5px);
+    }
+
+    .container {
+      max-width: 1440px;
+      margin: 0 auto;
+      padding: 18px 20px 36px;
+    }
+
+    /* Control Bar */
+    .toolbar {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 14px 18px;
+      box-shadow: var(--shadow);
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      margin-bottom: 16px;
+    }
+    .control-group {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .control-label {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--muted);
+      margin-right: 4px;
+    }
+
+    .seg-btn {
+      border: 1px solid var(--border);
+      background: #f8fafc;
+      color: var(--text);
+      padding: 7px 13px;
+      border-radius: 9px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .seg-btn:hover { background: #e2e8f0; }
+    .seg-btn.active {
+      background: var(--blue);
+      color: #fff;
+      border-color: var(--blue);
+      box-shadow: 0 2px 8px rgba(37, 99, 235, 0.28);
+    }
+    .seg-btn.active.linear-mode {
+      background: var(--red);
+      border-color: var(--red);
+      box-shadow: 0 2px 8px rgba(220, 38, 38, 0.28);
+    }
+
+    .action-btn {
+      border: none;
+      padding: 8px 14px;
+      border-radius: 9px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: transform 0.1s ease, opacity 0.15s ease;
+    }
+    .action-btn:active { transform: scale(0.97); }
+    .btn-primary { background: var(--green); color: #fff; }
+    .btn-primary.training { background: var(--amber); }
+    .btn-secondary { background: var(--purple-soft); color: var(--purple); border: 1px solid #ddd6fe; }
+    .btn-ghost { background: #f1f5f9; color: var(--text); border: 1px solid var(--border); }
+
+    /* Insight Banner */
+    .insight-banner {
+      border-radius: var(--radius);
+      padding: 13px 18px;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      border: 1px solid;
+      font-size: 13.5px;
+      transition: all 0.2s ease;
+    }
+    .insight-banner.linear {
+      background: var(--red-soft);
+      border-color: #fecaca;
+      color: #7f1d1d;
+    }
+    .insight-banner.nonlinear {
+      background: var(--green-soft);
+      border-color: #a7f3d0;
+      color: #064e3b;
+    }
+    .insight-icon {
+      font-size: 20px;
+      line-height: 1.2;
+      flex-shrink: 0;
+    }
+
+    /* Main Grid */
+    .main-grid {
+      display: grid;
+      grid-template-columns: 1.15fr 1fr;
+      gap: 16px;
+      align-items: start;
+    }
+    @media (max-width: 1100px) {
+      .main-grid { grid-template-columns: 1fr; }
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px 18px;
+      box-shadow: var(--shadow);
+    }
+    .card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+    .card-title {
+      font-size: 15px;
+      font-weight: 700;
+      margin: 0;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+    }
+    .card-sub {
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    /* Network SVG */
+    #networkSvg {
+      width: 100%;
+      height: 310px;
+      display: block;
+      background: #fafcff;
+      border: 1px solid #eef2f7;
+      border-radius: 10px;
+    }
+
+    /* Space Folding Canvases */
+    .plots-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+    @media (max-width: 640px) {
+      .plots-row { grid-template-columns: 1fr; }
+    }
+    .plot-box {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .plot-title {
+      font-size: 13px;
+      font-weight: 700;
+      margin-bottom: 4px;
+      text-align: center;
+    }
+    .plot-desc {
+      font-size: 11.5px;
+      color: var(--muted);
+      margin-bottom: 8px;
+      text-align: center;
+      min-height: 32px;
+    }
+    canvas.space-canvas {
+      width: 100%;
+      max-width: 290px;
+      aspect-ratio: 1 / 1;
+      border: 1px solid #cbd5e1;
+      border-radius: 10px;
+      cursor: crosshair;
+      background: #fff;
+    }
+
+    /* Formula & Collapse Card */
+    .math-box {
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px 14px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 12.5px;
+      line-height: 1.75;
+      overflow-x: auto;
+    }
+    .math-row {
+      margin-bottom: 4px;
+    }
+    .math-tag {
+      display: inline-block;
+      font-family: -apple-system, sans-serif;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 1px 7px;
+      border-radius: 5px;
+      margin-right: 6px;
+      vertical-align: middle;
+    }
+    .tag-l1 { background: #dbeafe; color: #1d4ed8; }
+    .tag-act { background: #ede9fe; color: #6d28d9; }
+    .tag-l2 { background: #ffedd5; color: #c2410c; }
+    .tag-warn { background: #fee2e2; color: #b91c1c; }
+    .tag-ok { background: #d1fae5; color: #047857; }
+
+    .collapse-box {
+      margin-top: 10px;
+      padding: 10px 12px;
+      border-radius: 8px;
+      font-size: 12.5px;
+    }
+    .collapse-box.is-linear {
+      background: #fef2f2;
+      border: 1px dashed #ef4444;
+      color: #991b1b;
+    }
+    .collapse-box.is-nonlinear {
+      background: #f5f3ff;
+      border: 1px dashed #8b5cf6;
+      color: #4c1d95;
+    }
+
+    /* Sliders */
+    .sliders-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-top: 12px;
+    }
+    @media (max-width: 780px) {
+      .sliders-grid { grid-template-columns: 1fr; }
+    }
+    .param-group {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 10px;
+      padding: 10px 12px;
+    }
+    .param-group-title {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--muted);
+      margin-bottom: 8px;
+      display: flex;
+      justify-content: space-between;
+    }
+    .slider-item {
+      margin-bottom: 7px;
+    }
+    .slider-item:last-child { margin-bottom: 0; }
+    .slider-head {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      margin-bottom: 2px;
+    }
+    .slider-name { font-weight: 600; font-family: ui-monospace, monospace; }
+    .slider-val { font-family: ui-monospace, monospace; color: var(--blue); font-weight: 700; }
+    input[type="range"] {
+      width: 100%;
+      accent-color: var(--blue);
+      cursor: pointer;
+      margin: 0;
+    }
+
+    /* Bottom Stats + Activation Plot */
+    .sub-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.1fr;
+      gap: 14px;
+      margin-top: 14px;
+    }
+    @media (max-width: 640px) {
+      .sub-grid { grid-template-columns: 1fr; }
+    }
+    .xor-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12.5px;
+    }
+    .xor-table th, .xor-table td {
+      padding: 6px 8px;
+      border-bottom: 1px solid #e2e8f0;
+      text-align: center;
+      font-family: ui-monospace, monospace;
+    }
+    .xor-table th {
+      background: #f8fafc;
+      font-family: -apple-system, sans-serif;
+      color: var(--muted);
+      font-weight: 600;
+    }
+    .pill-pass {
+      background: #d1fae5; color: #065f46;
+      padding: 2px 7px; border-radius: 999px; font-weight: 700; font-size: 11px;
+    }
+    .pill-fail {
+      background: #fee2e2; color: #991b1b;
+      padding: 2px 7px; border-radius: 999px; font-weight: 700; font-size: 11px;
+    }
+    .metric-strip {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      font-size: 12.5px;
+      color: var(--muted);
+    }
+    .metric-strip strong { color: var(--text); font-family: ui-monospace, monospace; }
+
+    #actCanvas {
+      width: 100%;
+      height: 155px;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      background: #fff;
+      display: block;
+    }
+    .legend-row {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      font-size: 11.5px;
+      color: var(--muted);
+      margin-top: 6px;
+      justify-content: center;
+    }
+    .dot {
+      display: inline-block;
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      margin-right: 4px;
+      vertical-align: middle;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div>
+      <h1>2-2-1 神经网络激活函数直观演示</h1>
+      <p>输入层 (2) → 隐藏层 (2, W₁x+b₁ + 激活函数) → 输出层 (1, W₂a+b₂) · 亲眼看见「有 vs 没有」激活函数的本质区别</p>
+    </div>
+    <div class="header-badges">
+      <a class="back-link" href="../index.html">← 返回《掀开大模型的黑盒子》总目录</a>
+      <span class="badge">架构：2 → 2 → 1 全连接</span>
+      <span class="badge">拖动左图探针点实时前向计算</span>
+      <span class="badge">支持实时梯度下降训练</span>
+    </div>
+  </header>
+
+  <div class="container">
+    <!-- Top Controls -->
+    <div class="toolbar">
+      <div class="control-group">
+        <span class="control-label">隐藏层激活函数 σ(z)：</span>
+        <button class="seg-btn" data-act="none">❌ 无激活 (纯线性)</button>
+        <button class="seg-btn active" data-act="relu">ReLU</button>
+        <button class="seg-btn" data-act="sigmoid">Sigmoid</button>
+        <button class="seg-btn" data-act="silu">SiLU (Llama/Qwen)</button>
+        <button class="seg-btn" data-act="gelu">GELU (Gemma/GPT)</button>
+        <button class="seg-btn" data-act="tanh">Tanh</button>
+      </div>
+
+      <div class="control-group">
+        <button class="action-btn btn-secondary" id="btnPresetXor">🎯 加载 XOR 最佳解</button>
+        <button class="action-btn btn-primary" id="btnTrain">⚡ 自动训练 (XOR)</button>
+        <button class="action-btn btn-ghost" id="btnRandom">🎲 随机参数</button>
+      </div>
+    </div>
+
+    <!-- Dynamic Core Conclusion Banner -->
+    <div class="insight-banner nonlinear" id="insightBanner">
+      <div class="insight-icon" id="insightIcon">✨</div>
+      <div id="insightText"></div>
+    </div>
+
+    <div class="main-grid">
+      <!-- LEFT COLUMN: Network Architecture + Formulas + Sliders -->
+      <div style="display:flex; flex-direction:column; gap:16px;">
+        <!-- Network Diagram Card -->
+        <div class="card">
+          <div class="card-header">
+            <h2 class="card-title">1. 神经网络结构与数据流（激活函数放在哪？）</h2>
+            <span class="card-sub">紫色芯片 = 激活函数位置（隐藏层线性求和之后、传给输出层之前）</span>
+          </div>
+          <svg id="networkSvg" viewBox="0 0 680 310"></svg>
+          <div class="legend-row">
+            <span><span class="dot" style="background:#2563eb;"></span>正权重 (w &gt; 0)</span>
+            <span><span class="dot" style="background:#ea580c;"></span>负权重 (w &lt; 0)</span>
+            <span><span class="dot" style="background:#7c3aed;"></span>激活函数 σ(z) 芯片</span>
+            <span>提示：点击下方 4 个 XOR 样本或拖动右侧图中的绿框探针，查看实时计算数值</span>
+          </div>
+        </div>
+
+        <!-- Formula Collapse Proof Card -->
+        <div class="card">
+          <div class="card-header">
+            <h2 class="card-title">2. 实时数学公式推导（为什么没激活会「坍缩」？）</h2>
+            <span class="card-sub">随参数实时更新</span>
+          </div>
+          <div class="math-box" id="mathBox"></div>
+          <div class="collapse-box is-nonlinear" id="collapseBox"></div>
+        </div>
+
+        <!-- Parameter Sliders Card -->
+        <div class="card">
+          <div class="card-header">
+            <h2 class="card-title">3. 实时调参面板（W₁, b₁, W₂, b₂ 与输入探针）</h2>
+            <span class="card-sub">共 9 个可学习参数</span>
+          </div>
+          <div class="sliders-grid">
+            <div class="param-group">
+              <div class="param-group-title"><span>输入层 → 隐藏层 (W₁, b₁)</span><span>节点 h₁</span></div>
+              <div class="slider-item">
+                <div class="slider-head"><span class="slider-name">w₁₁ (x₁→h₁)</span><span class="slider-val" id="val_w11"></span></div>
+                <input type="range" id="sl_w11" min="-8" max="8" step="0.1">
+              </div>
+              <div class="slider-item">
+                <div class="slider-head"><span class="slider-name">w₁₂ (x₂→h₁)</span><span class="slider-val" id="val_w12"></span></div>
+                <input type="range" id="sl_w12" min="-8" max="8" step="0.1">
+              </div>
+              <div class="slider-item">
+                <div class="slider-head"><span class="slider-name">b₁₁ (h₁ 偏置)</span><span class="slider-val" id="val_b11"></span></div>
+                <input type="range" id="sl_b11" min="-10" max="10" step="0.1">
+              </div>
+            </div>
+
+            <div class="param-group">
+              <div class="param-group-title"><span>输入层 → 隐藏层 (W₁, b₁)</span><span>节点 h₂</span></div>
+              <div class="slider-item">
+                <div class="slider-head"><span class="slider-name">w₂₁ (x₁→h₂)</span><span class="slider-val" id="val_w21"></span></div>
+                <input type="range" id="sl_w21" min="-8" max="8" step="0.1">
+              </div>
+              <div class="slider-item">
+                <div class="slider-head"><span class="slider-name">w₂₂ (x₂→h₂)</span><span class="slider-val" id="val_w22"></span></div>
+                <input type="range" id="sl_w22" min="-8" max="8" step="0.1">
+              </div>
+              <div class="slider-item">
+                <div class="slider-head"><span class="slider-name">b₁₂ (h₂ 偏置)</span><span class="slider-val" id="val_b12"></span></div>
+                <input type="range" id="sl_b12" min="-10" max="10" step="0.1">
+              </div>
+            </div>
+
+            <div class="param-group">
+              <div class="param-group-title"><span>隐藏层 → 输出层 (W₂, b₂)</span><span>输出 y</span></div>
+              <div class="slider-item">
+                <div class="slider-head"><span class="slider-name">w₂,₁ (h₁→y)</span><span class="slider-val" id="val_v1"></span></div>
+                <input type="range" id="sl_v1" min="-8" max="8" step="0.1">
+              </div>
+              <div class="slider-item">
+                <div class="slider-head"><span class="slider-name">w₂,₂ (h₂→y)</span><span class="slider-val" id="val_v2"></span></div>
+                <input type="range" id="sl_v2" min="-8" max="8" step="0.1">
+              </div>
+              <div class="slider-item">
+                <div class="slider-head"><span class="slider-name">b₂ (输出层偏置)</span><span class="slider-val" id="val_b2"></span></div>
+                <input type="range" id="sl_b2" min="-8" max="8" step="0.1">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT COLUMN: Space Folding Visualization + Activation Curve + XOR Results -->
+      <div style="display:flex; flex-direction:column; gap:16px;">
+        <div class="card">
+          <div class="card-header">
+            <h2 class="card-title">4. 空间折叠直觉：为什么激活函数能解决 XOR？</h2>
+            <div class="metric-strip">
+              <span>步数: <strong id="stepCount">0</strong></span>
+              <span>MSE Loss: <strong id="lossVal">0.0000</strong></span>
+            </div>
+          </div>
+          <div class="plots-row">
+            <div class="plot-box">
+              <div class="plot-title">原始输入空间 (x₁, x₂)</div>
+              <div class="plot-desc">背景色 = 输出 y（蓝=1，橙=0，黑线=决策边界 y=0.5）<br/>可点击/拖动绿色十字探针</div>
+              <canvas id="inputCanvas" class="space-canvas" width="290" height="290"></canvas>
+            </div>
+            <div class="plot-box">
+              <div class="plot-title">隐藏层变换后空间 (a₁, a₂)</div>
+              <div class="plot-desc" id="hiddenPlotDesc">观察网格如何被激活函数“折弯”！<br/>黑线 = 输出层的线性切割线 W₂a + b₂ = 0.5</div>
+              <canvas id="hiddenCanvas" class="space-canvas" width="290" height="290"></canvas>
+            </div>
+          </div>
+          <div class="legend-row">
+            <span><span class="dot" style="background:#2563eb;"></span>目标 = 1：(0,1) 与 (1,0)</span>
+            <span><span class="dot" style="background:#ea580c;"></span>目标 = 0：(0,0) 与 (1,1)</span>
+            <span><span class="dot" style="background:#10b981;"></span>当前测试探针 (x₁, x₂)</span>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <h2 class="card-title">5. 当前激活函数曲线 &amp; XOR 四点预测结果</h2>
+            <span class="card-sub">点击任意一行可将探针定位到该输入</span>
+          </div>
+          <div class="sub-grid">
+            <div>
+              <canvas id="actCanvas" width="320" height="155"></canvas>
+              <div class="legend-row" style="margin-top:5px;">
+                <span><span class="dot" style="background:#2563eb;"></span>h₁ 位置 (z₁, a₁)</span>
+                <span><span class="dot" style="background:#db2777;"></span>h₂ 位置 (z₂, a₂)</span>
+              </div>
+            </div>
+            <div>
+              <table class="xor-table">
+                <thead>
+                  <tr>
+                    <th>输入 (x₁, x₂)</th>
+                    <th>目标</th>
+                    <th>模型输出 y</th>
+                    <th>判定</th>
+                  </tr>
+                </thead>
+                <tbody id="xorTableBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- Quick Explainer Card for Popular Science Script -->
+        <div class="card" style="background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);">
+          <div class="card-header" style="margin-bottom:6px;">
+            <h2 class="card-title">💡 一句话科普记忆法（适合做视频讲解）</h2>
+          </div>
+          <ul style="margin:0; padding-left:18px; font-size:13px; color:#334155; line-height:1.75;">
+            <li><strong>位置</strong>：激活函数放在<strong>隐藏层线性计算 (W₁x + b₁) 之后、下一层输入之前</strong>。</li>
+            <li><strong>没有激活函数</strong>：右图网格永远只是刚性地旋转/拉伸（仿射变换），两层合并后严格退化成 1 个线性公式，只能画<strong>1 条直线</strong>，永远切不开 XOR 对角点！</li>
+            <li><strong>加上激活函数</strong>：就像把一张画着红蓝点的纸<strong>对折一下</strong>（看右图变形的网格），原本斜对角的同色点被折到了一起，输出层用<strong>1 条直线</strong>就轻松切开！</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ================== Activation Functions ==================
+    const ACTIVATIONS = {
+      none: {
+        name: '无激活 (纯线性)',
+        symbol: 'I(z) = z',
+        f: z => z,
+        df: z => 1
+      },
+      relu: {
+        name: 'ReLU',
+        symbol: 'max(0, z)',
+        f: z => z > 0 ? z : 0,
+        df: z => z > 0 ? 1 : 0
+      },
+      sigmoid: {
+        name: 'Sigmoid',
+        symbol: '1 / (1 + e⁻ᶻ)',
+        f: z => 1 / (1 + Math.exp(-Math.max(-30, Math.min(30, z)))),
+        df: z => {
+          const s = 1 / (1 + Math.exp(-Math.max(-30, Math.min(30, z))));
+          return s * (1 - s);
+        }
+      },
+      silu: {
+        name: 'SiLU (Swish)',
+        symbol: 'z · σ(z)',
+        f: z => {
+          const s = 1 / (1 + Math.exp(-Math.max(-30, Math.min(30, z))));
+          return z * s;
+        },
+        df: z => {
+          const s = 1 / (1 + Math.exp(-Math.max(-30, Math.min(30, z))));
+          return s + z * s * (1 - s);
+        }
+      },
+      gelu: {
+        name: 'GELU',
+        symbol: '0.5z(1+tanh(...))',
+        f: z => {
+          const c = Math.sqrt(2 / Math.PI);
+          return 0.5 * z * (1 + Math.tanh(c * (z + 0.044715 * z * z * z)));
+        },
+        df: z => {
+          const eps = 1e-4;
+          const c = Math.sqrt(2 / Math.PI);
+          const g = v => 0.5 * v * (1 + Math.tanh(c * (v + 0.044715 * v * v * v)));
+          return (g(z + eps) - g(z - eps)) / (2 * eps);
+        }
+      },
+      tanh: {
+        name: 'Tanh',
+        symbol: 'tanh(z)',
+        f: z => Math.tanh(z),
+        df: z => {
+          const t = Math.tanh(z);
+          return 1 - t * t;
+        }
+      }
+    };
+
+    // Presets that solve XOR cleanly for each activation
+    const XOR_PRESETS = {
+      relu:    { w11: 1.0, w12: 1.0, b11: 0.0,  w21: 1.0, w22: 1.0, b12: -1.0, v1: 1.0,  v2: -2.0, b2: 0.0 },
+      none:    { w11: 1.0, w12: 1.0, b11: 0.0,  w21: 1.0, w22: 1.0, b12: -1.0, v1: 1.0,  v2: -2.0, b2: 0.0 },
+      sigmoid: { w11: 6.0, w12: 6.0, b11: -2.6, w21: 6.0, w22: 6.0, b12: -9.0, v1: 1.15, v2: -1.2, b2: -0.05 },
+      silu:    { w11: 2.5, w12: 2.5, b11: 0.0,  w21: 2.5, w22: 2.5, b12: -2.5, v1: 0.45, v2: -0.9, b2: 0.0 },
+      gelu:    { w11: 2.2, w12: 2.2, b11: 0.0,  w21: 2.2, w22: 2.2, b12: -2.2, v1: 0.5,  v2: -1.0, b2: 0.0 },
+      tanh:    { w11: 3.0, w12: 3.0, b11: -1.5, w21: 3.0, w22: 3.0, b12: -4.5, v1: 0.6,  v2: -0.6, b2: 0.0 }
+    };
+
+    const XOR_DATA = [
+      { x1: 0, x2: 0, y: 0 },
+      { x1: 0, x2: 1, y: 1 },
+      { x1: 1, x2: 0, y: 1 },
+      { x1: 1, x2: 1, y: 0 }
+    ];
+
+    // ================== State ==================
+    let actType = 'relu';
+    let params = { ...XOR_PRESETS.relu };
+    let probe = { x1: 1.0, x2: 0.0 };
+    let isTraining = false;
+    let trainStep = 0;
+    let adamState = null;
+    let animFrame = null;
+
+    const PARAM_KEYS = ['w11', 'w12', 'b11', 'w21', 'w22', 'b12', 'v1', 'v2', 'b2'];
+
+    function resetAdam() {
+      adamState = { m: {}, v: {}, t: 0 };
+      PARAM_KEYS.forEach(k => { adamState.m[k] = 0; adamState.v[k] = 0; });
+    }
+    resetAdam();
+
+    // ================== Forward Pass ==================
+    function forward(x1, x2, p = params, act = actType) {
+      const fn = ACTIVATIONS[act].f;
+      const z1 = p.w11 * x1 + p.w12 * x2 + p.b11;
+      const z2 = p.w21 * x1 + p.w22 * x2 + p.b12;
+      const a1 = fn(z1);
+      const a2 = fn(z2);
+      const y  = p.v1 * a1 + p.v2 * a2 + p.b2;
+      return { x1, x2, z1, z2, a1, a2, y };
+    }
+
+    function computeLoss() {
+      let loss = 0;
+      for (const d of XOR_DATA) {
+        const out = forward(d.x1, d.x2);
+        const err = out.y - d.y;
+        loss += err * err;
+      }
+      return loss / XOR_DATA.length;
+    }
+
+    // ================== Training Step (Adam) ==================
+    function trainOneBatch(iterations = 15) {
+      const fn = ACTIVATIONS[actType].f;
+      const df = ACTIVATIONS[actType].df;
+      const lr = actType === 'none' ? 0.05 : 0.04;
+      const beta1 = 0.9, beta2 = 0.999, eps = 1e-8;
+
+      for (let it = 0; it < iterations; it++) {
+        const grads = {};
+        PARAM_KEYS.forEach(k => grads[k] = 0);
+
+        for (const d of XOR_DATA) {
+          const z1 = params.w11 * d.x1 + params.w12 * d.x2 + params.b11;
+          const z2 = params.w21 * d.x1 + params.w22 * d.x2 + params.b12;
+          const a1 = fn(z1);
+          const a2 = fn(z2);
+          const y  = params.v1 * a1 + params.v2 * a2 + params.b2;
+
+          const dy = (2 / XOR_DATA.length) * (y - d.y);
+          grads.v1 += dy * a1;
+          grads.v2 += dy * a2;
+          grads.b2 += dy;
+
+          const dz1 = dy * params.v1 * df(z1);
+          const dz2 = dy * params.v2 * df(z2);
+
+          grads.w11 += dz1 * d.x1;
+          grads.w12 += dz1 * d.x2;
+          grads.b11 += dz1;
+
+          grads.w21 += dz2 * d.x1;
+          grads.w22 += dz2 * d.x2;
+          grads.b12 += dz2;
+        }
+
+        adamState.t += 1;
+        trainStep += 1;
+        for (const k of PARAM_KEYS) {
+          adamState.m[k] = beta1 * adamState.m[k] + (1 - beta1) * grads[k];
+          adamState.v[k] = beta2 * adamState.v[k] + (1 - beta2) * grads[k] * grads[k];
+          const mHat = adamState.m[k] / (1 - Math.pow(beta1, adamState.t));
+          const vHat = adamState.v[k] / (1 - Math.pow(beta2, adamState.t));
+          params[k] -= lr * mHat / (Math.sqrt(vHat) + eps);
+          // Clamp within slider range for smooth visualization
+          const maxLim = (k === 'b11' || k === 'b12') ? 10 : 8;
+          params[k] = Math.max(-maxLim, Math.min(maxLim, params[k]));
+        }
+      }
+    }
+
+    function stopTraining() {
+      isTraining = false;
+      if (animFrame) cancelAnimationFrame(animFrame);
+      animFrame = null;
+      const btn = document.getElementById('btnTrain');
+      btn.textContent = '⚡ 自动训练 (XOR)';
+      btn.classList.remove('training');
+    }
+
+    function trainingLoop() {
+      if (!isTraining) return;
+      trainOneBatch(12);
+      syncSlidersFromParams();
+      renderAll();
+      const loss = computeLoss();
+      if (loss < 0.0005 && actType !== 'none') {
+        stopTraining();
+        return;
+      }
+      if (trainStep >= 3000) {
+        stopTraining();
+        return;
+      }
+      animFrame = requestAnimationFrame(trainingLoop);
+    }
+
+    // ================== Formatting Helpers ==================
+    function fmt(v, digits = 2) {
+      if (Math.abs(v) < 0.0005) v = 0;
+      return v.toFixed(digits);
+    }
+    function fmtSigned(v, digits = 2) {
+      if (Math.abs(v) < 0.0005) return '+ 0.00';
+      return (v >= 0 ? '+ ' : '- ') + Math.abs(v).toFixed(digits);
+    }
+
+    // ================== Render 1: Insight Banner ==================
+    function renderBanner() {
+      const banner = document.getElementById('insightBanner');
+      const icon = document.getElementById('insightIcon');
+      const text = document.getElementById('insightText');
+      if (actType === 'none') {
+        banner.className = 'insight-banner linear';
+        icon.textContent = '⚠️';
+        text.innerHTML = `
+          <strong>当前已关闭激活函数（纯线性模式）</strong>：隐藏层只是做了 <code>a = z</code>，两层矩阵乘法直接合并成 <strong>1 个单层线性公式</strong>！
+          看右边的两张图：无论你怎么调参数或点「⚡ 自动训练」，背景决策边界<strong>永远只能是一条笔直的线</strong>，MSE Loss 最低只能卡在 0.25，永远无法切开 XOR 的 4 个点！
+        `;
+      } else {
+        banner.className = 'insight-banner nonlinear';
+        icon.textContent = '✨';
+        text.innerHTML = `
+          <strong>当前已启用隐藏层激活函数：${ACTIVATIONS[actType].name}</strong>（<code>a = ${ACTIVATIONS[actType].symbol}</code>）：
+          激活函数把线性求和的结果做了<strong>非线性弯折</strong>。请看最右侧「隐藏层空间 (a₁, a₂)」：原本规整的方格被“折弯/压缩”了，让对角的蓝色点 (0,1) 和 (1,0) 聚到同一侧，输出层只需画<strong>一条直线</strong>就能完美分类！
+        `;
+      }
+    }
+
+    // ================== Render 2: Network SVG ==================
+    function renderNetworkSVG() {
+      const svg = document.getElementById('networkSvg');
+      const res = forward(probe.x1, probe.x2);
+      const isLinear = actType === 'none';
+
+      // Coordinates
+      const xIn = 95, xHid = 340, xOut = 585;
+      const y1 = 98, y2 = 228, yMid = 163;
+
+      function edgeColor(w) { return w >= 0 ? '#2563eb' : '#ea580c'; }
+      function edgeWidth(w) { return Math.min(6, Math.max(1.2, Math.abs(w) * 1.1 + 0.8)); }
+
+      const edges = [
+        { xA: xIn + 30, yA: y1, xB: xHid - 58, yB: y1, w: params.w11, label: 'w₁₁', t: 0.32, dy: -10 },
+        { xA: xIn + 30, yA: y2, xB: xHid - 58, yB: y1, w: params.w12, label: 'w₁₂', t: 0.28, dy: -12 },
+        { xA: xIn + 30, yA: y1, xB: xHid - 58, yB: y2, w: params.w21, label: 'w₂₁', t: 0.28, dy: 18 },
+        { xA: xIn + 30, yA: y2, xB: xHid - 58, yB: y2, w: params.w22, label: 'w₂₂', t: 0.32, dy: 16 },
+        { xA: xHid + 58, yA: y1, xB: xOut - 36, yB: yMid, w: params.v1, label: 'w₂,₁', t: 0.45, dy: -12 },
+        { xA: xHid + 58, yA: y2, xB: xOut - 36, yB: yMid, w: params.v2, label: 'w₂,₂', t: 0.45, dy: 18 }
+      ];
+
+      let html = `
+        <defs>
+          <filter id="softShadow" x="-20%" y="-20%" width="140%" height="140%">
+            <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#0f172a" flood-opacity="0.08"/>
+          </filter>
+        </defs>
+        <!-- Layer Headers -->
+        <text x="${xIn}" y="26" text-anchor="middle" font-size="13" font-weight="700" fill="#334155">输入层 (2 节点)</text>
+        <text x="${xHid}" y="26" text-anchor="middle" font-size="13" font-weight="700" fill="${isLinear ? '#dc2626' : '#6d28d9'}">
+          隐藏层 (2 节点) ${isLinear ? '· ❌ 无激活直通' : '· ✨ 含激活函数 ' + ACTIVATIONS[actType].name}
+        </text>
+        <text x="${xOut}" y="26" text-anchor="middle" font-size="13" font-weight="700" fill="#334155">输出层 (1 节点)</text>
+      `;
+
+      // Highlight box around hidden layer activation zone
+      html += `
+        <rect x="${xHid - 70}" y="42" width="140" height="248" rx="14"
+          fill="${isLinear ? '#fef2f2' : '#f5f3ff'}"
+          stroke="${isLinear ? '#fca5a5' : '#c4b5fd'}"
+          stroke-width="1.5" stroke-dasharray="5 4" />
+      `;
+
+      // Edges
+      for (const e of edges) {
+        const mx = e.xA + (e.xB - e.xA) * e.t;
+        const my = e.yA + (e.yB - e.yA) * e.t + e.dy;
+        html += `
+          <line x1="${e.xA}" y1="${e.yA}" x2="${e.xB}" y2="${e.yB}"
+            stroke="${edgeColor(e.w)}" stroke-width="${edgeWidth(e.w)}" stroke-opacity="0.78" stroke-linecap="round"/>
+          <rect x="${mx - 28}" y="${my - 10}" width="56" height="17" rx="4" fill="#ffffff" fill-opacity="0.92" stroke="#e2e8f0" stroke-width="0.8"/>
+          <text x="${mx}" y="${my + 2}" text-anchor="middle" font-size="10.5" font-family="ui-monospace, monospace" font-weight="700" fill="${edgeColor(e.w)}">${e.label}=${fmt(e.w, 1)}</text>
+        `;
+      }
+
+      // Input Nodes
+      const inputs = [
+        { y: y1, name: 'x₁', val: res.x1 },
+        { y: y2, name: 'x₂', val: res.x2 }
+      ];
+      for (const inp of inputs) {
+        html += `
+          <g filter="url(#softShadow)">
+            <circle cx="${xIn}" cy="${inp.y}" r="30" fill="#ffffff" stroke="#10b981" stroke-width="2.5"/>
+            <text x="${xIn}" y="${inp.y - 4}" text-anchor="middle" font-size="12" font-weight="700" fill="#0f172a">${inp.name}</text>
+            <text x="${xIn}" y="${inp.y + 14}" text-anchor="middle" font-size="13" font-family="ui-monospace, monospace" font-weight="700" fill="#059669">${fmt(inp.val, 2)}</text>
+          </g>
+        `;
+      }
+
+      // Hidden Nodes (Split Pill: Left = Linear z, Right = Activation σ(z))
+      const hiddens = [
+        { y: y1, idx: '1', b: params.b11, z: res.z1, a: res.a1, color: '#2563eb' },
+        { y: y2, idx: '2', b: params.b12, z: res.z2, a: res.a2, color: '#db2777' }
+      ];
+      for (const h of hiddens) {
+        html += `
+          <g filter="url(#softShadow)">
+            <!-- Left half: linear sum z -->
+            <rect x="${xHid - 58}" y="${h.y - 30}" width="58" height="60" rx="10" fill="#ffffff" stroke="${h.color}" stroke-width="2"/>
+            <text x="${xHid - 29}" y="${h.y - 11}" text-anchor="middle" font-size="10.5" font-weight="700" fill="#475569">z${h.idx} = Σ+b</text>
+            <text x="${xHid - 29}" y="${h.y + 8}" text-anchor="middle" font-size="12.5" font-family="ui-monospace, monospace" font-weight="700" fill="${h.color}">${fmt(h.z, 2)}</text>
+            <text x="${xHid - 29}" y="${h.y + 23}" text-anchor="middle" font-size="9.5" font-family="ui-monospace, monospace" fill="#64748b">b=${fmt(h.b, 1)}</text>
+
+            <!-- Right half: activation chip -->
+            <rect x="${xHid + 2}" y="${h.y - 30}" width="56" height="60" rx="10"
+              fill="${isLinear ? '#fee2e2' : '#7c3aed'}"
+              stroke="${isLinear ? '#dc2626' : '#5b21b6'}" stroke-width="2"/>
+            <text x="${xHid + 30}" y="${h.y - 11}" text-anchor="middle" font-size="10.5" font-weight="700" fill="${isLinear ? '#991b1b' : '#ede9fe'}">${isLinear ? '直通 a=z' : 'σ(z' + h.idx + ')'}</text>
+            <text x="${xHid + 30}" y="${h.y + 9}" text-anchor="middle" font-size="13" font-family="ui-monospace, monospace" font-weight="700" fill="${isLinear ? '#dc2626' : '#ffffff'}">${fmt(h.a, 2)}</text>
+            <text x="${xHid + 30}" y="${h.y + 23}" text-anchor="middle" font-size="9" fill="${isLinear ? '#b91c1c' : '#ddd6fe'}">a${h.idx} 输出</text>
+          </g>
+        `;
+      }
+
+      // Output Node
+      const outColor = res.y >= 0.5 ? '#2563eb' : '#ea580c';
+      html += `
+        <g filter="url(#softShadow)">
+          <circle cx="${xOut}" cy="${yMid}" r="36" fill="#ffffff" stroke="${outColor}" stroke-width="3"/>
+          <text x="${xOut}" y="${yMid - 12}" text-anchor="middle" font-size="11" font-weight="700" fill="#475569">y = W₂a + b₂</text>
+          <text x="${xOut}" y="${yMid + 9}" text-anchor="middle" font-size="15" font-family="ui-monospace, monospace" font-weight="800" fill="${outColor}">${fmt(res.y, 2)}</text>
+          <text x="${xOut}" y="${yMid + 24}" text-anchor="middle" font-size="10" font-family="ui-monospace, monospace" fill="#64748b">b₂=${fmt(params.b2, 1)}</text>
+        </g>
+      `;
+
+      svg.innerHTML = html;
+    }
+
+    // ================== Render 3: Math Collapse Proof ==================
+    function renderMathBox() {
+      const box = document.getElementById('mathBox');
+      const collapse = document.getElementById('collapseBox');
+      const res = forward(probe.x1, probe.x2);
+      const isLinear = actType === 'none';
+      const actLabel = isLinear ? '' : ACTIVATIONS[actType].name;
+
+      box.innerHTML = `
+        <div class="math-row"><span class="math-tag tag-l1">第1层线性</span>z₁ = ${fmt(params.w11)}·x₁ ${fmtSigned(params.w12)}·x₂ ${fmtSigned(params.b11)}  →  <strong>${fmt(res.z1)}</strong></div>
+        <div class="math-row"><span class="math-tag tag-l1">第1层线性</span>z₂ = ${fmt(params.w21)}·x₁ ${fmtSigned(params.w22)}·x₂ ${fmtSigned(params.b12)}  →  <strong>${fmt(res.z2)}</strong></div>
+        <div class="math-row"><span class="math-tag tag-act">激活位置</span>a₁ = ${isLinear ? 'z₁ (无激活!)' : actLabel + '(z₁)'} = <strong>${fmt(res.a1)}</strong>， a₂ = ${isLinear ? 'z₂ (无激活!)' : actLabel + '(z₂)'} = <strong>${fmt(res.a2)}</strong></div>
+        <div class="math-row"><span class="math-tag tag-l2">输出层</span>y  = ${fmt(params.v1)}·a₁ ${fmtSigned(params.v2)}·a₂ ${fmtSigned(params.b2)}  →  <strong>${fmt(res.y)}</strong></div>
+      `;
+
+      if (isLinear) {
+        const weq1 = params.v1 * params.w11 + params.v2 * params.w21;
+        const weq2 = params.v1 * params.w12 + params.v2 * params.w22;
+        const beq  = params.v1 * params.b11 + params.v2 * params.b12 + params.b2;
+        collapse.className = 'collapse-box is-linear';
+        collapse.innerHTML = `
+          <div><span class="math-tag tag-warn">数学坍缩证明</span><strong>去掉激活函数后，把 a₁=z₁, a₂=z₂ 代入输出层并合并同类项：</strong></div>
+          <div style="font-family:ui-monospace,monospace; margin-top:5px; font-size:13px;">
+            y = <strong>${fmt(weq1)}</strong>·x₁ <strong>${fmtSigned(weq2)}</strong>·x₂ <strong>${fmtSigned(beq)}</strong>
+          </div>
+          <div style="margin-top:4px;">结论：这 9 个参数、2 层结构<strong>完全退化成了 1 个最普通的单层线性公式</strong>（只有 3 个等效参数 W<sub>eq,1</sub>, W<sub>eq,2</sub>, b<sub>eq</sub>），在二维平面上永远只能画一条直线！</div>
+        `;
+      } else {
+        collapse.className = 'collapse-box is-nonlinear';
+        collapse.innerHTML = `
+          <div><span class="math-tag tag-ok">非线性生效</span><strong>因为夹着 ${actLabel}(·)，外面的权重 W₂ 无法乘进括号合并同类项：</strong></div>
+          <div style="font-family:ui-monospace,monospace; margin-top:5px; font-size:12.5px;">
+            y = ${fmt(params.v1)}·${actLabel}(${fmt(params.w11)}x₁${fmtSigned(params.w12)}x₂${fmtSigned(params.b11)}) ${fmtSigned(params.v2)}·${actLabel}(${fmt(params.w21)}x₁${fmtSigned(params.w22)}x₂${fmtSigned(params.b12)}) ${fmtSigned(params.b2)}
+          </div>
+          <div style="margin-top:4px;">结论：每一个隐藏神经元相当于把输入空间“折弯”一次，组合起来就能拟合任意复杂的曲线边界（如 XOR、圆环，乃至大语言模型的复杂语义逻辑）！</div>
+        `;
+      }
+    }
+
+    // ================== Color Map for y ==================
+    function valueToRGB(y) {
+      // y=0 -> soft orange, y=0.5 -> white, y=1 -> soft blue
+      const t = Math.max(0, Math.min(1, y));
+      let r, g, b;
+      if (t < 0.5) {
+        const u = t / 0.5; // 0->1
+        r = Math.round(251 + (255 - 251) * u);
+        g = Math.round(146 + (255 - 146) * u);
+        b = Math.round(60  + (255 - 60)  * u);
+      } else {
+        const u = (t - 0.5) / 0.5;
+        r = Math.round(255 + (59  - 255) * u);
+        g = Math.round(255 + (130 - 255) * u);
+        b = Math.round(255 + (246 - 255) * u);
+      }
+      return [r, g, b];
+    }
+
+    // ================== Render 4A: Input Space Canvas ==================
+    const IN_MIN = -0.4, IN_MAX = 1.4;
+    function inToPx(v, size) { return ((v - IN_MIN) / (IN_MAX - IN_MIN)) * size; }
+    function inToPy(v, size) { return (1 - (v - IN_MIN) / (IN_MAX - IN_MIN)) * size; }
+    function pxToInX(px, size) { return IN_MIN + (px / size) * (IN_MAX - IN_MIN); }
+    function pyToInY(py, size) { return IN_MIN + (1 - py / size) * (IN_MAX - IN_MIN); }
+
+    function renderInputSpace() {
+      const canvas = document.getElementById('inputCanvas');
+      const ctx = canvas.getContext('2d');
+      const W = canvas.width, H = canvas.height;
+
+      // 1. Heatmap
+      const step = 3;
+      for (let py = 0; py < H; py += step) {
+        const x2 = pyToInY(py + step / 2, H);
+        for (let px = 0; px < W; px += step) {
+          const x1 = pxToInX(px + step / 2, W);
+          const { y } = forward(x1, x2);
+          const [r, g, b] = valueToRGB(y);
+          ctx.fillStyle = `rgb(${r},${g},${b})`;
+          ctx.fillRect(px, py, step, step);
+        }
+      }
+
+      // 2. Decision boundary contour y = 0.5
+      ctx.fillStyle = '#0f172a';
+      const cStep = 2;
+      for (let py = 0; py < H - cStep; py += cStep) {
+        for (let px = 0; px < W - cStep; px += cStep) {
+          const v00 = forward(pxToInX(px, W), pyToInY(py, H)).y - 0.5;
+          const v10 = forward(pxToInX(px + cStep, W), pyToInY(py, H)).y - 0.5;
+          const v01 = forward(pxToInX(px, W), pyToInY(py + cStep, H)).y - 0.5;
+          if ((v00 <= 0 && (v10 > 0 || v01 > 0)) || (v00 >= 0 && (v10 < 0 || v01 < 0))) {
+            ctx.fillRect(px, py, 2.2, 2.2);
+          }
+        }
+      }
+
+      // 3. Reference Grid in [0,1]x[0,1]
+      ctx.lineWidth = 1;
+      for (let i = 0; i <= 8; i++) {
+        const t = i / 8;
+        ctx.strokeStyle = 'rgba(15, 23, 42, 0.22)';
+        ctx.beginPath();
+        ctx.moveTo(inToPx(t, W), inToPy(0, H));
+        ctx.lineTo(inToPx(t, W), inToPy(1, H));
+        ctx.stroke();
+
+        ctx.beginPath();
+        ctx.moveTo(inToPx(0, W), inToPy(t, H));
+        ctx.lineTo(inToPx(1, W), inToPy(t, H));
+        ctx.stroke();
+      }
+
+      // Axes labels
+      ctx.fillStyle = '#334155';
+      ctx.font = 'bold 11px ui-monospace, monospace';
+      ctx.fillText('x₁', W - 18, H - 6);
+      ctx.fillText('x₂', 6, 14);
+
+      // 4. XOR Points
+      for (const d of XOR_DATA) {
+        const cx = inToPx(d.x1, W);
+        const cy = inToPy(d.x2, H);
+        ctx.beginPath();
+        ctx.arc(cx, cy, 9.5, 0, Math.PI * 2);
+        ctx.fillStyle = d.y === 1 ? '#2563eb' : '#ea580c';
+        ctx.fill();
+        ctx.lineWidth = 2.5;
+        ctx.strokeStyle = '#ffffff';
+        ctx.stroke();
+
+        ctx.fillStyle = '#ffffff';
+        ctx.font = 'bold 10px ui-monospace, monospace';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(String(d.y), cx, cy + 0.5);
+      }
+
+      // 5. Probe Crosshair
+      const px = inToPx(probe.x1, W);
+      const py = inToPy(probe.x2, H);
+      ctx.strokeStyle = '#059669';
+      ctx.lineWidth = 2.5;
+      ctx.strokeRect(px - 11, py - 11, 22, 22);
+      ctx.beginPath();
+      ctx.arc(px, py, 3.5, 0, Math.PI * 2);
+      ctx.fillStyle = '#10b981';
+      ctx.fill();
+      ctx.textAlign = 'left';
+      ctx.textBaseline = 'alphabetic';
+    }
+
+    // ================== Render 4B: Hidden Space (a1, a2) Folding Canvas ==================
+    function renderHiddenSpace() {
+      const canvas = document.getElementById('hiddenCanvas');
+      const ctx = canvas.getContext('2d');
+      const W = canvas.width, H = canvas.height;
+      ctx.clearRect(0, 0, W, H);
+
+      // Sample grid points in [0,1]x[0,1] to determine dynamic bounding box
+      const N = 12;
+      const gridPts = [];
+      let minA1 = Infinity, maxA1 = -Infinity, minA2 = Infinity, maxA2 = -Infinity;
+
+      function track(a1, a2) {
+        if (a1 < minA1) minA1 = a1;
+        if (a1 > maxA1) maxA1 = a1;
+        if (a2 < minA2) minA2 = a2;
+        if (a2 > maxA2) maxA2 = a2;
+      }
+
+      for (let i = 0; i <= N; i++) {
+        gridPts[i] = [];
+        for (let j = 0; j <= N; j++) {
+          const out = forward(i / N, j / N);
+          gridPts[i][j] = { a1: out.a1, a2: out.a2 };
+          track(out.a1, out.a2);
+        }
+      }
+      const probeOut = forward(probe.x1, probe.x2);
+      track(probeOut.a1, probeOut.a2);
+
+      // Add margin
+      const span1 = Math.max(0.5, maxA1 - minA1);
+      const span2 = Math.max(0.5, maxA2 - minA2);
+      const span = Math.max(span1, span2) * 1.35;
+      const mid1 = (minA1 + maxA1) / 2;
+      const mid2 = (minA2 + maxA2) / 2;
+      const lo1 = mid1 - span / 2, hi1 = mid1 + span / 2;
+      const lo2 = mid2 - span / 2, hi2 = mid2 + span / 2;
+
+      const toX = a1 => ((a1 - lo1) / (hi1 - lo1)) * W;
+      const toY = a2 => (1 - (a2 - lo2) / (hi2 - lo2)) * H;
+
+      // 1. Background linear decision field of Output Layer: y = v1*a1 + v2*a2 + b2
+      const step = 4;
+      for (let py = 0; py < H; py += step) {
+        const a2 = lo2 + (1 - (py + step / 2) / H) * (hi2 - lo2);
+        for (let px = 0; px < W; px += step) {
+          const a1 = lo1 + ((px + step / 2) / W) * (hi1 - lo1);
+          const y = params.v1 * a1 + params.v2 * a2 + params.b2;
+          const [r, g, b] = valueToRGB(y);
+          ctx.fillStyle = `rgba(${r},${g},${b},0.65)`;
+          ctx.fillRect(px, py, step, step);
+        }
+      }
+
+      // 2. Output Layer Straight Decision Line: v1*a1 + v2*a2 + b2 = 0.5
+      if (Math.abs(params.v1) + Math.abs(params.v2) > 1e-5) {
+        ctx.strokeStyle = '#0f172a';
+        ctx.lineWidth = 2.4;
+        ctx.setLineDash([6, 4]);
+        ctx.beginPath();
+        const pts = [];
+        if (Math.abs(params.v2) > 1e-5) {
+          pts.push([lo1, (0.5 - params.b2 - params.v1 * lo1) / params.v2]);
+          pts.push([hi1, (0.5 - params.b2 - params.v1 * hi1) / params.v2]);
+        } else {
+          const xLine = (0.5 - params.b2) / params.v1;
+          pts.push([xLine, lo2]);
+          pts.push([xLine, hi2]);
+        }
+        ctx.moveTo(toX(pts[0][0]), toY(pts[0][1]));
+        ctx.lineTo(toX(pts[1][0]), toY(pts[1][1]));
+        ctx.stroke();
+        ctx.setLineDash([]);
+      }
+
+      // 3. Draw Warped Grid
+      ctx.strokeStyle = 'rgba(15, 23, 42, 0.35)';
+      ctx.lineWidth = 1.1;
+      for (let i = 0; i <= N; i++) {
+        ctx.beginPath();
+        for (let j = 0; j <= N; j++) {
+          const p = gridPts[i][j];
+          if (j === 0) ctx.moveTo(toX(p.a1), toY(p.a2));
+          else ctx.lineTo(toX(p.a1), toY(p.a2));
+        }
+        ctx.stroke();
+      }
+      for (let j = 0; j <= N; j++) {
+        ctx.beginPath();
+        for (let i = 0; i <= N; i++) {
+          const p = gridPts[i][j];
+          if (i === 0) ctx.moveTo(toX(p.a1), toY(p.a2));
+          else ctx.lineTo(toX(p.a1), toY(p.a2));
+        }
+        ctx.stroke();
+      }
+
+      // Axes labels
+      ctx.fillStyle = '#334155';
+      ctx.font = 'bold 11px ui-monospace, monospace';
+      ctx.fillText('a₁', W - 18, H - 6);
+      ctx.fillText('a₂', 6, 14);
+
+      // 4. Transformed XOR Points
+      for (const d of XOR_DATA) {
+        const out = forward(d.x1, d.x2);
+        const cx = toX(out.a1);
+        const cy = toY(out.a2);
+        ctx.beginPath();
+        ctx.arc(cx, cy, 9.5, 0, Math.PI * 2);
+        ctx.fillStyle = d.y === 1 ? '#2563eb' : '#ea580c';
+        ctx.fill();
+        ctx.lineWidth = 2.5;
+        ctx.strokeStyle = '#ffffff';
+        ctx.stroke();
+
+        ctx.fillStyle = '#ffffff';
+        ctx.font = 'bold 10px ui-monospace, monospace';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(String(d.y), cx, cy + 0.5);
+      }
+
+      // 5. Probe in hidden space
+      const ppx = toX(probeOut.a1);
+      const ppy = toY(probeOut.a2);
+      ctx.strokeStyle = '#059669';
+      ctx.lineWidth = 2.5;
+      ctx.strokeRect(ppx - 11, ppy - 11, 22, 22);
+      ctx.textAlign = 'left';
+      ctx.textBaseline = 'alphabetic';
+
+      // Update caption
+      const desc = document.getElementById('hiddenPlotDesc');
+      if (actType === 'none') {
+        desc.innerHTML = `<span style="color:#dc2626;font-weight:700;">网格仍是平行四边形（未折弯）！</span><br/>黑虚线永远切不开对角的蓝点和橙点`;
+      } else {
+        desc.innerHTML = `<span style="color:#059669;font-weight:700;">网格被 ${ACTIVATIONS[actType].name} 折弯了！</span><br/>黑虚线 = 输出层的一条直线切割`;
+      }
+    }
+
+    // ================== Render 5: Activation Function Curve ==================
+    function renderActCurve() {
+      const canvas = document.getElementById('actCanvas');
+      const ctx = canvas.getContext('2d');
+      const W = canvas.width, H = canvas.height;
+      ctx.clearRect(0, 0, W, H);
+
+      const fn = ACTIVATIONS[actType].f;
+      const xMin = -4, xMax = 4;
+      const yMin = -2, yMax = 4;
+      const toX = z => ((z - xMin) / (xMax - xMin)) * W;
+      const toY = a => (1 - (a - yMin) / (yMax - yMin)) * H;
+
+      // Grid axes
+      ctx.strokeStyle = '#cbd5e1';
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(0, toY(0)); ctx.lineTo(W, toY(0));
+      ctx.moveTo(toX(0), 0); ctx.lineTo(toX(0), H);
+      ctx.stroke();
+
+      // Dashed linear reference y = x
+      ctx.strokeStyle = '#e2e8f0';
+      ctx.setLineDash([4, 4]);
+      ctx.beginPath();
+      ctx.moveTo(toX(xMin), toY(xMin));
+      ctx.lineTo(toX(xMax), toY(xMax));
+      ctx.stroke();
+      ctx.setLineDash([]);
+
+      // Activation curve
+      ctx.strokeStyle = actType === 'none' ? '#dc2626' : '#7c3aed';
+      ctx.lineWidth = 2.6;
+      ctx.beginPath();
+      for (let px = 0; px <= W; px++) {
+        const z = xMin + (px / W) * (xMax - xMin);
+        const a = fn(z);
+        const py = toY(a);
+        if (px === 0) ctx.moveTo(px, py);
+        else ctx.lineTo(px, py);
+      }
+      ctx.stroke();
+
+      // Plot current h1 and h2 points
+      const res = forward(probe.x1, probe.x2);
+      const pts = [
+        { z: res.z1, a: res.a1, color: '#2563eb', label: 'h₁' },
+        { z: res.z2, a: res.a2, color: '#db2777', label: 'h₂' }
+      ];
+      for (const p of pts) {
+        const cx = Math.max(8, Math.min(W - 8, toX(p.z)));
+        const cy = Math.max(8, Math.min(H - 8, toY(p.a)));
+        ctx.beginPath();
+        ctx.arc(cx, cy, 5.5, 0, Math.PI * 2);
+        ctx.fillStyle = p.color;
+        ctx.fill();
+        ctx.strokeStyle = '#fff';
+        ctx.lineWidth = 1.8;
+        ctx.stroke();
+      }
+
+      // Label
+      ctx.fillStyle = '#334155';
+      ctx.font = 'bold 11px ui-monospace, monospace';
+      ctx.fillText(`${ACTIVATIONS[actType].name}: ${ACTIVATIONS[actType].symbol}`, 8, 16);
+    }
+
+    // ================== Render 6: XOR Prediction Table ==================
+    function renderXorTable() {
+      const tbody = document.getElementById('xorTableBody');
+      let html = '';
+      for (const d of XOR_DATA) {
+        const out = forward(d.x1, d.x2);
+        const pred = out.y >= 0.5 ? 1 : 0;
+        const ok = pred === d.y;
+        const isSelected = Math.abs(probe.x1 - d.x1) < 0.05 && Math.abs(probe.x2 - d.x2) < 0.05;
+        html += `
+          <tr style="cursor:pointer; background:${isSelected ? '#ecfdf5' : 'transparent'};"
+              onclick="selectProbe(${d.x1}, ${d.x2})">
+            <td><strong>(${d.x1}, ${d.x2})</strong></td>
+            <td style="color:${d.y===1 ? '#2563eb' : '#ea580c'}; font-weight:700;">${d.y}</td>
+            <td>${fmt(out.y, 3)}</td>
+            <td><span class="${ok ? 'pill-pass' : 'pill-fail'}">${ok ? '✓ 正确' : '✗ 错误'}</span></td>
+          </tr>
+        `;
+      }
+      tbody.innerHTML = html;
+      document.getElementById('stepCount').textContent = trainStep;
+      document.getElementById('lossVal').textContent = computeLoss().toFixed(4);
+    }
+
+    function selectProbe(x1, x2) {
+      probe.x1 = x1;
+      probe.x2 = x2;
+      renderAll();
+    }
+    window.selectProbe = selectProbe;
+
+    // ================== Sync Sliders & Events ==================
+    function syncSlidersFromParams() {
+      for (const k of PARAM_KEYS) {
+        const sl = document.getElementById('sl_' + k);
+        const val = document.getElementById('val_' + k);
+        if (sl) sl.value = params[k];
+        if (val) val.textContent = fmt(params[k], 2);
+      }
+    }
+
+    function renderAll() {
+      renderBanner();
+      renderNetworkSVG();
+      renderMathBox();
+      renderInputSpace();
+      renderHiddenSpace();
+      renderActCurve();
+      renderXorTable();
+    }
+
+    // Bind sliders
+    for (const k of PARAM_KEYS) {
+      const sl = document.getElementById('sl_' + k);
+      sl.addEventListener('input', () => {
+        stopTraining();
+        params[k] = parseFloat(sl.value);
+        document.getElementById('val_' + k).textContent = fmt(params[k], 2);
+        renderAll();
+      });
+    }
+
+    // Bind activation buttons
+    document.querySelectorAll('.seg-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        stopTraining();
+        actType = btn.dataset.act;
+        document.querySelectorAll('.seg-btn').forEach(b => {
+          b.classList.remove('active', 'linear-mode');
+        });
+        btn.classList.add('active');
+        if (actType === 'none') btn.classList.add('linear-mode');
+        resetAdam();
+        renderAll();
+      });
+    });
+
+    // Preset XOR button
+    document.getElementById('btnPresetXor').addEventListener('click', () => {
+      stopTraining();
+      params = { ...XOR_PRESETS[actType] };
+      trainStep = 0;
+      resetAdam();
+      syncSlidersFromParams();
+      renderAll();
+    });
+
+    // Randomize button
+    document.getElementById('btnRandom').addEventListener('click', () => {
+      stopTraining();
+      for (const k of PARAM_KEYS) {
+        params[k] = (Math.random() * 2 - 1) * 2.0;
+      }
+      // Avoid completely dead ReLU on both neurons
+      if (actType === 'relu') {
+        params.b11 = Math.abs(params.b11) * 0.5;
+        params.b12 = -Math.abs(params.b12) * 0.3;
+      }
+      trainStep = 0;
+      resetAdam();
+      syncSlidersFromParams();
+      renderAll();
+    });
+
+    // Train button
+    document.getElementById('btnTrain').addEventListener('click', () => {
+      if (isTraining) {
+        stopTraining();
+        return;
+      }
+      // If loss is already tiny, randomize first so the user sees the training process!
+      if (computeLoss() < 0.01) {
+        for (const k of PARAM_KEYS) {
+          params[k] = (Math.random() * 2 - 1) * 1.8;
+        }
+        // Keep ReLU alive
+        if (actType === 'relu') {
+          params.w11 = Math.abs(params.w11) + 0.5;
+          params.w12 = Math.abs(params.w12) + 0.5;
+          params.b11 = 0.2;
+          params.w21 = Math.abs(params.w21) + 0.5;
+          params.w22 = Math.abs(params.w22) + 0.5;
+          params.b12 = -0.8;
+          params.v1 = 1.0;
+          params.v2 = -1.2;
+          params.b2 = 0.0;
+        }
+        trainStep = 0;
+        syncSlidersFromParams();
+      }
+      resetAdam();
+      isTraining = true;
+      const btn = document.getElementById('btnTrain');
+      btn.textContent = '⏸ 停止训练';
+      btn.classList.add('training');
+      trainingLoop();
+    });
+
+    // Drag probe on Input Canvas
+    const inputCanvas = document.getElementById('inputCanvas');
+    let dragging = false;
+    function updateProbeFromEvent(e) {
+      const rect = inputCanvas.getBoundingClientRect();
+      const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+      const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+      const px = ((clientX - rect.left) / rect.width) * inputCanvas.width;
+      const py = ((clientY - rect.top) / rect.height) * inputCanvas.height;
+      probe.x1 = Math.max(IN_MIN, Math.min(IN_MAX, pxToInX(px, inputCanvas.width)));
+      probe.x2 = Math.max(IN_MIN, Math.min(IN_MAX, pyToInY(py, inputCanvas.height)));
+      renderAll();
+    }
+    inputCanvas.addEventListener('mousedown', e => { dragging = true; updateProbeFromEvent(e); });
+    window.addEventListener('mousemove', e => { if (dragging) updateProbeFromEvent(e); });
+    window.addEventListener('mouseup', () => { dragging = false; });
+    inputCanvas.addEventListener('touchstart', e => { dragging = true; updateProbeFromEvent(e); e.preventDefault(); }, { passive: false });
+    window.addEventListener('touchmove', e => { if (dragging) updateProbeFromEvent(e); });
+    window.addEventListener('touchend', () => { dragging = false; });
+
+    // Init
+    syncSlidersFromParams();
+    renderAll();
+  </script>
+</body>
+</html>
