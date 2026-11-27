@@ -1,0 +1,4 @@
+.DS_Store
+.oil-ui/
+__pycache__/
+*.pyc

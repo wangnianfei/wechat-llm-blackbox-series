@@ -3,158 +3,283 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>第 2 期｜别被满天飞的 AI 新词吓住！给高中生与初学者的 5 条硬核破局忠告 - 微信公众号排版预览</title>
+<title>第 2 期｜别被满天飞的 AI 新词吓住！给高中生与初学者的 5 条硬核破局忠告 · 《掀开大模型的黑盒子》</title>
 <style>
+  *, *::before, *::after { box-sizing: border-box; }
+  :root {
+    --desk: #F2EFE9;
+    --bar: rgba(250, 249, 246, 0.86);
+    --paper: #FFFEFC;
+    --ink: #18202C;
+    --ink-sub: #475569;
+    --ink-mute: #556173;
+    --indigo: #2B548A;
+    --indigo-hover: #1F416E;
+    --warm-glow: #E08B5A;
+    --accent: #2B548A;
+  }
   body {
     margin: 0;
-    padding: 0;
-    background: #e2e8f0;
-    font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
+    min-height: 100vh;
+    background:
+      radial-gradient(58% 44% at 92% 4%, rgba(232, 160, 112, 0.19) 0%, rgba(232, 160, 112, 0) 68%),
+      radial-gradient(50% 42% at 8% 92%, rgba(66, 125, 198, 0.11) 0%, rgba(66, 125, 198, 0) 65%),
+      var(--desk);
+    background-attachment: fixed;
+    color: var(--ink);
+    font-family: -apple-system,BlinkMacSystemFont,'PingFang SC','Hiragino Sans GB','Noto Sans SC','Microsoft YaHei',sans-serif;
+    -webkit-font-smoothing: antialiased;
   }
   .toolbar {
     position: sticky;
     top: 0;
     z-index: 100;
-    background: #0f172a;
-    color: #fff;
-    padding: 10px 20px;
+    background: var(--bar);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border-bottom: 1px solid rgba(43, 84, 138, 0.08);
+    padding: 0 22px;
+    height: 58px;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    flex-wrap: wrap;
-    gap: 10px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+    gap: 12px;
+  }
+  .read-progress {
+    position: absolute;
+    left: 0;
+    bottom: -1px;
+    height: 2.5px;
+    width: 0%;
+    background: linear-gradient(90deg, var(--indigo) 0%, #4C82C2 55%, var(--warm-glow) 100%);
+    transition: width 0.08s linear;
+    pointer-events: none;
   }
   .toolbar-left, .toolbar-right {
     display: flex;
     align-items: center;
     gap: 10px;
+    min-width: 0;
   }
-  .btn {
-    background: #2563eb;
-    color: #fff;
+  .back-link {
+    color: var(--ink-sub);
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 7px 12px;
+    border-radius: 9px;
+    background: rgba(255, 255, 255, 0.85);
+    box-shadow: 0 1px 2px rgba(24, 32, 44, 0.05), 0 0 0 1px rgba(43, 84, 138, 0.09);
+    white-space: nowrap;
+    transition: color 0.16s, box-shadow 0.16s, background 0.16s;
+  }
+  .back-link:hover {
+    color: var(--indigo);
+    background: #FFFFFF;
+    box-shadow: 0 2px 8px rgba(43, 84, 138, 0.12), 0 0 0 1px rgba(43, 84, 138, 0.24);
+  }
+  .issue-pill {
+    font-family: 'JetBrains Mono','SF Mono',Menlo,Consolas,monospace;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--accent);
+    background: #F0F5FC;
+    padding: 4.5px 10px;
+    border-radius: 999px;
+    white-space: nowrap;
+  }
+  .issue-title-mini {
+    font-size: 13.5px;
+    font-weight: 600;
+    color: var(--ink);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 340px;
+  }
+  .seg {
+    display: inline-flex;
+    background: rgba(43, 84, 138, 0.06);
+    border-radius: 9px;
+    padding: 3px;
+  }
+  .seg button {
     border: none;
-    padding: 7px 14px;
-    border-radius: 6px;
+    background: transparent;
+    color: var(--ink-sub);
+    font-size: 12.5px;
+    font-weight: 600;
+    padding: 5px 11px;
+    border-radius: 7px;
+    cursor: pointer;
+    font-family: inherit;
+    transition: all 0.16s;
+  }
+  .seg button.active {
+    background: var(--paper);
+    color: var(--ink);
+    box-shadow: 0 1px 4px rgba(24, 32, 44, 0.09);
+  }
+  .btn-copy {
+    background: linear-gradient(135deg, var(--indigo) 0%, #3768A6 100%);
+    color: #FFFFFF;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 9px;
     font-size: 13px;
     font-weight: 600;
     cursor: pointer;
-    text-decoration: none;
+    font-family: inherit;
+    white-space: nowrap;
+    box-shadow: 0 2px 8px rgba(43, 84, 138, 0.22);
+    transition: transform 0.15s, box-shadow 0.15s, background 0.15s;
   }
-  .btn:hover { background: #1d4ed8; }
-  .btn-copy { background: #16a34a; }
-  .btn-copy:hover { background: #15803d; }
-  .btn-outline {
-    background: transparent;
-    border: 1px solid #475569;
-    color: #e2e8f0;
+  .btn-copy:hover {
+    transform: translateY(-0.5px);
+    box-shadow: 0 4px 12px rgba(43, 84, 138, 0.30);
+    background: linear-gradient(135deg, var(--indigo-hover) 0%, var(--indigo) 100%);
+  }
+  .btn-copy.copied {
+    background: linear-gradient(135deg, #196473 0%, #247F91 100%);
   }
   .preview-shell {
-    margin: 24px auto;
+    margin: 30px auto 26px auto;
     max-width: 677px;
-    background: #fff;
-    border-radius: 12px;
-    box-shadow: 0 12px 32px rgba(15,23,42,0.12);
+    background: var(--paper);
+    border-radius: 16px;
+    box-shadow: 0 1px 2px rgba(24, 32, 44, 0.04), 0 18px 48px rgba(34, 52, 78, 0.09), 0 0 0 1px rgba(43, 84, 138, 0.06);
     overflow: hidden;
-    transition: max-width 0.25s ease;
+    transition: max-width 0.24s ease, border-radius 0.24s ease;
   }
   .preview-shell.mobile {
     max-width: 390px;
-    border: 10px solid #1e293b;
-    border-radius: 32px;
+    border: 10px solid #1C2533;
+    border-radius: 36px;
+    box-shadow: 0 22px 52px rgba(24, 32, 44, 0.20);
   }
   .bottom-nav {
     max-width: 677px;
-    margin: 0 auto 40px auto;
+    margin: 0 auto 52px auto;
     display: flex;
     justify-content: space-between;
-    padding: 0 12px;
+    align-items: center;
+    gap: 12px;
+    padding: 0 2px;
   }
-  .nav-btn {
-    background: #fff;
-    color: #0f172a;
-    padding: 10px 16px;
-    border-radius: 8px;
+  .pager-link {
+    color: var(--ink);
     text-decoration: none;
-    font-size: 13.5px;
+    font-size: 13px;
     font-weight: 600;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+    padding: 10px 16px;
+    background: var(--paper);
+    border-radius: 10px;
+    box-shadow: 0 1px 3px rgba(24, 32, 44, 0.05), 0 0 0 1px rgba(43, 84, 138, 0.08);
+    transition: color 0.16s, box-shadow 0.16s, transform 0.16s;
+  }
+  .pager-link:hover {
+    color: var(--indigo);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(43, 84, 138, 0.12), 0 0 0 1px rgba(43, 84, 138, 0.22);
+  }
+  .pager-disabled {
+    color: var(--ink-mute);
+    background: rgba(255, 255, 255, 0.55);
+    border-radius: 10px;
+    font-size: 13px;
+    padding: 10px 16px;
+  }
+  @media (max-width: 720px) {
+    .toolbar { padding: 0 14px; }
+    .issue-title-mini, .seg { display: none; }
+    .preview-shell, .preview-shell.mobile { max-width: 100%; margin: 0; border-radius: 0; border: none; box-shadow: none; }
+    .bottom-nav { padding: 18px 14px 0 14px; }
   }
 </style>
 </head>
 <body>
-  <div class="toolbar">
+  <header class="toolbar">
     <div class="toolbar-left">
-      <a href="../index.html" class="btn btn-outline">📚 返回全12期总览工作台</a>
-      <span style="font-size:13px;color:#cbd5e1;">第 02/12 期 · 2470 字 · 约 10 分钟</span>
+      <a href="../index.html#ep02" class="back-link">← 返回 12 期工作台</a>
+      <span class="issue-pill">第 02 / 12 期</span>
+      <span class="issue-title-mini">别被满天飞的 AI 新词吓住！给高中生与初学者的 5 条硬核破局忠告</span>
     </div>
     <div class="toolbar-right">
-      <button class="btn btn-outline" onclick="toggleWidth()">📱 切换手机(390px) / 电脑(677px)视野</button>
-      <button class="btn btn-copy" id="copyBtn" onclick="copyWeChat()">📋 一键复制公众号富文本排版</button>
-    </div>
-  </div>
-
-  <div class="preview-shell" id="shell">
-    <section id="wechat-article-body" style="max-width:677px;margin:0 auto;padding:24px 20px;background:#ffffff;font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Hiragino Sans GB','Microsoft YaHei',sans-serif;color:#1e293b;box-sizing:border-box;">
-<section style="margin-bottom:24px;border-radius:14px;overflow:hidden;border:1px solid #e2e8f0;background:linear-gradient(135deg,#0f172a 0%,#1e293b 100%);color:#ffffff;padding:22px 20px;box-shadow:0 8px 24px rgba(15,23,42,0.12);">
-      <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:12px;">
-        <span style="display:inline-block;background:#0d9488;color:#ffffff;font-size:12px;font-weight:700;padding:3px 10px;border-radius:999px;letter-spacing:0.5px;">《掀开大模型的黑盒子》第 02/12 期 · 学习方法论特辑</span>
-        <span style="font-size:12px;color:#94a3b8;">第一部分：破除黑盒与底层基石</span>
+      <div class="seg" role="group" aria-label="视口宽度切换">
+        <button id="btnDesktop" class="active" onclick="setWidthMode(false)">公众号 677px</button>
+        <button id="btnMobile" onclick="setWidthMode(true)">手机 390px</button>
       </div>
-      <h1 style="margin:0 0 12px 0;font-size:21px;line-height:1.45;font-weight:800;color:#ffffff;letter-spacing:0.3px;">第 2 期｜别被满天飞的 AI 新词吓住！给高中生与初学者的 5 条硬核破局忠告</h1>
-      <div style="display:flex;align-items:center;gap:16px;font-size:12.5px;color:#cbd5e1;border-top:1px solid rgba(255,255,255,0.12);padding-top:10px;">
-        <span>✍️ 作者：AI 硬核科普实验室</span>
-        <span>⏱️ 预计阅读：10 分钟（2470 字）</span>
-        <span>🔬 实验底座：DeepSeek-1.3B 真机实测</span>
+      <button class="btn-copy" id="copyBtn" onclick="copyArticle()">复制公众号排版</button>
+    </div>
+    <div class="read-progress" id="readProgress"></div>
+  </header>
+
+  <main class="preview-shell" id="previewShell">
+    <section id="wechat-article-body" style="max-width:677px;margin:0 auto;background:#FFFEFC;font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Hiragino Sans GB','Noto Sans SC','Microsoft YaHei',sans-serif;color:#2B3544;box-sizing:border-box;">
+<div style="height:3.5px;background:linear-gradient(90deg,#2B548A 0%,#4C82C2 54%,#E08B5A 100%);"></div>
+<section style="padding:28px 28px 36px;padding-inline:min(28px,5vw);">
+<section style="margin-bottom:28px;padding-bottom:18px;border-bottom:1px solid #EFECE4;">
+      <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:16px;">
+        <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+          <span style="display:inline-block;background:#2B548A;color:#FFFFFF;font-family:'JetBrains Mono','SF Mono',Menlo,Consolas,monospace;font-size:11.5px;font-weight:700;padding:3.5px 11px;border-radius:999px;letter-spacing:0.7px;">ISSUE 02 / 12</span>
+          <span style="font-size:12.5px;font-weight:600;color:#2B548A;letter-spacing:0.25px;">学习方法论特辑</span>
+        </div>
+        <span style="font-size:12px;color:#556173;letter-spacing:0.2px;">PART I · 第一部分：破除黑盒与底层基石</span>
+      </div>
+      <h1 style="margin:0 0 14px 0;font-family:'Source Han Serif SC','Noto Serif SC','Songti SC','STSong',Georgia,serif;font-size:23.5px;line-height:1.4;font-weight:700;color:#18202C;text-wrap:balance;">别被满天飞的 AI 新词吓住！给高中生与初学者的 5 条硬核破局忠告</h1>
+      <div style="width:54px;height:3px;border-radius:99px;background:linear-gradient(90deg,#2B548A 0%,#E08B5A 100%);margin-bottom:14px;"></div>
+      <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:4px 12px;font-size:12.5px;color:#475569;">
+        <span>《掀开大模型的黑盒子》 · 约 9 分钟（2,442 字）</span>
+        <span style="color:#556173;">DeepSeek-Coder-1.3B 真机实测</span>
       </div>
     </section>
-<section style="margin:20px 0 26px 0;padding:18px 18px 14px 18px;background:linear-gradient(180deg,#eff6ff 0%,#f8fafc 100%);border-left:5px solid #0d9488;border-radius:10px;border-top:1px solid #dbeafe;border-right:1px solid #dbeafe;border-bottom:1px solid #dbeafe;"><div style="font-size:15.5px;font-weight:800;color:#0d9488;margin-bottom:10px;display:flex;align-items:center;gap:6px;"><span>💡 本期核心要点（1分钟先抓主干）</span></div><ul style="margin:0;padding-left:20px;"><li style="margin:8px 0;line-height:1.75;color:#1e293b;font-size:14.5px;"><strong style="color:#0f172a;font-weight:700;background:linear-gradient(180deg,transparent 65%,#0d948822 0);padding:0 2px;">破除数学恐惧</strong>：千亿参数大模型看似高不可攀，拆到底层全是你高中课本里的老熟人——向量的加减乘除、空间拉伸旋转、点积夹角与切线斜率（导数）。</li><li style="margin:8px 0;line-height:1.75;color:#1e293b;font-size:14.5px;"><strong style="color:#0f172a;font-weight:700;background:linear-gradient(180deg,transparent 65%,#0d948822 0);padding:0 2px;">永远把“基础概念定义”放第一位</strong>：破解理工科“每个汉字都认识，连在一起却不知所云”魔咒的唯一解药，是死磕每个概念的<strong style="color:#0f172a;font-weight:700;background:linear-gradient(180deg,transparent 65%,#0d948822 0);padding:0 2px;">数学定义与输入输出张量形状</strong>。</li><li style="margin:8px 0;line-height:1.75;color:#1e293b;font-size:14.5px;"><strong style="color:#0f172a;font-weight:700;background:linear-gradient(180deg,transparent 65%,#0d948822 0);padding:0 2px;">拒绝追逐泛滥的“中间型时髦名词”</strong>：越是新词爆炸，越要屏蔽表层包装噪音，死磕那些十年都不会变的底层数学与统计思想。</li><li style="margin:8px 0;line-height:1.75;color:#1e293b;font-size:14.5px;"><strong style="color:#0f172a;font-weight:700;background:linear-gradient(180deg,transparent 65%,#0d948822 0);padding:0 2px;">真机实操 + AI 助教双轮驱动</strong>：用 6 行 Python 代码在本地跑通 <code style="font-family:'JetBrains Mono',Menlo,Consolas,monospace;font-size:13.5px;background-color:#f1f5f9;color:#0f172a;padding:2px 6px;border-radius:4px;border:1px solid #e2e8f0;margin:0 2px;">DeepSeek 1.3B</code> 观察真实张量，同时用“费曼追问法”把大模型变成你的 24 小时交互式实验助教。</li></ul></section>
-<h2 style="margin:30px 0 14px 0;padding-bottom:8px;border-bottom:2px solid #0d9488;font-size:18px;font-weight:800;color:#0f172a;display:flex;align-items:center;gap:8px;"><span style="display:inline-block;width:8px;height:18px;background:#0d9488;border-radius:3px;"></span><span>一、 忠告一：破除恐惧心理——千亿参数底层不过是高中数学</span></h2>
-<p style="margin:14px 0;font-size:15.5px;line-height:1.85;color:#1e293b;letter-spacing:0.3px;text-align:justify;">上一期建立起“大模型只是超级函数 <span style="font-family:'Cambria Math','Times New Roman',serif;font-style:italic;color:#0f172a;background:#f8fafc;padding:1px 5px;border-radius:4px;">Y = F(X)</span>”的总体观后，很多同学依然心里打鼓：“听说现在的模型动辄百亿、千亿参数，我只有高中理科基础，真能看懂吗？”</p>
-<p style="margin:14px 0;font-size:15.5px;line-height:1.85;color:#1e293b;letter-spacing:0.3px;text-align:justify;">请把心放回肚子里：<strong style="color:#0f172a;font-weight:700;background:linear-gradient(180deg,transparent 65%,#0d948822 0);padding:0 2px;">不仅能看懂，而且你手里的数学武器已经绰绰有余！</strong> 大多数人之所以畏惧大模型，是因为把<strong style="color:#0f172a;font-weight:700;background:linear-gradient(180deg,transparent 65%,#0d948822 0);padding:0 2px;">“规模的庞大”</strong>误当成了<strong style="color:#0f172a;font-weight:700;background:linear-gradient(180deg,transparent 65%,#0d948822 0);padding:0 2px;">“原理的深奥”</strong>。拿拥有 <code style="font-family:'JetBrains Mono',Menlo,Consolas,monospace;font-size:13.5px;background-color:#f1f5f9;color:#0f172a;padding:2px 6px;border-radius:4px;border:1px solid #e2e8f0;margin:0 2px;">1,346,471,936</code>（13.46 亿）个参数的 <code style="font-family:'JetBrains Mono',Menlo,Consolas,monospace;font-size:13.5px;background-color:#f1f5f9;color:#0f172a;padding:2px 6px;border-radius:4px;border:1px solid #e2e8f0;margin:0 2px;">DeepSeek 1.3B</code> 来说，拿显微镜凑近看，整座大厦只靠高中数学的“四块基石”支撑：</p>
-<ol style="margin:12px 0;padding-left:22px;"><li style="margin:7px 0;font-size:15px;line-height:1.8;color:#1e293b;"><strong style="color:#0f172a;font-weight:700;background:linear-gradient(180deg,transparent 65%,#0d948822 0);padding:0 2px;">向量的线性变换（矩阵乘法）</strong>：把一个词表示成长度为 <code style="font-family:'JetBrains Mono',Menlo,Consolas,monospace;font-size:13.5px;background-color:#f1f5f9;color:#0f172a;padding:2px 6px;border-radius:4px;border:1px solid #e2e8f0;margin:0 2px;">2048</code> 的数字向量，乘上一个矩阵，在几何空间里干的事情不过是把这根箭头<strong style="color:#0f172a;font-weight:700;background:linear-gradient(180deg,transparent 65%,#0d948822 0);padding:0 2px;">拉伸、缩放或者旋转一个角度</strong>。</li><li style="margin:7px 0;font-size:15px;line-height:1.8;color:#1e293b;"><strong style="color:#0f172a;font-weight:700;background:linear-gradient(180deg,transparent 65%,#0d948822 0);padding:0 2px;">向量的点积（<span style="font-family:'Cambria Math','Times New Roman',serif;font-style:italic;color:#0f172a;background:#f8fafc;padding:1px 5px;border-radius:4px;">a⃗·b⃗ = |a⃗||b⃗|cosθ</span>）</strong>：“注意力机制”的核心运算就是算两个词向量的点积——点积越大，说明两根向量在空间里夹角 <span style="font-family:'Cambria Math','Times New Roman',serif;font-style:italic;color:#0f172a;background:#f8fafc;padding:1px 5px;border-radius:4px;">θ</span> 越小、靠得越近、语义越相关。</li><li style="margin:7px 0;font-size:15px;line-height:1.8;color:#1e293b;"><strong style="color:#0f172a;font-weight:700;background:linear-gradient(180deg,transparent 65%,#0d948822 0);padding:0 2px;">指数归一化（指数函数 <span style="font-family:'Cambria Math','Times New Roman',serif;font-style:italic;color:#0f172a;background:#f8fafc;padding:1px 5px;border-radius:4px;">y = e<sup>x</sup></span>）</strong>：模型顶楼输出词表得分后，用指数函数把得分全部变成正数再除以总和算出百分比，这就是 <code style="font-family:'JetBrains Mono',Menlo,Consolas,monospace;font-size:13.5px;background-color:#f1f5f9;color:#0f172a;padding:2px 6px;border-radius:4px;border:1px solid #e2e8f0;margin:0 2px;">Softmax</code>。</li><li style="margin:7px 0;font-size:15px;line-height:1.8;color:#1e293b;"><strong style="color:#0f172a;font-weight:700;background:linear-gradient(180deg,transparent 65%,#0d948822 0);padding:0 2px;">切线斜率（导数 <span style="font-family:'Cambria Math','Times New Roman',serif;font-style:italic;color:#0f172a;background:#f8fafc;padding:1px 5px;border-radius:4px;">f'(x)</span>）</strong>：训练时如何调整 13.46 亿个参数？无非是算误差函数的导数（斜率），顺着斜率下坡方向把参数微调一点点。</li></ol>
-<p style="margin:14px 0;font-size:15.5px;line-height:1.85;color:#1e293b;letter-spacing:0.3px;text-align:justify;">把一次乘加运算重复十亿次，那是显卡（GPU）干的体力活，不是你需要恐惧的脑力活。</p>
-<section style="margin:22px 0;padding:14px 12px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;text-align:center;overflow-x:auto;"><svg viewBox="0 0 680 310" style="width:100%;max-width:640px;height:auto;display:block;margin:16px auto;" xmlns="http://www.w3.org/2000/svg">
+<section style="margin:18px 0 26px 0;padding:11px 14px 8px 14px;background:linear-gradient(135deg,#F0F5FC 0%,#FFFEFC 72%);border-left:2px solid #2B548A;border-radius:0 10px 10px 0;"><div style="font-family:'Source Han Serif SC','Noto Serif SC','Songti SC','STSong',Georgia,serif;font-size:16.5px;font-weight:700;color:#2B548A;margin-bottom:7px;">本期核心要点 · 1 分钟先抓主干</div><ul style="margin:0;padding-left:20px;"><li style="margin:8px 0;line-height:1.82;color:#2B3544;font-size:14.8px;"><strong style="color:#18202C;font-weight:700;">破除数学恐惧</strong>：千亿参数大模型看似高不可攀，拆到底层全是你高中课本里的老熟人——向量的加减乘除、空间拉伸旋转、点积夹角与切线斜率（导数）。</li><li style="margin:8px 0;line-height:1.82;color:#2B3544;font-size:14.8px;"><strong style="color:#18202C;font-weight:700;">永远把“基础概念定义”放第一位</strong>：破解理工科“每个汉字都认识，连在一起却不知所云”魔咒的唯一解药，是死磕每个概念的<strong style="color:#18202C;font-weight:700;">数学定义与输入输出张量形状</strong>。</li><li style="margin:8px 0;line-height:1.82;color:#2B3544;font-size:14.8px;"><strong style="color:#18202C;font-weight:700;">拒绝追逐泛滥的“中间型时髦名词”</strong>：越是新词爆炸，越要屏蔽表层包装噪音，死磕那些十年都不会变的底层数学与统计思想。</li><li style="margin:8px 0;line-height:1.82;color:#2B3544;font-size:14.8px;"><strong style="color:#18202C;font-weight:700;">真机实操 + AI 助教双轮驱动</strong>：用 6 行 Python 代码在本地跑通 <code style="font-family:'JetBrains Mono','SF Mono',Menlo,Consolas,monospace;font-size:13.2px;background-color:#EEF3FA;color:#1F416E;padding:1.5px 6px;border-radius:5px;margin:0 2px;">DeepSeek 1.3B</code> 观察真实张量，同时用“费曼追问法”把大模型变成你的 24 小时交互式实验助教。</li></ul></section>
+<h2 style="margin:36px 0 16px 0;font-family:'Source Han Serif SC','Noto Serif SC','Songti SC','STSong',Georgia,serif;font-size:19.5px;line-height:1.42;font-weight:700;color:#18202C;display:flex;align-items:center;gap:10px;"><span style="display:inline-block;width:4px;height:19px;background:linear-gradient(180deg,#2B548A 0%,#E08B5A 100%);border-radius:99px;flex-shrink:0;"></span><span style="min-width:0;text-wrap:pretty;">一、 忠告一：破除恐惧心理——千亿参数底层不过是高中数学</span></h2>
+<p style="margin:16px 0;font-size:15.5px;line-height:1.88;color:#2B3544;letter-spacing:0.25px;text-align:justify;">上一期建立起“大模型只是超级函数 <span style="font-family:Georgia,'Cambria Math','Times New Roman',serif;font-style:italic;font-size:15px;color:#18202C;background:#F7F5F0;padding:1px 6px;border-radius:5px;margin:0 1px;">Y <span style="font-style:normal;">=</span> F<span style="font-style:normal;">(</span>X<span style="font-style:normal;">)</span></span>”的总体观后，很多同学依然心里打鼓：“听说现在的模型动辄百亿、千亿参数，我只有高中理科基础，真能看懂吗？”</p>
+<p style="margin:16px 0;font-size:15.5px;line-height:1.88;color:#2B3544;letter-spacing:0.25px;text-align:justify;">请把心放回肚子里：<strong style="color:#18202C;font-weight:700;">不仅能看懂，而且你手里的数学武器已经绰绰有余！</strong> 大多数人之所以畏惧大模型，是因为把<strong style="color:#18202C;font-weight:700;">“规模的庞大”</strong>误当成了<strong style="color:#18202C;font-weight:700;">“原理的深奥”</strong>。拿拥有 <code style="font-family:'JetBrains Mono','SF Mono',Menlo,Consolas,monospace;font-size:13.2px;background-color:#EEF3FA;color:#1F416E;padding:1.5px 6px;border-radius:5px;margin:0 2px;">1,346,471,936</code>（13.46 亿）个参数的 <code style="font-family:'JetBrains Mono','SF Mono',Menlo,Consolas,monospace;font-size:13.2px;background-color:#EEF3FA;color:#1F416E;padding:1.5px 6px;border-radius:5px;margin:0 2px;">DeepSeek 1.3B</code> 来说，拿显微镜凑近看，整座大厦只靠高中数学的“四块基石”支撑：</p>
+<section style="margin:15px 0;"><section style="display:flex;align-items:baseline;gap:9px;margin:10px 0;"><span style="flex-shrink:0;min-width:22px;font-family:'JetBrains Mono','SF Mono',Menlo,Consolas,monospace;font-size:13.5px;font-weight:700;color:#2B548A;font-variant-numeric:tabular-nums;">1.</span><section style="flex:1;min-width:0;font-size:15.2px;line-height:1.86;color:#2B3544;"><strong style="color:#18202C;font-weight:700;">向量的线性变换（矩阵乘法）</strong>：把一个词表示成长度为 <code style="font-family:'JetBrains Mono','SF Mono',Menlo,Consolas,monospace;font-size:13.2px;background-color:#EEF3FA;color:#1F416E;padding:1.5px 6px;border-radius:5px;margin:0 2px;">2048</code> 的数字向量，乘上一个矩阵，在几何空间里干的事情不过是把这根箭头<strong style="color:#18202C;font-weight:700;">拉伸、缩放或者旋转一个角度</strong>。</section></section><section style="display:flex;align-items:baseline;gap:9px;margin:10px 0;"><span style="flex-shrink:0;min-width:22px;font-family:'JetBrains Mono','SF Mono',Menlo,Consolas,monospace;font-size:13.5px;font-weight:700;color:#2B548A;font-variant-numeric:tabular-nums;">2.</span><section style="flex:1;min-width:0;font-size:15.2px;line-height:1.86;color:#2B3544;"><strong style="color:#18202C;font-weight:700;">向量的点积（<span style="font-family:Georgia,'Cambria Math','Times New Roman',serif;font-style:italic;font-size:15px;color:#18202C;background:#F7F5F0;padding:1px 6px;border-radius:5px;margin:0 1px;"><strong style="font-style:italic;font-weight:700;color:#18202C;">a</strong><span style="font-style:normal;"> · </span><strong style="font-style:italic;font-weight:700;color:#18202C;">b</strong> <span style="font-style:normal;">=</span> <span style="font-style:normal;">|</span><strong style="font-style:italic;font-weight:700;color:#18202C;">a</strong><span style="font-style:normal;">|</span><span style="font-style:normal;">|</span><strong style="font-style:italic;font-weight:700;color:#18202C;">b</strong><span style="font-style:normal;">|</span><span style="font-style:normal;">cos</span>&thinsp;<span style="font-style:normal;">θ</span></span>）</strong>：“注意力机制”的核心运算就是算两个词向量的点积——点积越大，说明两根向量在空间里夹角 <span style="font-family:Georgia,'Cambria Math','Times New Roman',serif;font-style:italic;font-size:15px;color:#18202C;background:#F7F5F0;padding:1px 6px;border-radius:5px;margin:0 1px;"><span style="font-style:normal;">θ</span></span> 越小、靠得越近、语义越相关。</section></section><section style="display:flex;align-items:baseline;gap:9px;margin:10px 0;"><span style="flex-shrink:0;min-width:22px;font-family:'JetBrains Mono','SF Mono',Menlo,Consolas,monospace;font-size:13.5px;font-weight:700;color:#2B548A;font-variant-numeric:tabular-nums;">3.</span><section style="flex:1;min-width:0;font-size:15.2px;line-height:1.86;color:#2B3544;"><strong style="color:#18202C;font-weight:700;">指数归一化（指数函数 <span style="font-family:Georgia,'Cambria Math','Times New Roman',serif;font-style:italic;font-size:15px;color:#18202C;background:#F7F5F0;padding:1px 6px;border-radius:5px;margin:0 1px;">y <span style="font-style:normal;">=</span> e<sup style="font-size:0.80em;line-height:0;vertical-align:0.38em;">x</sup></span>）</strong>：模型顶楼输出词表得分后，用指数函数把得分全部变成正数再除以总和算出百分比，这就是 <code style="font-family:'JetBrains Mono','SF Mono',Menlo,Consolas,monospace;font-size:13.2px;background-color:#EEF3FA;color:#1F416E;padding:1.5px 6px;border-radius:5px;margin:0 2px;">Softmax</code>。</section></section><section style="display:flex;align-items:baseline;gap:9px;margin:10px 0;"><span style="flex-shrink:0;min-width:22px;font-family:'JetBrains Mono','SF Mono',Menlo,Consolas,monospace;font-size:13.5px;font-weight:700;color:#2B548A;font-variant-numeric:tabular-nums;">4.</span><section style="flex:1;min-width:0;font-size:15.2px;line-height:1.86;color:#2B3544;"><strong style="color:#18202C;font-weight:700;">切线斜率（导数 <span style="font-family:Georgia,'Cambria Math','Times New Roman',serif;font-style:italic;font-size:15px;color:#18202C;background:#F7F5F0;padding:1px 6px;border-radius:5px;margin:0 1px;">f&#x27;<span style="font-style:normal;">(</span>x<span style="font-style:normal;">)</span></span>）</strong>：训练时如何调整 13.46 亿个参数？无非是算误差函数的导数（斜率），顺着斜率下坡方向把参数微调一点点。</section></section></section>
+<p style="margin:16px 0;font-size:15.5px;line-height:1.88;color:#2B3544;letter-spacing:0.25px;text-align:justify;">把一次乘加运算重复十亿次，那是显卡（GPU）干的体力活，不是你需要恐惧的脑力活。</p>
+<figure style="margin:28px 0 26px 0;padding:0;text-align:center;"><div style="padding:16px 12px 12px 12px;background:#FAF9F6;border-radius:14px;overflow-x:auto;box-shadow:0 2px 12px rgba(24,32,44,0.04);"><svg viewBox="0 0 680 310" style="width:100%;max-width:640px;height:auto;display:block;margin:0 auto;font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Hiragino Sans GB','Noto Sans SC','Microsoft YaHei',sans-serif;" xmlns="http://www.w3.org/2000/svg">
   <defs>
     <linearGradient id="pyrBg" x1="0%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%" stop-color="#f8fafc"/>
-      <stop offset="100%" stop-color="#f1f5f9"/>
+      <stop offset="0%" stop-color="#FAF9F6"/>
+      <stop offset="100%" stop-color="#F2F5FA"/>
     </linearGradient>
   </defs>
-  <rect x="4" y="4" width="672" height="302" rx="14" fill="url(#pyrBg)" stroke="#cbd5e1" stroke-width="1.5"/>
-  <text x="340" y="28" text-anchor="middle" font-size="15" font-weight="bold" fill="#0f172a">AI 硬核学习五步破局金字塔（从消除恐惧到自主探索）</text>
+  <rect x="4" y="4" width="672" height="302" rx="14" fill="url(#pyrBg)" stroke="#D8D4CA" stroke-width="1.5"/>
+  <text x="340" y="28" text-anchor="middle" font-size="15" font-weight="bold" fill="#18202C">AI 硬核学习五步破局金字塔（从消除恐惧到自主探索）</text>
 
-  <polygon points="340,42 250,90 430,90" fill="#f59e0b" stroke="#ffffff" stroke-width="2"/>
-  <text x="340" y="72" text-anchor="middle" font-size="12" font-weight="bold" fill="#ffffff">5. 用 AI 学 AI</text>
-  <text x="442" y="74" font-size="11" fill="#b45309" font-weight="bold">← 24小时费曼助教：随时要求降维举例与生成代码</text>
+  <polygon points="340,42 250,90 430,90" fill="#C8812D" stroke="#FFFEFC" stroke-width="2"/>
+  <text x="340" y="72" text-anchor="middle" font-size="12" font-weight="bold" fill="#FFFEFC">5. 用 AI 学 AI</text>
+  <text x="442" y="74" font-size="11" fill="#985517" font-weight="bold"><tspan x="442">← 24小时费曼助教：</tspan><tspan x="453" dy="13">随时要求降维举例与生成代码</tspan></text>
 
-  <polygon points="246,94 190,142 490,142 434,94" fill="#10b981" stroke="#ffffff" stroke-width="2"/>
-  <text x="340" y="123" text-anchor="middle" font-size="12" font-weight="bold" fill="#ffffff">4. 亲手真机实操（HuggingFace 小模型）</text>
-  <text x="500" y="124" font-size="11" fill="#047857" font-weight="bold">← 6行代码跑通 DeepSeek 观察张量</text>
+  <polygon points="246,94 190,142 490,142 434,94" fill="#267E8D" stroke="#FFFEFC" stroke-width="2"/>
+  <text x="340" y="123" text-anchor="middle" font-size="12" font-weight="bold" fill="#FFFEFC">4. 亲手真机实操（HuggingFace 小模型）</text>
+  <text x="500" y="124" font-size="11" fill="#196473" font-weight="bold"><tspan x="500">← 6行代码跑通</tspan><tspan x="511" dy="13"> DeepSeek 观察张量</tspan></text>
 
-  <polygon points="186,146 130,194 550,194 494,146" fill="#0ea5e9" stroke="#ffffff" stroke-width="2"/>
-  <text x="340" y="175" text-anchor="middle" font-size="12" font-weight="bold" fill="#ffffff">3. 屏蔽“中间型时髦名词”，死磕底层思想</text>
+  <polygon points="186,146 130,194 550,194 494,146" fill="#2E7F99" stroke="#FFFEFC" stroke-width="2"/>
+  <text x="340" y="175" text-anchor="middle" font-size="12" font-weight="bold" fill="#FFFEFC">3. 屏蔽“中间型时髦名词”，死磕底层思想</text>
 
-  <polygon points="126,198 70,246 610,246 554,198" fill="#3b82f6" stroke="#ffffff" stroke-width="2"/>
-  <text x="340" y="227" text-anchor="middle" font-size="13" font-weight="bold" fill="#ffffff">2. 永远把“基础概念定义”放第一位（紧盯输入与输出张量）</text>
+  <polygon points="126,198 70,246 610,246 554,198" fill="#396EB0" stroke="#FFFEFC" stroke-width="2"/>
+  <text x="340" y="227" text-anchor="middle" font-size="13" font-weight="bold" fill="#FFFEFC">2. 永远把“基础概念定义”放第一位（紧盯输入与输出张量）</text>
 
-  <polygon points="66,250 20,296 660,296 614,250" fill="#1e293b" stroke="#ffffff" stroke-width="2"/>
-  <text x="340" y="278" text-anchor="middle" font-size="13" font-weight="bold" fill="#38bdf8">1. 破除恐惧底座：函数 y=f(x) + 向量拉伸旋转 + 点积夹角 + 导数斜率</text>
-</svg></section>
-<hr style="border:none;border-top:1px dashed #cbd5e1;margin:24px 0;" />
-<h2 style="margin:30px 0 14px 0;padding-bottom:8px;border-bottom:2px solid #0d9488;font-size:18px;font-weight:800;color:#0f172a;display:flex;align-items:center;gap:8px;"><span style="display:inline-block;width:8px;height:18px;background:#0d9488;border-radius:3px;"></span><span>二、 忠告二：永远把“基础概念定义”放第一位——打破黑话魔咒</span></h2>
-<p style="margin:14px 0;font-size:15.5px;line-height:1.85;color:#1e293b;letter-spacing:0.3px;text-align:justify;">学理工科时，几乎人人都经历过这种痛苦：<strong style="color:#0f172a;font-weight:700;background:linear-gradient(180deg,transparent 65%,#0d948822 0);padding:0 2px;">“这句话里每个汉字我都认识，怎么连在一起就完全看不懂了？”</strong> 比如：<em style="color:#334155;">“自回归模型对多头点积注意力输出张量进行层归一化，经线性投影与 Softmax 生成下一个词元。”</em></p>
-<p style="margin:14px 0;font-size:15.5px;line-height:1.85;color:#1e293b;letter-spacing:0.3px;text-align:justify;">为什么像天书？因为在理工科里，每个术语都有严格的“输入是什么、做完什么运算、输出是什么”。只要有一个基础概念在你脑子里是模糊的，五六个词串起来就会直接让大脑死机。我们把最常吓唬初学者的 <strong style="color:#0f172a;font-weight:700;background:linear-gradient(180deg,transparent 65%,#0d948822 0);padding:0 2px;">8 个核心黑话</strong>直接翻译成<strong style="color:#0f172a;font-weight:700;background:linear-gradient(180deg,transparent 65%,#0d948822 0);padding:0 2px;">高中数学本质定义</strong>，并附上 <code style="font-family:'JetBrains Mono',Menlo,Consolas,monospace;font-size:13.5px;background-color:#f1f5f9;color:#0f172a;padding:2px 6px;border-radius:4px;border:1px solid #e2e8f0;margin:0 2px;">DeepSeek 1.3B</code> 的真机实测数据：</p>
-<section style="margin:18px 0;overflow-x:auto;border-radius:8px;border:1px solid #cbd5e1;box-shadow:0 2px 8px rgba(15,23,42,0.04);"><table style="width:100%;border-collapse:collapse;font-size:12.8px;"><thead><tr><th style="padding:9px 10px;background:#0d9488;color:#ffffff;font-weight:700;font-size:12.5px;text-align:left;border:1px solid #cbd5e1;white-space:nowrap;">常见吓人 AI 黑话</th><th style="padding:9px 10px;background:#0d9488;color:#ffffff;font-weight:700;font-size:12.5px;text-align:left;border:1px solid #cbd5e1;white-space:nowrap;">高中数学与几何本质定义（人话翻译）</th><th style="padding:9px 10px;background:#0d9488;color:#ffffff;font-weight:700;font-size:12.5px;text-align:left;border:1px solid #cbd5e1;white-space:nowrap;">DeepSeek 1.3B 真机实测数据</th></tr></thead><tbody><tr><td style="padding:8px 10px;border:1px solid #e2e8f0;font-size:12.8px;line-height:1.55;color:#1e293b;background:#ffffff;"><strong style="color:#0f172a;font-weight:700;background:linear-gradient(180deg,transparent 65%,#0d948822 0);padding:0 2px;">1. Token（词元）</strong></td><td style="padding:8px 10px;border:1px solid #e2e8f0;font-size:12.8px;line-height:1.55;color:#1e293b;background:#ffffff;">文本切分后的最小编号单元（词表里的<strong style="color:#0f172a;font-weight:700;background:linear-gradient(180deg,transparent 65%,#0d948822 0);padding:0 2px;">整数身份证号</strong>）</td><td style="padding:8px 10px;border:1px solid #e2e8f0;font-size:12.8px;line-height:1.55;color:#1e293b;background:#ffffff;">例句切成 6 个编号，其中 <code style="font-family:'JetBrains Mono',Menlo,Consolas,monospace;font-size:13.5px;background-color:#f1f5f9;color:#0f172a;padding:2px 6px;border-radius:4px;border:1px solid #e2e8f0;margin:0 2px;">&quot;苹果&quot;</code> 的身份证号是 <code style="font-family:'JetBrains Mono',Menlo,Consolas,monospace;font-size:13.5px;background-color:#f1f5f9;color:#0f172a;padding:2px 6px;border-radius:4px;border:1px solid #e2e8f0;margin:0 2px;">id = 17144</code></td></tr><tr><td style="padding:8px 10px;border:1px solid #e2e8f0;font-size:12.8px;line-height:1.55;color:#1e293b;background:#f8fafc;"><strong style="color:#0f172a;font-weight:700;background:linear-gradient(180deg,transparent 65%,#0d948822 0);padding:0 2px;">2. Embedding（词嵌入）</strong></td><td style="padding:8px 10px;border:1px solid #e2e8f0;font-size:12.8px;line-height:1.55;color:#1e293b;background:#f8fafc;">把整数编号查表映射成一串实数坐标（空间里的<strong style="color:#0f172a;font-weight:700;background:linear-gradient(180deg,transparent 65%,#0d948822 0);padding:0 2px;">一条向量</strong>）</td><td style="padding:8px 10px;border:1px solid #e2e8f0;font-size:12.8px;line-height:1.55;color:#1e293b;background:#f8fafc;"><code style="font-family:'JetBrains Mono',Menlo,Consolas,monospace;font-size:13.5px;background-color:#f1f5f9;color:#0f172a;padding:2px 6px;border-radius:4px;border:1px solid #e2e8f0;margin:0 2px;">17144</code> 号在 <code style="font-family:'JetBrains Mono',Menlo,Consolas,monospace;font-size:13.5px;background-color:#f1f5f9;color:#0f172a;padding:2px 6px;border-radius:4px;border:1px solid #e2e8f0;margin:0 2px;">[32256, 2048]</code> 词表里查出 1 条 <code style="font-family:'JetBrains Mono',Menlo,Consolas,monospace;font-size:13.5px;background-color:#f1f5f9;color:#0f172a;padding:2px 6px;border-radius:4px;border:1px solid #e2e8f0;margin:0 2px;">2048</code> 维向量，模长 <code style="font-family:'JetBrains Mono',Menlo,Consolas,monospace;font-size:13.5px;background-color:#f1f5f9;color:#0f172a;padding:2px 6px;border-radius:4px;border:1px solid #e2e8f0;margin:0 2px;">8.07</code></td></tr><tr><td style="padding:8px 10px;border:1px solid #e2e8f0;font-size:12.8px;line-height:1.55;color:#1e293b;background:#ffffff;"><strong style="color:#0f172a;font-weight:700;background:linear-gradient(180deg,transparent 65%,#0d948822 0);padding:0 2px;">3. Tensor（张量）</strong></td><td style="padding:8px 10px;border:1px solid #e2e8f0;font-size:12.8px;line-height:1.55;color:#1e293b;background:#ffffff;">标量（0维）、向量（1维）、矩阵（2维）向更高维度的<strong style="color:#0f172a;font-weight:700;background:linear-gradient(180deg,transparent 65%,#0d948822 0);padding:0 2px;">数字方盒堆叠</strong></td><td style="padding:8px 10px;border:1px solid #e2e8f0;font-size:12.8px;line-height:1.55;color:#1e293b;background:#ffffff;">1 句话 6 个词并排堆成 <code style="font-family:'JetBrains Mono',Menlo,Consolas,monospace;font-size:13.5px;background-color:#f1f5f9;color:#0f172a;padding:2px 6px;border-radius:4px;border:1px solid #e2e8f0;margin:0 2px;">[6, 2048]</code>，加批次变成三维盒 <code style="font-family:'JetBrains Mono',Menlo,Consolas,monospace;font-size:13.5px;background-color:#f1f5f9;color:#0f172a;padding:2px 6px;border-radius:4px;border:1px solid #e2e8f0;margin:0 2px;">[1, 6, 2048]</code></td></tr><tr><td style="padding:8px 10px;border:1px solid #e2e8f0;font-size:12.8px;line-height:1.55;color:#1e293b;background:#f8fafc;"><strong style="color:#0f172a;font-weight:700;background:linear-gradient(180deg,transparent 65%,#0d948822 0);padding:0 2px;">4. Linear Projection（线性投影）</strong></td><td style="padding:8px 10px;border:1px solid #e2e8f0;font-size:12.8px;line-height:1.55;color:#1e293b;background:#f8fafc;">高中矩阵乘法的别称，几何上只是把向量<strong style="color:#0f172a;font-weight:700;background:linear-gradient(180deg,transparent 65%,#0d948822 0);padding:0 2px;">拉伸、缩放和旋转</strong></td><td style="padding:8px 10px;border:1px solid #e2e8f0;font-size:12.8px;line-height:1.55;color:#1e293b;background:#f8fafc;">第 0 层 <span style="font-family:'Cambria Math','Times New Roman',serif;font-style:italic;color:#0f172a;background:#f8fafc;padding:1px 5px;border-radius:4px;">Q</span> 矩阵 <code style="font-family:'JetBrains Mono',Menlo,Consolas,monospace;font-size:13.5px;background-color:#f1f5f9;color:#0f172a;padding:2px 6px;border-radius:4px;border:1px solid #e2e8f0;margin:0 2px;">[2048, 2048]</code> 把归一化后的“苹果”向量拉伸 <code style="font-family:'JetBrains Mono',Menlo,Consolas,monospace;font-size:13.5px;background-color:#f1f5f9;color:#0f172a;padding:2px 6px;border-radius:4px;border:1px solid #e2e8f0;margin:0 2px;">8.26</code> 倍、旋转 <code style="font-family:'JetBrains Mono',Menlo,Consolas,monospace;font-size:13.5px;background-color:#f1f5f9;color:#0f172a;padding:2px 6px;border-radius:4px;border:1px solid #e2e8f0;margin:0 2px;">90.24°</code></td></tr><tr><td style="padding:8px 10px;border:1px solid #e2e8f0;font-size:12.8px;line-height:1.55;color:#1e293b;background:#ffffff;"><strong style="color:#0f172a;font-weight:700;background:linear-gradient(180deg,transparent 65%,#0d948822 0);padding:0 2px;">5. Dot Product Attention（点积注意力）</strong></td><td style="padding:8px 10px;border:1px solid #e2e8f0;font-size:12.8px;line-height:1.55;color:#1e293b;background:#ffffff;">用点积 $\vec{a}\cdot\vec{b}=</td><td style="padding:8px 10px;border:1px solid #e2e8f0;font-size:12.8px;line-height:1.55;color:#1e293b;background:#ffffff;">\vec{a}</td><td style="padding:8px 10px;border:1px solid #e2e8f0;font-size:12.8px;line-height:1.55;color:#1e293b;background:#ffffff;"></td><td style="padding:8px 10px;border:1px solid #e2e8f0;font-size:12.8px;line-height:1.55;color:#1e293b;background:#ffffff;">\vec{b}</td><td style="padding:8px 10px;border:1px solid #e2e8f0;font-size:12.8px;line-height:1.55;color:#1e293b;background:#ffffff;">\cos\theta$ 测夹角亲密度，<strong style="color:#0f172a;font-weight:700;background:linear-gradient(180deg,transparent 65%,#0d948822 0);padding:0 2px;">按相关度加权求平均</strong></td><td style="padding:8px 10px;border:1px solid #e2e8f0;font-size:12.8px;line-height:1.55;color:#1e293b;background:#ffffff;">训练后“苹果↔水果”点积 <code style="font-family:'JetBrains Mono',Menlo,Consolas,monospace;font-size:13.5px;background-color:#f1f5f9;color:#0f172a;padding:2px 6px;border-radius:4px;border:1px solid #e2e8f0;margin:0 2px;">13.79</code>（夹角 <code style="font-family:'JetBrains Mono',Menlo,Consolas,monospace;font-size:13.5px;background-color:#f1f5f9;color:#0f172a;padding:2px 6px;border-radius:4px;border:1px solid #e2e8f0;margin:0 2px;">75.80°</code>），“苹果↔微积分”仅 <code style="font-family:'JetBrains Mono',Menlo,Consolas,monospace;font-size:13.5px;background-color:#f1f5f9;color:#0f172a;padding:2px 6px;border-radius:4px;border:1px solid #e2e8f0;margin:0 2px;">4.19</code>（夹角 <code style="font-family:'JetBrains Mono',Menlo,Consolas,monospace;font-size:13.5px;background-color:#f1f5f9;color:#0f172a;padding:2px 6px;border-radius:4px;border:1px solid #e2e8f0;margin:0 2px;">86.97°</code>）</td></tr><tr><td style="padding:8px 10px;border:1px solid #e2e8f0;font-size:12.8px;line-height:1.55;color:#1e293b;background:#f8fafc;"><strong style="color:#0f172a;font-weight:700;background:linear-gradient(180deg,transparent 65%,#0d948822 0);padding:0 2px;">6. Softmax（归一化指数函数）</strong></td><td style="padding:8px 10px;border:1px solid #e2e8f0;font-size:12.8px;line-height:1.55;color:#1e293b;background:#f8fafc;">用 <span style="font-family:'Cambria Math','Times New Roman',serif;font-style:italic;color:#0f172a;background:#f8fafc;padding:1px 5px;border-radius:4px;">e<sup>x<sub>i</sub></sup>/∑ e<sup>x<sub>j</sub></sup></span> 把一组实数得分变成<strong style="color:#0f172a;font-weight:700;background:linear-gradient(180deg,transparent 65%,#0d948822 0);padding:0 2px;">总和为 100% 的概率表</strong></td><td style="padding:8px 10px;border:1px solid #e2e8f0;font-size:12.8px;line-height:1.55;color:#1e293b;background:#f8fafc;">第 1 步把 <code style="font-family:'JetBrains Mono',Menlo,Consolas,monospace;font-size:13.5px;background-color:#f1f5f9;color:#0f172a;padding:2px 6px;border-radius:4px;border:1px solid #e2e8f0;margin:0 2px;">32,256</code> 个候选词得分转成概率，<code style="font-family:'JetBrains Mono',Menlo,Consolas,monospace;font-size:13.5px;background-color:#f1f5f9;color:#0f172a;padding:2px 6px;border-radius:4px;border:1px solid #e2e8f0;margin:0 2px;">“，”</code> 占 <code style="font-family:'JetBrains Mono',Menlo,Consolas,monospace;font-size:13.5px;background-color:#f1f5f9;color:#0f172a;padding:2px 6px;border-radius:4px;border:1px solid #e2e8f0;margin:0 2px;">37.38%</code>、<code style="font-family:'JetBrains Mono',Menlo,Consolas,monospace;font-size:13.5px;background-color:#f1f5f9;color:#0f172a;padding:2px 6px;border-radius:4px;border:1px solid #e2e8f0;margin:0 2px;">“。”</code> 占 <code style="font-family:'JetBrains Mono',Menlo,Consolas,monospace;font-size:13.5px;background-color:#f1f5f9;color:#0f172a;padding:2px 6px;border-radius:4px;border:1px solid #e2e8f0;margin:0 2px;">14.64%</code></td></tr><tr><td style="padding:8px 10px;border:1px solid #e2e8f0;font-size:12.8px;line-height:1.55;color:#1e293b;background:#ffffff;"><strong style="color:#0f172a;font-weight:700;background:linear-gradient(180deg,transparent 65%,#0d948822 0);padding:0 2px;">7. Autoregressive（自回归）</strong></td><td style="padding:8px 10px;border:1px solid #e2e8f0;font-size:12.8px;line-height:1.55;color:#1e293b;background:#ffffff;">把函数 <span style="font-family:'Cambria Math','Times New Roman',serif;font-style:italic;color:#0f172a;background:#f8fafc;padding:1px 5px;border-radius:4px;">Y=F(X)</span> 吐出的新词拼回输入末尾，<strong style="color:#0f172a;font-weight:700;background:linear-gradient(180deg,transparent 65%,#0d948822 0);padding:0 2px;">循环调用同一个函数</strong></td><td style="padding:8px 10px;border:1px solid #e2e8f0;font-size:12.8px;line-height:1.55;color:#1e293b;background:#ffffff;">从 <code style="font-family:'JetBrains Mono',Menlo,Consolas,monospace;font-size:13.5px;background-color:#f1f5f9;color:#0f172a;padding:2px 6px;border-radius:4px;border:1px solid #e2e8f0;margin:0 2px;">&quot;我在苹果公司吃了一个苹果&quot;</code> 连续 4 步循环接龙吐出 <code style="font-family:'JetBrains Mono',Menlo,Consolas,monospace;font-size:13.5px;background-color:#f1f5f9;color:#0f172a;padding:2px 6px;border-radius:4px;border:1px solid #e2e8f0;margin:0 2px;">&quot;，然后又吃&quot;</code></td></tr><tr><td style="padding:8px 10px;border:1px solid #e2e8f0;font-size:12.8px;line-height:1.55;color:#1e293b;background:#f8fafc;"><strong style="color:#0f172a;font-weight:700;background:linear-gradient(180deg,transparent 65%,#0d948822 0);padding:0 2px;">8. Gradient Descent（梯度下降）</strong></td><td style="padding:8px 10px;border:1px solid #e2e8f0;font-size:12.8px;line-height:1.55;color:#1e293b;background:#f8fafc;">顺着误差函数切线斜率（导数）最陡的下坡方向，<strong style="color:#0f172a;font-weight:700;background:linear-gradient(180deg,transparent 65%,#0d948822 0);padding:0 2px;">微调参数减小误差</strong></td><td style="padding:8px 10px;border:1px solid #e2e8f0;font-size:12.8px;line-height:1.55;color:#1e293b;background:#f8fafc;">训练时沿斜率微调 <code style="font-family:'JetBrains Mono',Menlo,Consolas,monospace;font-size:13.5px;background-color:#f1f5f9;color:#0f172a;padding:2px 6px;border-radius:4px;border:1px solid #e2e8f0;margin:0 2px;">13.46 亿</code>个参数，把随机噪音表雕琢成语义表</td></tr></tbody></table></section>
-<section style="margin:18px 0;padding:15px 16px;background:linear-gradient(135deg,#f0fdf4 0%,#dcfce7 100%);border:1px solid #86efac;border-left:5px solid #16a34a;border-radius:10px;font-size:14.5px;line-height:1.8;color:#14532d;"><strong style="color:#0f172a;font-weight:700;background:linear-gradient(180deg,transparent 65%,#0d948822 0);padding:0 2px;">🧠 底层思想提炼</strong>：<strong style="color:#0f172a;font-weight:700;background:linear-gradient(180deg,transparent 65%,#0d948822 0);padding:0 2px;">概念定义锚定思想</strong>。遇到任何新术语，绝不放过含糊印象，立刻追问：“它的数学定义是什么？输入张量形状是什么？输出张量代表什么？”把基础定义锚定在高中数学上，一切黑话都会迎刃而解。</section>
-<hr style="border:none;border-top:1px dashed #cbd5e1;margin:24px 0;" />
-<h2 style="margin:30px 0 14px 0;padding-bottom:8px;border-bottom:2px solid #0d9488;font-size:18px;font-weight:800;color:#0f172a;display:flex;align-items:center;gap:8px;"><span style="display:inline-block;width:8px;height:18px;background:#0d9488;border-radius:3px;"></span><span>三、 忠告三：拒绝追逐泛滥的“中间型时髦名词”——死磕底层逻辑</span></h2>
-<p style="margin:14px 0;font-size:15.5px;line-height:1.85;color:#1e293b;letter-spacing:0.3px;text-align:justify;">现在的 AI 圈每隔几天就会蹦出一堆抓人眼球的“中间型时髦名词”——各种套壳框架缩写与花哨流派。许多初学者天天追逐这些半衰期只有几个月的新词，结果半年过去，连“一句话是怎么变成张量送进模型里的”都答不上来。</p>
-<p style="margin:14px 0;font-size:15.5px;line-height:1.85;color:#1e293b;letter-spacing:0.3px;text-align:justify;"><strong style="color:#0f172a;font-weight:700;background:linear-gradient(180deg,transparent 65%,#0d948822 0);padding:0 2px;">越是概念爆炸，越要拒绝追逐“中间型名词”，把 90% 的精力用来死磕十年不变的底层逻辑</strong>：二进制与 UTF-8 如何演化出 Token、张量如何用空间拉伸旋转与点积表达语义、24 层注意力如何注入语境，以及<strong style="color:#0f172a;font-weight:700;background:linear-gradient(180deg,transparent 65%,#0d948822 0);padding:0 2px;">训练过程（随机张量表试错学习）</strong>与<strong style="color:#0f172a;font-weight:700;background:linear-gradient(180deg,transparent 65%,#0d948822 0);padding:0 2px;">推理过程（权重彻底冻结）</strong>的本质分野。</p>
-<hr style="border:none;border-top:1px dashed #cbd5e1;margin:24px 0;" />
-<h2 style="margin:30px 0 14px 0;padding-bottom:8px;border-bottom:2px solid #0d9488;font-size:18px;font-weight:800;color:#0f172a;display:flex;align-items:center;gap:8px;"><span style="display:inline-block;width:8px;height:18px;background:#0d9488;border-radius:3px;"></span><span>四、 忠告四与忠告五：亲手跑通 6 行真机代码，用 AI 助教学 AI</span></h2>
-<p style="margin:14px 0;font-size:15.5px;line-height:1.85;color:#1e293b;letter-spacing:0.3px;text-align:justify;"><strong style="color:#0f172a;font-weight:700;background:linear-gradient(180deg,transparent 65%,#0d948822 0);padding:0 2px;">忠告四：亲手实操，从本地开源小模型里把真实张量拉出来看！</strong> 像 <code style="font-family:'JetBrains Mono',Menlo,Consolas,monospace;font-size:13.5px;background-color:#f1f5f9;color:#0f172a;padding:2px 6px;border-radius:4px;border:1px solid #e2e8f0;margin:0 2px;">deepseek-coder-1.3b-base</code> 这样的小模型，在普通家用电脑上只需 <strong style="color:#0f172a;font-weight:700;background:linear-gradient(180deg,transparent 65%,#0d948822 0);padding:0 2px;">6 行 Python 代码</strong> 就能撬开黑盒：</p>
-<section style="margin:18px 0;border-radius:10px;overflow:hidden;border:1px solid #1e293b;background:#0f172a;box-shadow:0 4px 12px rgba(15,23,42,0.12);"><div style="background:#1e293b;padding:6px 14px;font-size:12px;color:#94a3b8;display:flex;align-items:center;justify-content:space-between;font-family:monospace;"><span>● ● ● &nbsp; python</span><span>DeepSeek 1.3B 实操代码</span></div><pre style="margin:0;padding:14px 16px;overflow-x:auto;font-family:'JetBrains Mono',Menlo,Consolas,monospace;font-size:13px;line-height:1.65;color:#e2e8f0;white-space:pre;">import torch
+  <polygon points="66,250 20,296 660,296 614,250" fill="#2B3544" stroke="#FFFEFC" stroke-width="2"/>
+  <text x="340" y="278" text-anchor="middle" font-size="13" font-weight="bold" fill="#59A3BA">1. 破除恐惧底座：函数 y=f(x) + 向量拉伸旋转 + 点积夹角 + 导数斜率</text>
+</svg></div><figcaption style="margin-top:10px;font-size:12.5px;color:#556173;letter-spacing:0.15px;"><span style="font-family:'JetBrains Mono','SF Mono',Menlo,Consolas,monospace;font-size:11.5px;font-weight:700;color:#2B548A;margin-right:6px;">DIAGRAM</span>第 02 期核心机理结构图解</figcaption></figure>
+<section style="margin:30px auto;max-width:260px;height:1px;background:linear-gradient(90deg,transparent 0%,#DBD5CA 28%,#E08B5A 50%,#DBD5CA 72%,transparent 100%);"></section>
+<h2 style="margin:36px 0 16px 0;font-family:'Source Han Serif SC','Noto Serif SC','Songti SC','STSong',Georgia,serif;font-size:19.5px;line-height:1.42;font-weight:700;color:#18202C;display:flex;align-items:center;gap:10px;"><span style="display:inline-block;width:4px;height:19px;background:linear-gradient(180deg,#2B548A 0%,#E08B5A 100%);border-radius:99px;flex-shrink:0;"></span><span style="min-width:0;text-wrap:pretty;">二、 忠告二：永远把“基础概念定义”放第一位——打破黑话魔咒</span></h2>
+<p style="margin:16px 0;font-size:15.5px;line-height:1.88;color:#2B3544;letter-spacing:0.25px;text-align:justify;">学理工科时，几乎人人都经历过这种痛苦：<strong style="color:#18202C;font-weight:700;">“这句话里每个汉字我都认识，怎么连在一起就完全看不懂了？”</strong> 比如：<em style="color:#475569;font-style:italic;">“自回归模型对多头点积注意力输出张量进行层归一化，经线性投影与 Softmax 生成下一个词元。”</em></p>
+<p style="margin:16px 0;font-size:15.5px;line-height:1.88;color:#2B3544;letter-spacing:0.25px;text-align:justify;">为什么像天书？因为在理工科里，每个术语都有严格的“输入是什么、做完什么运算、输出是什么”。只要有一个基础概念在你脑子里是模糊的，五六个词串起来就会直接让大脑死机。我们把最常吓唬初学者的 <strong style="color:#18202C;font-weight:700;">8 个核心黑话</strong>直接翻译成<strong style="color:#18202C;font-weight:700;">高中数学本质定义</strong>，并附上 <code style="font-family:'JetBrains Mono','SF Mono',Menlo,Consolas,monospace;font-size:13.2px;background-color:#EEF3FA;color:#1F416E;padding:1.5px 6px;border-radius:5px;margin:0 2px;">DeepSeek 1.3B</code> 的真机实测数据：</p>
+<section style="margin:24px 0;"><section style="overflow-x:auto;-webkit-overflow-scrolling:touch;border-radius:8px;"><table style="width:100%;border-collapse:collapse;font-size:13px;"><thead><tr><th style="padding:10px 11px;background:#F1F5FC;color:#18202C;font-weight:700;font-size:12.5px;line-height:1.4;vertical-align:bottom;text-align:left;border-top:2px solid #2B548A;border-bottom:1.5px solid #C6D6EC;">常见吓人 AI 黑话</th><th style="padding:10px 11px;background:#F1F5FC;color:#18202C;font-weight:700;font-size:12.5px;line-height:1.4;vertical-align:bottom;text-align:left;border-top:2px solid #2B548A;border-bottom:1.5px solid #C6D6EC;">高中数学与几何本质定义（人话翻译）</th><th style="padding:10px 11px;background:#F1F5FC;color:#18202C;font-weight:700;font-size:12.5px;line-height:1.4;vertical-align:bottom;text-align:left;border-top:2px solid #2B548A;border-bottom:1.5px solid #C6D6EC;">DeepSeek 1.3B 真机实测数据</th></tr></thead><tbody><tr><td style="padding:9px 11px;border-bottom:1px solid #EFECE4;font-size:13px;line-height:1.54;color:#2B3544;background:#FFFEFC;font-variant-numeric:tabular-nums;vertical-align:top;"><strong style="color:#18202C;font-weight:700;">1. Token（词元）</strong></td><td style="padding:9px 11px;border-bottom:1px solid #EFECE4;font-size:13px;line-height:1.54;color:#2B3544;background:#FFFEFC;font-variant-numeric:tabular-nums;vertical-align:top;">文本切分后的最小编号单元（词表里的<strong style="color:#18202C;font-weight:700;">整数身份证号</strong>）</td><td style="padding:9px 11px;border-bottom:1px solid #EFECE4;font-size:13px;line-height:1.54;color:#2B3544;background:#FFFEFC;font-variant-numeric:tabular-nums;vertical-align:top;">例句切成 6 个编号，其中 <code style="font-family:'JetBrains Mono','SF Mono',Menlo,Consolas,monospace;font-size:13.2px;background-color:#EEF3FA;color:#1F416E;padding:1.5px 6px;border-radius:5px;margin:0 2px;">&quot;苹果&quot;</code> 的身份证号是 <code style="font-family:'JetBrains Mono','SF Mono',Menlo,Consolas,monospace;font-size:13.2px;background-color:#EEF3FA;color:#1F416E;padding:1.5px 6px;border-radius:5px;margin:0 2px;">id = 17144</code></td></tr><tr><td style="padding:9px 11px;border-bottom:1px solid #EFECE4;font-size:13px;line-height:1.54;color:#2B3544;background:#FAF9F6;font-variant-numeric:tabular-nums;vertical-align:top;"><strong style="color:#18202C;font-weight:700;">2. Embedding（词嵌入）</strong></td><td style="padding:9px 11px;border-bottom:1px solid #EFECE4;font-size:13px;line-height:1.54;color:#2B3544;background:#FAF9F6;font-variant-numeric:tabular-nums;vertical-align:top;">把整数编号查表映射成一串实数坐标（空间里的<strong style="color:#18202C;font-weight:700;">一条向量</strong>）</td><td style="padding:9px 11px;border-bottom:1px solid #EFECE4;font-size:13px;line-height:1.54;color:#2B3544;background:#FAF9F6;font-variant-numeric:tabular-nums;vertical-align:top;"><code style="font-family:'JetBrains Mono','SF Mono',Menlo,Consolas,monospace;font-size:13.2px;background-color:#EEF3FA;color:#1F416E;padding:1.5px 6px;border-radius:5px;margin:0 2px;">17144</code> 号在 <code style="font-family:'JetBrains Mono','SF Mono',Menlo,Consolas,monospace;font-size:13.2px;background-color:#EEF3FA;color:#1F416E;padding:1.5px 6px;border-radius:5px;margin:0 2px;">[32256, 2048]</code> 词表里查出 1 条 <code style="font-family:'JetBrains Mono','SF Mono',Menlo,Consolas,monospace;font-size:13.2px;background-color:#EEF3FA;color:#1F416E;padding:1.5px 6px;border-radius:5px;margin:0 2px;">2048</code> 维向量，模长 <code style="font-family:'JetBrains Mono','SF Mono',Menlo,Consolas,monospace;font-size:13.2px;background-color:#EEF3FA;color:#1F416E;padding:1.5px 6px;border-radius:5px;margin:0 2px;">8.07</code></td></tr><tr><td style="padding:9px 11px;border-bottom:1px solid #EFECE4;font-size:13px;line-height:1.54;color:#2B3544;background:#FFFEFC;font-variant-numeric:tabular-nums;vertical-align:top;"><strong style="color:#18202C;font-weight:700;">3. Tensor（张量）</strong></td><td style="padding:9px 11px;border-bottom:1px solid #EFECE4;font-size:13px;line-height:1.54;color:#2B3544;background:#FFFEFC;font-variant-numeric:tabular-nums;vertical-align:top;">标量（0维）、向量（1维）、矩阵（2维）向更高维度的<strong style="color:#18202C;font-weight:700;">数字方盒堆叠</strong></td><td style="padding:9px 11px;border-bottom:1px solid #EFECE4;font-size:13px;line-height:1.54;color:#2B3544;background:#FFFEFC;font-variant-numeric:tabular-nums;vertical-align:top;">1 句话 6 个词并排堆成 <code style="font-family:'JetBrains Mono','SF Mono',Menlo,Consolas,monospace;font-size:13.2px;background-color:#EEF3FA;color:#1F416E;padding:1.5px 6px;border-radius:5px;margin:0 2px;">[6, 2048]</code>，加批次变成三维盒 <code style="font-family:'JetBrains Mono','SF Mono',Menlo,Consolas,monospace;font-size:13.2px;background-color:#EEF3FA;color:#1F416E;padding:1.5px 6px;border-radius:5px;margin:0 2px;">[1, 6, 2048]</code></td></tr><tr><td style="padding:9px 11px;border-bottom:1px solid #EFECE4;font-size:13px;line-height:1.54;color:#2B3544;background:#FAF9F6;font-variant-numeric:tabular-nums;vertical-align:top;"><strong style="color:#18202C;font-weight:700;">4. Linear Projection（线性投影）</strong></td><td style="padding:9px 11px;border-bottom:1px solid #EFECE4;font-size:13px;line-height:1.54;color:#2B3544;background:#FAF9F6;font-variant-numeric:tabular-nums;vertical-align:top;">高中矩阵乘法的别称，几何上只是把向量<strong style="color:#18202C;font-weight:700;">拉伸、缩放和旋转</strong></td><td style="padding:9px 11px;border-bottom:1px solid #EFECE4;font-size:13px;line-height:1.54;color:#2B3544;background:#FAF9F6;font-variant-numeric:tabular-nums;vertical-align:top;">第 0 层 <span style="font-family:Georgia,'Cambria Math','Times New Roman',serif;font-style:italic;font-size:15px;color:#18202C;background:#F7F5F0;padding:1px 6px;border-radius:5px;margin:0 1px;">Q</span> 矩阵 <code style="font-family:'JetBrains Mono','SF Mono',Menlo,Consolas,monospace;font-size:13.2px;background-color:#EEF3FA;color:#1F416E;padding:1.5px 6px;border-radius:5px;margin:0 2px;">[2048, 2048]</code> 把归一化后的“苹果”向量拉伸 <code style="font-family:'JetBrains Mono','SF Mono',Menlo,Consolas,monospace;font-size:13.2px;background-color:#EEF3FA;color:#1F416E;padding:1.5px 6px;border-radius:5px;margin:0 2px;">8.26</code> 倍、旋转 <code style="font-family:'JetBrains Mono','SF Mono',Menlo,Consolas,monospace;font-size:13.2px;background-color:#EEF3FA;color:#1F416E;padding:1.5px 6px;border-radius:5px;margin:0 2px;">90.24°</code></td></tr><tr><td style="padding:9px 11px;border-bottom:1px solid #EFECE4;font-size:13px;line-height:1.54;color:#2B3544;background:#FFFEFC;font-variant-numeric:tabular-nums;vertical-align:top;"><strong style="color:#18202C;font-weight:700;">5. Dot Product Attention（点积注意力）</strong></td><td style="padding:9px 11px;border-bottom:1px solid #EFECE4;font-size:13px;line-height:1.54;color:#2B3544;background:#FFFEFC;font-variant-numeric:tabular-nums;vertical-align:top;">用点积 <span style="font-family:Georgia,'Cambria Math','Times New Roman',serif;font-style:italic;font-size:15px;color:#18202C;background:#F7F5F0;padding:1px 6px;border-radius:5px;margin:0 1px;"><strong style="font-style:italic;font-weight:700;color:#18202C;">a</strong><span style="font-style:normal;"> · </span><strong style="font-style:italic;font-weight:700;color:#18202C;">b</strong><span style="font-style:normal;">=</span><span style="font-style:normal;">|</span><strong style="font-style:italic;font-weight:700;color:#18202C;">a</strong><span style="font-style:normal;">|</span><span style="font-style:normal;">|</span><strong style="font-style:italic;font-weight:700;color:#18202C;">b</strong><span style="font-style:normal;">|</span><span style="font-style:normal;">cos</span>&thinsp;<span style="font-style:normal;">θ</span></span> 测夹角亲密度，<strong style="color:#18202C;font-weight:700;">按相关度加权求平均</strong></td><td style="padding:9px 11px;border-bottom:1px solid #EFECE4;font-size:13px;line-height:1.54;color:#2B3544;background:#FFFEFC;font-variant-numeric:tabular-nums;vertical-align:top;">训练后“苹果↔水果”点积 <code style="font-family:'JetBrains Mono','SF Mono',Menlo,Consolas,monospace;font-size:13.2px;background-color:#EEF3FA;color:#1F416E;padding:1.5px 6px;border-radius:5px;margin:0 2px;">13.79</code>（夹角 <code style="font-family:'JetBrains Mono','SF Mono',Menlo,Consolas,monospace;font-size:13.2px;background-color:#EEF3FA;color:#1F416E;padding:1.5px 6px;border-radius:5px;margin:0 2px;">75.80°</code>），“苹果↔微积分”仅 <code style="font-family:'JetBrains Mono','SF Mono',Menlo,Consolas,monospace;font-size:13.2px;background-color:#EEF3FA;color:#1F416E;padding:1.5px 6px;border-radius:5px;margin:0 2px;">4.19</code>（夹角 <code style="font-family:'JetBrains Mono','SF Mono',Menlo,Consolas,monospace;font-size:13.2px;background-color:#EEF3FA;color:#1F416E;padding:1.5px 6px;border-radius:5px;margin:0 2px;">86.97°</code>）</td></tr><tr><td style="padding:9px 11px;border-bottom:1px solid #EFECE4;font-size:13px;line-height:1.54;color:#2B3544;background:#FAF9F6;font-variant-numeric:tabular-nums;vertical-align:top;"><strong style="color:#18202C;font-weight:700;">6. Softmax（归一化指数函数）</strong></td><td style="padding:9px 11px;border-bottom:1px solid #EFECE4;font-size:13px;line-height:1.54;color:#2B3544;background:#FAF9F6;font-variant-numeric:tabular-nums;vertical-align:top;">用 <span style="font-family:Georgia,'Cambria Math','Times New Roman',serif;font-style:italic;font-size:15px;color:#18202C;background:#F7F5F0;padding:1px 6px;border-radius:5px;margin:0 1px;">e<sup style="font-size:0.80em;line-height:0;vertical-align:0.38em;">x<sub style="font-size:0.80em;line-height:0;vertical-align:-0.22em;">i</sub></sup><span style="font-style:normal;">/</span><span style="font-style:normal;font-size:1.12em;vertical-align:-0.05em;">∑</span> e<sup style="font-size:0.80em;line-height:0;vertical-align:0.38em;">x<sub style="font-size:0.80em;line-height:0;vertical-align:-0.22em;">j</sub></sup></span> 把一组实数得分变成<strong style="color:#18202C;font-weight:700;">总和为 100% 的概率表</strong></td><td style="padding:9px 11px;border-bottom:1px solid #EFECE4;font-size:13px;line-height:1.54;color:#2B3544;background:#FAF9F6;font-variant-numeric:tabular-nums;vertical-align:top;">第 1 步把 <code style="font-family:'JetBrains Mono','SF Mono',Menlo,Consolas,monospace;font-size:13.2px;background-color:#EEF3FA;color:#1F416E;padding:1.5px 6px;border-radius:5px;margin:0 2px;">32,256</code> 个候选词得分转成概率，<code style="font-family:'JetBrains Mono','SF Mono',Menlo,Consolas,monospace;font-size:13.2px;background-color:#EEF3FA;color:#1F416E;padding:1.5px 6px;border-radius:5px;margin:0 2px;">“，”</code> 占 <code style="font-family:'JetBrains Mono','SF Mono',Menlo,Consolas,monospace;font-size:13.2px;background-color:#EEF3FA;color:#1F416E;padding:1.5px 6px;border-radius:5px;margin:0 2px;">37.38%</code>、<code style="font-family:'JetBrains Mono','SF Mono',Menlo,Consolas,monospace;font-size:13.2px;background-color:#EEF3FA;color:#1F416E;padding:1.5px 6px;border-radius:5px;margin:0 2px;">“。”</code> 占 <code style="font-family:'JetBrains Mono','SF Mono',Menlo,Consolas,monospace;font-size:13.2px;background-color:#EEF3FA;color:#1F416E;padding:1.5px 6px;border-radius:5px;margin:0 2px;">14.64%</code></td></tr><tr><td style="padding:9px 11px;border-bottom:1px solid #EFECE4;font-size:13px;line-height:1.54;color:#2B3544;background:#FFFEFC;font-variant-numeric:tabular-nums;vertical-align:top;"><strong style="color:#18202C;font-weight:700;">7. Autoregressive（自回归）</strong></td><td style="padding:9px 11px;border-bottom:1px solid #EFECE4;font-size:13px;line-height:1.54;color:#2B3544;background:#FFFEFC;font-variant-numeric:tabular-nums;vertical-align:top;">把函数 <span style="font-family:Georgia,'Cambria Math','Times New Roman',serif;font-style:italic;font-size:15px;color:#18202C;background:#F7F5F0;padding:1px 6px;border-radius:5px;margin:0 1px;">Y<span style="font-style:normal;">=</span>F<span style="font-style:normal;">(</span>X<span style="font-style:normal;">)</span></span> 吐出的新词拼回输入末尾，<strong style="color:#18202C;font-weight:700;">循环调用同一个函数</strong></td><td style="padding:9px 11px;border-bottom:1px solid #EFECE4;font-size:13px;line-height:1.54;color:#2B3544;background:#FFFEFC;font-variant-numeric:tabular-nums;vertical-align:top;">从 <code style="font-family:'JetBrains Mono','SF Mono',Menlo,Consolas,monospace;font-size:13.2px;background-color:#EEF3FA;color:#1F416E;padding:1.5px 6px;border-radius:5px;margin:0 2px;">&quot;我在苹果公司吃了一个苹果&quot;</code> 连续 4 步循环接龙吐出 <code style="font-family:'JetBrains Mono','SF Mono',Menlo,Consolas,monospace;font-size:13.2px;background-color:#EEF3FA;color:#1F416E;padding:1.5px 6px;border-radius:5px;margin:0 2px;">&quot;，然后又吃&quot;</code></td></tr><tr><td style="padding:9px 11px;border-bottom:1.5px solid #2B548A;font-size:13px;line-height:1.54;color:#2B3544;background:#FAF9F6;font-variant-numeric:tabular-nums;vertical-align:top;"><strong style="color:#18202C;font-weight:700;">8. Gradient Descent（梯度下降）</strong></td><td style="padding:9px 11px;border-bottom:1.5px solid #2B548A;font-size:13px;line-height:1.54;color:#2B3544;background:#FAF9F6;font-variant-numeric:tabular-nums;vertical-align:top;">顺着误差函数切线斜率（导数）最陡的下坡方向，<strong style="color:#18202C;font-weight:700;">微调参数减小误差</strong></td><td style="padding:9px 11px;border-bottom:1.5px solid #2B548A;font-size:13px;line-height:1.54;color:#2B3544;background:#FAF9F6;font-variant-numeric:tabular-nums;vertical-align:top;">训练时沿斜率微调 <code style="font-family:'JetBrains Mono','SF Mono',Menlo,Consolas,monospace;font-size:13.2px;background-color:#EEF3FA;color:#1F416E;padding:1.5px 6px;border-radius:5px;margin:0 2px;">13.46 亿</code>个参数，把随机噪音表雕琢成语义表</td></tr></tbody></table></section></section>
+<section style="margin:24px 0;padding:17px 20px 15px 20px;background:linear-gradient(135deg,#F0F5FC 0%,#F7FAFE 100%);border-left:3.5px solid #2B548A;border-radius:0 14px 14px 0;"><div style="font-family:'JetBrains Mono','SF Mono',Menlo,Consolas,monospace;font-size:12px;font-weight:700;letter-spacing:0.8px;color:#2B548A;margin-bottom:6px;">FIRST PRINCIPLES · 底层思想</div><p style="margin:6px 0;font-size:15px;line-height:1.84;color:#2B3544;text-align:justify;"><strong style="color:#18202C;font-weight:700;">底层思想提炼</strong>：<strong style="color:#18202C;font-weight:700;">概念定义锚定思想</strong>。遇到任何新术语，绝不放过含糊印象，立刻追问：“它的数学定义是什么？输入张量形状是什么？输出张量代表什么？”把基础定义锚定在高中数学上，一切黑话都会迎刃而解。</p></section>
+<section style="margin:30px auto;max-width:260px;height:1px;background:linear-gradient(90deg,transparent 0%,#DBD5CA 28%,#E08B5A 50%,#DBD5CA 72%,transparent 100%);"></section>
+<h2 style="margin:36px 0 16px 0;font-family:'Source Han Serif SC','Noto Serif SC','Songti SC','STSong',Georgia,serif;font-size:19.5px;line-height:1.42;font-weight:700;color:#18202C;display:flex;align-items:center;gap:10px;"><span style="display:inline-block;width:4px;height:19px;background:linear-gradient(180deg,#2B548A 0%,#E08B5A 100%);border-radius:99px;flex-shrink:0;"></span><span style="min-width:0;text-wrap:pretty;">三、 忠告三：拒绝追逐泛滥的“中间型时髦名词”——死磕底层逻辑</span></h2>
+<p style="margin:16px 0;font-size:15.5px;line-height:1.88;color:#2B3544;letter-spacing:0.25px;text-align:justify;">现在的 AI 圈每隔几天就会蹦出一堆抓人眼球的“中间型时髦名词”——各种套壳框架缩写与花哨流派。许多初学者天天追逐这些半衰期只有几个月的新词，结果半年过去，连“一句话是怎么变成张量送进模型里的”都答不上来。</p>
+<p style="margin:16px 0;font-size:15.5px;line-height:1.88;color:#2B3544;letter-spacing:0.25px;text-align:justify;"><strong style="color:#18202C;font-weight:700;">越是概念爆炸，越要拒绝追逐“中间型名词”，把 90% 的精力用来死磕十年不变的底层逻辑</strong>：二进制与 UTF-8 如何演化出 Token、张量如何用空间拉伸旋转与点积表达语义、24 层注意力如何注入语境，以及<strong style="color:#18202C;font-weight:700;">训练过程（随机张量表试错学习）</strong>与<strong style="color:#18202C;font-weight:700;">推理过程（权重彻底冻结）</strong>的本质分野。</p>
+<section style="margin:30px auto;max-width:260px;height:1px;background:linear-gradient(90deg,transparent 0%,#DBD5CA 28%,#E08B5A 50%,#DBD5CA 72%,transparent 100%);"></section>
+<h2 style="margin:36px 0 16px 0;font-family:'Source Han Serif SC','Noto Serif SC','Songti SC','STSong',Georgia,serif;font-size:19.5px;line-height:1.42;font-weight:700;color:#18202C;display:flex;align-items:center;gap:10px;"><span style="display:inline-block;width:4px;height:19px;background:linear-gradient(180deg,#2B548A 0%,#E08B5A 100%);border-radius:99px;flex-shrink:0;"></span><span style="min-width:0;text-wrap:pretty;">四、 忠告四与忠告五：亲手跑通 6 行真机代码，用 AI 助教学 AI</span></h2>
+<p style="margin:16px 0;font-size:15.5px;line-height:1.88;color:#2B3544;letter-spacing:0.25px;text-align:justify;"><strong style="color:#18202C;font-weight:700;">忠告四：亲手实操，从本地开源小模型里把真实张量拉出来看！</strong> 像 <code style="font-family:'JetBrains Mono','SF Mono',Menlo,Consolas,monospace;font-size:13.2px;background-color:#EEF3FA;color:#1F416E;padding:1.5px 6px;border-radius:5px;margin:0 2px;">deepseek-coder-1.3b-base</code> 这样的小模型，在普通家用电脑上只需 <strong style="color:#18202C;font-weight:700;">6 行 Python 代码</strong> 就能撬开黑盒：</p>
+<section style="margin:22px 0;border-radius:12px;overflow:hidden;border-left:3.5px solid #2B548A;background:#F3F6FA;"><div style="background:#E9EFF8;padding:8px 16px;font-size:12px;color:#475569;font-family:'JetBrains Mono','SF Mono',Menlo,Consolas,monospace;display:flex;align-items:center;justify-content:space-between;letter-spacing:0.4px;"><span style="font-weight:700;color:#2B548A;">PYTHON</span><span>DEEPSEEK-CODER-1.3B 实操清单</span></div><pre style="margin:0;padding:15px 18px;overflow-x:auto;font-family:'JetBrains Mono','SF Mono',Menlo,Consolas,monospace;font-size:13px;line-height:1.7;color:#18202C;white-space:pre;">import torch
 from transformers import AutoTokenizer, AutoModelForCausalLM
 
 tok = AutoTokenizer.from_pretrained(&quot;./ds13b&quot;)
@@ -162,42 +287,72 @@ model = AutoModelForCausalLM.from_pretrained(&quot;./ds13b&quot;, dtype=torch.bf
 ids = tok(&quot;我在苹果公司吃了一个苹果&quot;, return_tensors=&quot;pt&quot;, add_special_tokens=False).input_ids
 print(&quot;词元编号:&quot;, ids.tolist(), &quot;| 词向量表形状:&quot;, model.model.embed_tokens.weight.shape)
 print(&quot;“苹果”(id=17144)前6维坐标:&quot;, [round(x, 4) for x in model.model.embed_tokens.weight[17144][:6].tolist()])</pre></section>
-<p style="margin:14px 0;font-size:15.5px;line-height:1.85;color:#1e293b;letter-spacing:0.3px;text-align:justify;">运行后屏幕会跳出真实词元编号 <code style="font-family:'JetBrains Mono',Menlo,Consolas,monospace;font-size:13.5px;background-color:#f1f5f9;color:#0f172a;padding:2px 6px;border-radius:4px;border:1px solid #e2e8f0;margin:0 2px;">[[23098, 17144, 2804, 3509, 13556, 17144]]</code>、词表形状 <code style="font-family:'JetBrains Mono',Menlo,Consolas,monospace;font-size:13.5px;background-color:#f1f5f9;color:#0f172a;padding:2px 6px;border-radius:4px;border:1px solid #e2e8f0;margin:0 2px;">torch.Size([32256, 2048])</code> 以及“苹果”前 6 维坐标 <code style="font-family:'JetBrains Mono',Menlo,Consolas,monospace;font-size:13.5px;background-color:#f1f5f9;color:#0f172a;padding:2px 6px;border-radius:4px;border:1px solid #e2e8f0;margin:0 2px;">[0.0398, -0.2314, 0.1011, 0.2002, -0.1553, 0.0908]</code>。对比未经训练的随机表与训练后的词表，你会看到“苹果↔水果”的余弦相似度从随机的 <code style="font-family:'JetBrains Mono',Menlo,Consolas,monospace;font-size:13.5px;background-color:#f1f5f9;color:#0f172a;padding:2px 6px;border-radius:4px;border:1px solid #e2e8f0;margin:0 2px;">-0.0094</code> 跃升至 <code style="font-family:'JetBrains Mono',Menlo,Consolas,monospace;font-size:13.5px;background-color:#f1f5f9;color:#0f172a;padding:2px 6px;border-radius:4px;border:1px solid #e2e8f0;margin:0 2px;">0.2454</code>，“吃↔喝”从 <code style="font-family:'JetBrains Mono',Menlo,Consolas,monospace;font-size:13.5px;background-color:#f1f5f9;color:#0f172a;padding:2px 6px;border-radius:4px;border:1px solid #e2e8f0;margin:0 2px;">0.0139</code> 跃升至 <code style="font-family:'JetBrains Mono',Menlo,Consolas,monospace;font-size:13.5px;background-color:#f1f5f9;color:#0f172a;padding:2px 6px;border-radius:4px;border:1px solid #e2e8f0;margin:0 2px;">0.3570</code>！</p>
-<figure style="margin:22px 0;text-align:center;"><img src="../assets/fig1_random_vs_trained.png" alt="DeepSeek 1.3B 真机实验：训练前随机向量 vs 训练后语义向量的几何对比" style="width:100%;max-width:100%;height:auto;border-radius:10px;border:1px solid #e2e8f0;box-shadow:0 4px 14px rgba(15,23,42,0.06);display:block;margin:0 auto;" /><figcaption style="margin-top:8px;font-size:12.5px;color:#64748b;line-height:1.5;">▲ 图：DeepSeek 1.3B 真机实验：训练前随机向量 vs 训练后语义向量的几何对比</figcaption></figure>
-<p style="margin:14px 0;font-size:15.5px;line-height:1.85;color:#1e293b;letter-spacing:0.3px;text-align:justify;"><strong style="color:#0f172a;font-weight:700;background:linear-gradient(180deg,transparent 65%,#0d948822 0);padding:0 2px;">忠告五：用 AI 学 AI，把大模型变成你的 24 小时实验助教</strong>。遇到卡壳概念时，直接向 AI 发送<strong style="color:#0f172a;font-weight:700;background:linear-gradient(180deg,transparent 65%,#0d948822 0);padding:0 2px;">“三步降维追问指令”</strong>：① <em style="color:#334155;">“只用高中向量、矩阵和函数知识解释该概念”</em>；② <em style="color:#334155;">“以‘我在苹果公司吃了一个苹果’为例写出输入输出张量形状”</em>；③ <em style="color:#334155;">“写 10 行内 PyTorch 代码打印该张量验证”</em>。</p>
-<section style="margin:18px 0;padding:15px 16px;background:linear-gradient(135deg,#f0fdf4 0%,#dcfce7 100%);border:1px solid #86efac;border-left:5px solid #16a34a;border-radius:10px;font-size:14.5px;line-height:1.8;color:#14532d;"><strong style="color:#0f172a;font-weight:700;background:linear-gradient(180deg,transparent 65%,#0d948822 0);padding:0 2px;">🧠 底层思想提炼</strong>：<strong style="color:#0f172a;font-weight:700;background:linear-gradient(180deg,transparent 65%,#0d948822 0);padding:0 2px;">白盒实验与交互证伪思想</strong>。把大模型从神坛拉回实验室标本，用真机代码输出检验数学定义，再用 AI 助教构建即时反馈闭环。</section>
-<hr style="border:none;border-top:1px dashed #cbd5e1;margin:24px 0;" />
-<section style="margin:28px 0;padding:20px 18px;background:linear-gradient(135deg,#fffbeb 0%,#fef3c7 100%);border:1px solid #fcd34d;border-radius:12px;box-shadow:0 4px 14px rgba(217,119,6,0.08);"><div style="display:inline-block;background:#d97706;color:#ffffff;font-size:12px;font-weight:700;padding:2px 10px;border-radius:999px;margin-bottom:8px;">📜 科学史故事专栏</div><h3 style="margin:4px 0 12px 0;font-size:17px;font-weight:800;color:#92400e;">费曼与父亲的林中散步——知道五国语言里的鸟名，不等于懂这只鸟</h3><p style="margin:10px 0;font-size:14.8px;line-height:1.85;color:#334155;text-align:justify;">诺贝尔物理学奖得主<strong style="color:#0f172a;font-weight:700;background:linear-gradient(180deg,transparent 65%,#0d948822 0);padding:0 2px;">理查德·费曼（Richard Feynman）</strong>一生最痛恨用华丽术语掩盖对底层原理的无知，这源于童年时父亲带他在树林里的一次散步。</p><p style="margin:10px 0;font-size:14.8px;line-height:1.85;color:#334155;text-align:justify;">那天树枝上落了一只小鸟正啄着羽毛，同行男孩考费曼：“你知道那是什么鸟吗？”费曼摇头后遭嘲笑：“连褐喉画眉都不知道！”等男孩走远，父亲蹲下身说：“这只鸟在英语里叫 <code style="font-family:'JetBrains Mono',Menlo,Consolas,monospace;font-size:13.5px;background-color:#f1f5f9;color:#0f172a;padding:2px 6px;border-radius:4px;border:1px solid #e2e8f0;margin:0 2px;">Brown-throated thrush</code>，在德语里叫 <code style="font-family:'JetBrains Mono',Menlo,Consolas,monospace;font-size:13.5px;background-color:#f1f5f9;color:#0f172a;padding:2px 6px;border-radius:4px;border:1px solid #e2e8f0;margin:0 2px;">Halzenfugel</code>，在葡萄牙语里叫 <code style="font-family:'JetBrains Mono',Menlo,Consolas,monospace;font-size:13.5px;background-color:#f1f5f9;color:#0f172a;padding:2px 6px;border-radius:4px;border:1px solid #e2e8f0;margin:0 2px;">Pássaro</code>，在中文里叫画眉，在日语里叫 <code style="font-family:'JetBrains Mono',Menlo,Consolas,monospace;font-size:13.5px;background-color:#f1f5f9;color:#0f172a;padding:2px 6px;border-radius:4px;border:1px solid #e2e8f0;margin:0 2px;">Katano Tekkera</code>……<strong style="color:#0f172a;font-weight:700;background:linear-gradient(180deg,transparent 65%,#0d948822 0);padding:0 2px;">可是，就算你把各国语言里它的名字背得滚瓜烂熟，你对这只鸟本身依然一无所知！</strong>现在忘掉名字，看看这只鸟<strong style="color:#0f172a;font-weight:700;background:linear-gradient(180deg,transparent 65%,#0d948822 0);padding:0 2px;">在做什么</strong>——它为什么刚飞下来就不停啄羽毛？”</p><p style="margin:10px 0;font-size:14.8px;line-height:1.85;color:#334155;text-align:justify;">背下 100 个时髦 AI 缩写，只相当于背下画眉鸟的五国译名；唯有掀开黑盒，亲眼看见 <code style="font-family:'JetBrains Mono',Menlo,Consolas,monospace;font-size:13.5px;background-color:#f1f5f9;color:#0f172a;padding:2px 6px;border-radius:4px;border:1px solid #e2e8f0;margin:0 2px;">1,346,471,936</code> 个数字如何在 <code style="font-family:'JetBrains Mono',Menlo,Consolas,monospace;font-size:13.5px;background-color:#f1f5f9;color:#0f172a;padding:2px 6px;border-radius:4px;border:1px solid #e2e8f0;margin:0 2px;">2048</code> 维空间里拉伸、旋转与点积，你才真正看懂了这只“大模型飞鸟”是如何振翅高飞的。</p></section>
-<section style="margin:26px 0;padding:18px 18px;background:linear-gradient(135deg,#eef2ff 0%,#e0e7ff 100%);border:1px solid #a5b4fc;border-left:5px solid #4f46e5;border-radius:10px;"><div style="font-size:15.5px;font-weight:800;color:#4338ca;margin-bottom:8px;">🔮 下期预告</div><p style="margin:10px 0;font-size:15px;line-height:1.8;color:#1e1b4b;">现在我们要正式拆解超级函数 <span style="font-family:'Cambria Math','Times New Roman',serif;font-style:italic;color:#0f172a;background:#f8fafc;padding:1px 5px;border-radius:4px;">Y = F(X)</span> 的第一道大门了。<strong style="color:#0f172a;font-weight:700;background:linear-gradient(180deg,transparent 65%,#4f46e522 0);padding:0 2px;">计算机芯片里只有高低电平开关，连一个汉字都不认识，甚至连十进制都不会算，它是怎么把人类语言变成数学输入的？更离奇的是，1 个字节明明有 <span style="font-family:'Cambria Math','Times New Roman',serif;font-style:italic;color:#0f172a;background:#f8fafc;padding:1px 5px;border-radius:4px;">2<sup>8</sup> = 256</span> 种状态，为什么现代大模型分词器的 UTF-8 初始底座却只有 243 个字节？</strong> 下一期，我们揭秘《从电门开关到 UTF-8 的 243 字节之谜》！</p></section>
-<section style="margin:26px 0 12px 0;padding:16px 18px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;"><div style="font-size:15px;font-weight:800;color:#0f172a;margin-bottom:8px;">🔗 拓展资源加油站（课后动手实验室）</div><ol style="margin:0;padding-left:20px;"><li style="margin:8px 0;font-size:13.8px;line-height:1.75;color:#334155;"><strong style="color:#0f172a;font-weight:700;background:linear-gradient(180deg,transparent 65%,#0d948822 0);padding:0 2px;">【官方教程】HuggingFace <code style="font-family:'JetBrains Mono',Menlo,Consolas,monospace;font-size:13.5px;background-color:#f1f5f9;color:#0f172a;padding:2px 6px;border-radius:4px;border:1px solid #e2e8f0;margin:0 2px;">Transformers</code> 快速上手</strong>：访问 <code style="font-family:'JetBrains Mono',Menlo,Consolas,monospace;font-size:13.5px;background-color:#f1f5f9;color:#0f172a;padding:2px 6px;border-radius:4px;border:1px solid #e2e8f0;margin:0 2px;">huggingface.co/docs/transformers/quicktour</code>，5 分钟学会用 Python 加载开源大模型。</li><li style="margin:8px 0;font-size:13.8px;line-height:1.75;color:#334155;"><strong style="color:#0f172a;font-weight:700;background:linear-gradient(180deg,transparent 65%,#0d948822 0);padding:0 2px;">【费曼演讲视频】《知道名字 vs 真正理解》</strong>：B 站搜索 <code style="font-family:'JetBrains Mono',Menlo,Consolas,monospace;font-size:13.5px;background-color:#f1f5f9;color:#0f172a;padding:2px 6px;border-radius:4px;border:1px solid #e2e8f0;margin:0 2px;">费曼 鸟的名字</code>，观看费曼晚年亲口讲述父亲教他观察画眉鸟的 4 分钟原版采访。</li><li style="margin:8px 0;font-size:13.8px;line-height:1.75;color:#334155;"><strong style="color:#0f172a;font-weight:700;background:linear-gradient(180deg,transparent 65%,#0d948822 0);padding:0 2px;">【零配置云端实验】Google Colab 免费笔记本</strong>：无需本地配环境，在浏览器里复制本期的 6 行 Python 代码即可在线查看张量形状与词向量坐标。</li></ol></section>
-<section style="margin-top:30px;padding:16px 18px;background:#0f172a;color:#cbd5e1;border-radius:10px;font-size:12.5px;line-height:1.7;text-align:center;">
-      <div style="font-weight:700;color:#ffffff;font-size:13.5px;margin-bottom:4px;">《掀开大模型的黑盒子》全 12 期硬核科普连载</div>
-      <div>数据与真机实验基于本地开源模型 <code style="color:#38bdf8;">deepseek-coder-1.3b-base</code> (32,256 词表 · 24 层 · 13.46 亿参数) 实测生成</div>
+<p style="margin:16px 0;font-size:15.5px;line-height:1.88;color:#2B3544;letter-spacing:0.25px;text-align:justify;">运行后屏幕会跳出真实词元编号 <code style="font-family:'JetBrains Mono','SF Mono',Menlo,Consolas,monospace;font-size:13.2px;background-color:#EEF3FA;color:#1F416E;padding:1.5px 6px;border-radius:5px;margin:0 2px;">[[23098, 17144, 2804, 3509, 13556, 17144]]</code>、词表形状 <code style="font-family:'JetBrains Mono','SF Mono',Menlo,Consolas,monospace;font-size:13.2px;background-color:#EEF3FA;color:#1F416E;padding:1.5px 6px;border-radius:5px;margin:0 2px;">torch.Size([32256, 2048])</code> 以及“苹果”前 6 维坐标 <code style="font-family:'JetBrains Mono','SF Mono',Menlo,Consolas,monospace;font-size:13.2px;background-color:#EEF3FA;color:#1F416E;padding:1.5px 6px;border-radius:5px;margin:0 2px;">[0.0398, -0.2314, 0.1011, 0.2002, -0.1553, 0.0908]</code>。对比未经训练的随机表与训练后的词表，你会看到“苹果↔水果”的余弦相似度从随机的 <code style="font-family:'JetBrains Mono','SF Mono',Menlo,Consolas,monospace;font-size:13.2px;background-color:#EEF3FA;color:#1F416E;padding:1.5px 6px;border-radius:5px;margin:0 2px;">-0.0094</code> 跃升至 <code style="font-family:'JetBrains Mono','SF Mono',Menlo,Consolas,monospace;font-size:13.2px;background-color:#EEF3FA;color:#1F416E;padding:1.5px 6px;border-radius:5px;margin:0 2px;">0.2454</code>，“吃↔喝”从 <code style="font-family:'JetBrains Mono','SF Mono',Menlo,Consolas,monospace;font-size:13.2px;background-color:#EEF3FA;color:#1F416E;padding:1.5px 6px;border-radius:5px;margin:0 2px;">0.0139</code> 跃升至 <code style="font-family:'JetBrains Mono','SF Mono',Menlo,Consolas,monospace;font-size:13.2px;background-color:#EEF3FA;color:#1F416E;padding:1.5px 6px;border-radius:5px;margin:0 2px;">0.3570</code>！</p>
+<figure style="margin:28px 0 26px 0;padding:0;text-align:center;"><img src="../assets/fig1_random_vs_trained.png" alt="DeepSeek 1.3B 真机实验：训练前随机向量 vs 训练后语义向量的几何对比" style="width:100%;max-width:100%;height:auto;border-radius:12px;display:block;margin:0 auto;box-shadow:0 4px 20px rgba(24,32,44,0.08);" /><figcaption style="margin-top:11px;font-size:12.5px;color:#475569;line-height:1.58;letter-spacing:0.15px;"><span style="font-family:'JetBrains Mono','SF Mono',Menlo,Consolas,monospace;font-size:11.5px;font-weight:700;color:#2B548A;margin-right:6px;">FIG.</span>DeepSeek 1.3B 真机实验：训练前随机向量 vs 训练后语义向量的几何对比</figcaption></figure>
+<p style="margin:16px 0;font-size:15.5px;line-height:1.88;color:#2B3544;letter-spacing:0.25px;text-align:justify;"><strong style="color:#18202C;font-weight:700;">忠告五：用 AI 学 AI，把大模型变成你的 24 小时实验助教</strong>。遇到卡壳概念时，直接向 AI 发送<strong style="color:#18202C;font-weight:700;">“三步降维追问指令”</strong>：① <em style="color:#475569;font-style:italic;">“只用高中向量、矩阵和函数知识解释该概念”</em>；② <em style="color:#475569;font-style:italic;">“以‘我在苹果公司吃了一个苹果’为例写出输入输出张量形状”</em>；③ <em style="color:#475569;font-style:italic;">“写 10 行内 PyTorch 代码打印该张量验证”</em>。</p>
+<section style="margin:24px 0;padding:17px 20px 15px 20px;background:linear-gradient(135deg,#F0F5FC 0%,#F7FAFE 100%);border-left:3.5px solid #2B548A;border-radius:0 14px 14px 0;"><div style="font-family:'JetBrains Mono','SF Mono',Menlo,Consolas,monospace;font-size:12px;font-weight:700;letter-spacing:0.8px;color:#2B548A;margin-bottom:6px;">FIRST PRINCIPLES · 底层思想</div><p style="margin:6px 0;font-size:15px;line-height:1.84;color:#2B3544;text-align:justify;"><strong style="color:#18202C;font-weight:700;">底层思想提炼</strong>：<strong style="color:#18202C;font-weight:700;">白盒实验与交互证伪思想</strong>。把大模型从神坛拉回实验室标本，用真机代码输出检验数学定义，再用 AI 助教构建即时反馈闭环。</p></section>
+<section style="margin:30px auto;max-width:260px;height:1px;background:linear-gradient(90deg,transparent 0%,#DBD5CA 28%,#E08B5A 50%,#DBD5CA 72%,transparent 100%);"></section>
+<section style="margin:32px 0;padding:22px 22px 16px 22px;background:linear-gradient(145deg,#FDF6EE 0%,#FAF2E8 100%);border-top:3px solid #D97A4A;border-radius:14px;"><div style="font-family:'JetBrains Mono','SF Mono',Menlo,Consolas,monospace;font-size:12px;font-weight:700;letter-spacing:0.8px;color:#B04A22;margin-bottom:6px;">HISTORY OF SCIENCE · 科学史故事专栏</div><h3 style="margin:0 0 13px 0;font-family:'Source Han Serif SC','Noto Serif SC','Songti SC','STSong',Georgia,serif;font-size:18px;line-height:1.45;font-weight:700;color:#5A2B16;">费曼与父亲的林中散步——知道五国语言里的鸟名，不等于懂这只鸟</h3><p style="margin:11px 0;font-size:15px;line-height:1.88;color:#352D28;text-align:justify;">诺贝尔物理学奖得主<strong style="color:#18202C;font-weight:700;">理查德·费曼（Richard Feynman）</strong>一生最痛恨用华丽术语掩盖对底层原理的无知，这源于童年时父亲带他在树林里的一次散步。</p><p style="margin:11px 0;font-size:15px;line-height:1.88;color:#352D28;text-align:justify;">那天树枝上落了一只小鸟正啄着羽毛，同行男孩考费曼：“你知道那是什么鸟吗？”费曼摇头后遭嘲笑：“连褐喉画眉都不知道！”等男孩走远，父亲蹲下身说：“这只鸟在英语里叫 <code style="font-family:'JetBrains Mono','SF Mono',Menlo,Consolas,monospace;font-size:13.2px;background-color:#EEF3FA;color:#1F416E;padding:1.5px 6px;border-radius:5px;margin:0 2px;">Brown-throated thrush</code>，在德语里叫 <code style="font-family:'JetBrains Mono','SF Mono',Menlo,Consolas,monospace;font-size:13.2px;background-color:#EEF3FA;color:#1F416E;padding:1.5px 6px;border-radius:5px;margin:0 2px;">Halzenfugel</code>，在葡萄牙语里叫 <code style="font-family:'JetBrains Mono','SF Mono',Menlo,Consolas,monospace;font-size:13.2px;background-color:#EEF3FA;color:#1F416E;padding:1.5px 6px;border-radius:5px;margin:0 2px;">Pássaro</code>，在中文里叫画眉，在日语里叫 <code style="font-family:'JetBrains Mono','SF Mono',Menlo,Consolas,monospace;font-size:13.2px;background-color:#EEF3FA;color:#1F416E;padding:1.5px 6px;border-radius:5px;margin:0 2px;">Katano Tekkera</code>……<strong style="color:#18202C;font-weight:700;">可是，就算你把各国语言里它的名字背得滚瓜烂熟，你对这只鸟本身依然一无所知！</strong>现在忘掉名字，看看这只鸟<strong style="color:#18202C;font-weight:700;">在做什么</strong>——它为什么刚飞下来就不停啄羽毛？”</p><p style="margin:11px 0;font-size:15px;line-height:1.88;color:#352D28;text-align:justify;">背下 100 个时髦 AI 缩写，只相当于背下画眉鸟的五国译名；唯有掀开黑盒，亲眼看见 <code style="font-family:'JetBrains Mono','SF Mono',Menlo,Consolas,monospace;font-size:13.2px;background-color:#EEF3FA;color:#1F416E;padding:1.5px 6px;border-radius:5px;margin:0 2px;">1,346,471,936</code> 个数字如何在 <code style="font-family:'JetBrains Mono','SF Mono',Menlo,Consolas,monospace;font-size:13.2px;background-color:#EEF3FA;color:#1F416E;padding:1.5px 6px;border-radius:5px;margin:0 2px;">2048</code> 维空间里拉伸、旋转与点积，你才真正看懂了这只“大模型飞鸟”是如何振翅高飞的。</p></section>
+<section style="margin:28px 0;padding:20px 22px 16px 22px;background:linear-gradient(135deg,#F0F5FC 0%,#FDF6EE 100%);border-left:3.5px solid #2B548A;border-radius:0 14px 14px 0;"><div style="font-family:'JetBrains Mono','SF Mono',Menlo,Consolas,monospace;font-size:12px;font-weight:700;letter-spacing:0.8px;color:#2B548A;margin-bottom:5px;">NEXT ISSUE · 下期预告</div><div style="font-family:'Source Han Serif SC','Noto Serif SC','Songti SC','STSong',Georgia,serif;font-size:16.5px;font-weight:700;color:#18202C;margin-bottom:8px;">下期预告</div><p style="margin:10px 0;font-size:14.8px;line-height:1.84;color:#2B3544;text-align:justify;">现在我们要正式拆解超级函数 <span style="font-family:Georgia,'Cambria Math','Times New Roman',serif;font-style:italic;font-size:15px;color:#18202C;background:#F7F5F0;padding:1px 6px;border-radius:5px;margin:0 1px;">Y <span style="font-style:normal;">=</span> F<span style="font-style:normal;">(</span>X<span style="font-style:normal;">)</span></span> 的第一道大门了。<strong style="color:#18202C;font-weight:700;">计算机芯片里只有高低电平开关，连一个汉字都不认识，甚至连十进制都不会算，它是怎么把人类语言变成数学输入的？更离奇的是，1 个字节明明有 <span style="font-family:Georgia,'Cambria Math','Times New Roman',serif;font-style:italic;font-size:15px;color:#18202C;background:#F7F5F0;padding:1px 6px;border-radius:5px;margin:0 1px;"><span style="font-style:normal;">2</span><sup style="font-size:0.80em;line-height:0;vertical-align:0.38em;"><span style="font-style:normal;">8</span></sup> <span style="font-style:normal;">=</span> <span style="font-style:normal;">2</span><span style="font-style:normal;">5</span><span style="font-style:normal;">6</span></span> 种状态，为什么现代大模型分词器的 UTF-8 初始底座却只有 243 个字节？</strong> 下一期，我们揭秘《从电门开关到 UTF-8 的 243 字节之谜》！</p></section>
+<section style="margin:28px 0 14px 0;padding:20px 22px 16px 22px;background:#F7F5F0;border-radius:14px;"><div style="font-family:'JetBrains Mono','SF Mono',Menlo,Consolas,monospace;font-size:12px;font-weight:700;letter-spacing:0.8px;color:#556173;margin-bottom:5px;">REFERENCES &amp; LAB</div><div style="font-family:'Source Han Serif SC','Noto Serif SC','Songti SC','STSong',Georgia,serif;font-size:16px;font-weight:700;color:#18202C;margin-bottom:10px;">拓展资源加油站（课后动手实验室）</div><ol style="margin:0;padding-left:20px;"><li style="margin:8px 0;font-size:14px;line-height:1.78;color:#475569;"><strong style="color:#18202C;font-weight:700;">【官方教程】HuggingFace <code style="font-family:'JetBrains Mono','SF Mono',Menlo,Consolas,monospace;font-size:13.2px;background-color:#EEF3FA;color:#1F416E;padding:1.5px 6px;border-radius:5px;margin:0 2px;">Transformers</code> 快速上手</strong>：访问 <code style="font-family:'JetBrains Mono','SF Mono',Menlo,Consolas,monospace;font-size:13.2px;background-color:#EEF3FA;color:#1F416E;padding:1.5px 6px;border-radius:5px;margin:0 2px;">huggingface.co/docs/transformers/quicktour</code>，5 分钟学会用 Python 加载开源大模型。</li><li style="margin:8px 0;font-size:14px;line-height:1.78;color:#475569;"><strong style="color:#18202C;font-weight:700;">【费曼演讲视频】《知道名字 vs 真正理解》</strong>：B 站搜索 <code style="font-family:'JetBrains Mono','SF Mono',Menlo,Consolas,monospace;font-size:13.2px;background-color:#EEF3FA;color:#1F416E;padding:1.5px 6px;border-radius:5px;margin:0 2px;">费曼 鸟的名字</code>，观看费曼晚年亲口讲述父亲教他观察画眉鸟的 4 分钟原版采访。</li><li style="margin:8px 0;font-size:14px;line-height:1.78;color:#475569;"><strong style="color:#18202C;font-weight:700;">【零配置云端实验】Google Colab 免费笔记本</strong>：无需本地配环境，在浏览器里复制本期的 6 行 Python 代码即可在线查看张量形状与词向量坐标。</li></ol></section>
+<section style="margin-top:38px;padding-top:18px;font-size:12.5px;line-height:1.78;color:#475569;display:flex;flex-direction:column;gap:5px;">
+      <div style="height:2px;border-radius:99px;background:linear-gradient(90deg,#2B548A 0%,#4C82C2 52%,#E08B5A 100%);margin-bottom:14px;"></div>
+      <div style="font-family:'Source Han Serif SC','Noto Serif SC','Songti SC','STSong',Georgia,serif;font-weight:700;color:#18202C;font-size:14px;letter-spacing:0.3px;">《掀开大模型的黑盒子》 · 全 12 期硬核科普连载</div>
+      <div>全部数据与图鉴均基于开源模型 <code style="font-family:'JetBrains Mono','SF Mono',Menlo,Consolas,monospace;font-size:12px;background:#EEF3FA;color:#1F416E;padding:1.5px 6px;border-radius:4px;">deepseek-coder-1.3b-base</code>（32,256 词表 · 24 层 · 13.46 亿参数）真机前向实测生成。</div>
     </section>
 </section>
-  </div>
+</section>
+  </main>
 
-  <div class="bottom-nav">
-    <a href="ep01.html" class="nav-btn">← 上一期 (第1期)</a>
-    <a href="ep03.html" class="nav-btn">下一期 (第3期) →</a>
-  </div>
+  <nav class="bottom-nav">
+    <a href="ep01.html" class="pager-link">← 上一期（第 01 期）</a>
+    <a href="ep03.html" class="pager-link">下一期（第 03 期）→</a>
+  </nav>
 
 <script>
-function toggleWidth() {
-  document.getElementById('shell').classList.toggle('mobile');
+function setWidthMode(isMobile) {
+  const shell = document.getElementById('previewShell');
+  shell.classList.toggle('mobile', isMobile);
+  document.getElementById('btnDesktop').classList.toggle('active', !isMobile);
+  document.getElementById('btnMobile').classList.toggle('active', isMobile);
 }
-function copyWeChat() {
+
+function updateProgress() {
+  const doc = document.documentElement;
+  const max = doc.scrollHeight - window.innerHeight;
+  const pct = max > 0 ? Math.min(100, Math.max(0, (window.scrollY / max) * 100)) : 0;
+  document.getElementById('readProgress').style.width = pct.toFixed(1) + '%';
+}
+window.addEventListener('scroll', updateProgress, { passive: true });
+updateProgress();
+
+async function copyArticle() {
   const node = document.getElementById('wechat-article-body');
-  const range = document.createRange();
-  range.selectNode(node);
-  const sel = window.getSelection();
-  sel.removeAllRanges();
-  sel.addRange(range);
-  document.execCommand('copy');
-  sel.removeAllRanges();
   const btn = document.getElementById('copyBtn');
-  btn.textContent = '✅ 已复制！可直接粘贴到微信公众号后台';
-  setTimeout(() => { btn.textContent = '📋 一键复制公众号富文本排版'; }, 3000);
+  let ok = false;
+  try {
+    if (navigator.clipboard && window.ClipboardItem) {
+      const htmlBlob = new Blob([node.outerHTML], { type: 'text/html' });
+      const textBlob = new Blob([node.innerText], { type: 'text/plain' });
+      await navigator.clipboard.write([new ClipboardItem({ 'text/html': htmlBlob, 'text/plain': textBlob })]);
+      ok = true;
+    }
+  } catch (_) {}
+  if (!ok) {
+    const range = document.createRange();
+    range.selectNode(node);
+    const sel = window.getSelection();
+    sel.removeAllRanges();
+    sel.addRange(range);
+    try { ok = document.execCommand('copy'); } catch (_) {}
+    if (ok) sel.removeAllRanges();
+  }
+  btn.textContent = ok ? '已复制' : '请手动复制';
+  btn.classList.toggle('copied', ok);
+  setTimeout(() => {
+    btn.textContent = '复制公众号排版';
+    btn.classList.remove('copied');
+  }, 2600);
 }
 </script>
 </body>
